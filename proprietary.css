@@ -1,0 +1,38 @@
+﻿div.entry {
+	margin-top:0.5em;
+	margin-bottom:0.5em;
+	}
+
+.dropdown-menu {
+    max-height: 400px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+	
+span.titleOriginal-single {
+	font-style: italic;
+	}	
+	
+.affix {
+      top: 0;
+      width: auto;
+	  
+  }
+.affix + .container-fluid {
+      padding-top: 70px;
+  }
+  
+div.container-fluid {
+	padding-left:10px;
+	padding-right:10px;
+	}
+	
+div.container-fluid:first-of-type { 
+	background-color:#eee;
+	margin-bottom:5px;
+	}	
+	
+ul.nav li.dropdown:hover ul.dropdown-menu {
+	display:block;
+	margin-top:0px;
+	}

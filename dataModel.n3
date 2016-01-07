@@ -1,0 +1,199 @@
+@base <> .
+
+# Entitäten
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/item> a <http://www.w3.org/2002/07/owl#Class> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Medium"@de, "Item"@en .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/catalogue> a <http://www.w3.org/2002/07/owl#Class> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Katalog"@de, "catalogue"@en .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/mentioning> a <http://www.w3.org/2002/07/owl#Class> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Katalogeintrag"@de, "Mentioning in catalogue"@en .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/person> a <http://www.w3.org/2002/07/owl#Class> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Person"@de, "Person"@en .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/place> a <http://www.w3.org/2002/07/owl#Class> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Ort"@de, "Place"@en .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/work> a <http://www.w3.org/2002/07/owl#Class> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Werk"@de, "work"@en .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/manifestation> a <http://www.w3.org/2002/07/owl#Class> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Dokumentierte Ausgabe"@de, "Manifestation"@en .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/originalCopy> a <http://www.w3.org/2002/07/owl#Class> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Originalexemplar"@de, "original copy"@en .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/bioDB> a <http://www.w3.org/2002/07/owl#Class> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Biographische Datenbank"@de, "Biographical database"@en .
+
+# Relationen
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/creator> a <http://www.w3.org/2002/07/owl#ObjectProperty>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Autor"@de, "creator"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/person> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://hartmut-beyer.bplaced.net/liddel-tool/item> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/contributor> a <http://www.w3.org/2002/07/owl#ObjectProperty>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Beiträger"@de, "contributor"@en ;
+	<http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/person> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://hartmut-beyer.bplaced.net/liddel-tool/item> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/placeOfOrigin> a <http://www.w3.org/2002/07/owl#ObjectProperty>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Provenienzmerkmal"@de, "provenance attribute"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/item> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://hartmut-beyer.bplaced.net/liddel-tool/place> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/beaconEntry> a <http://www.w3.org/2002/07/owl#ObjectProperty>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Eintrag in BEACON-Datei"@de, "BEACON entry"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/person> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://hartmut-beyer.bplaced.net/liddel-tool/bioDB> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/concerns> a <http://www.w3.org/2002/07/owl#ObjectProperty>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "betrifft"@de, "concerns"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/mentioning> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://hartmut-beyer.bplaced.net/liddel-tool/item> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/contains> a <http://www.w3.org/2002/07/owl#ObjectProperty>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "enthält"@de, "contains"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/catalogue> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://hartmut-beyer.bplaced.net/liddel-tool/mentioning> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/hasManifestation> a <http://www.w3.org/2002/07/owl#ObjectProperty>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "enthält"@de, "contains"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/item> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://hartmut-beyer.bplaced.net/liddel-tool/manifestation> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/hasOriginalCopy> a <http://www.w3.org/2002/07/owl#ObjectProperty>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "enthält"@de, "contains"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/item> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://hartmut-beyer.bplaced.net/liddel-tool/originalCopy> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/correspondsTo> a <http://www.w3.org/2002/07/owl#ObjectProperty>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "entspricht"@de, "corresponds to"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/item> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://hartmut-beyer.bplaced.net/liddel-tool/work> .
+
+# Attribute
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/idItem> a <http://www.w3.org/2002/07/owl#DatatypeProperty>, <http://www.w3.org/2002/07/owl#Class>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Identifier"@de, "identifier"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/item> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/image> a <http://www.w3.org/2002/07/owl#DatatypeProperty>, <http://www.w3.org/2002/07/owl#Class>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Scan"@de, "image"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/mentioning> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#decimal> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/page> a <http://www.w3.org/2002/07/owl#DatatypeProperty>, <http://www.w3.org/2002/07/owl#Class>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Seite"@de, "page"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/mentioning> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#decimal> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/nr> a <http://www.w3.org/2002/07/owl#DatatypeProperty>, <http://www.w3.org/2002/07/owl#Class>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Katalognummer"@de, "number in catalogue"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/mentioning> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#decimal> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/quality> a <http://www.w3.org/2002/07/owl#DatatypeProperty>, <http://www.w3.org/2002/07/owl#Class>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+   <http://www.w3.org/2000/01/rdf-schema#label> "Qualität"@de, "quality"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/item> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/type> a <http://www.w3.org/2002/07/owl#DatatypeProperty>, <http://www.w3.org/2002/07/owl#Class>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+   <http://www.w3.org/2000/01/rdf-schema#label> "Materialart"@de, "media type"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/item> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/positionInVolume> a <http://www.w3.org/2002/07/owl#DatatypeProperty>, <http://www.w3.org/2002/07/owl#Class>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+   <http://www.w3.org/2000/01/rdf-schema#label> "Position im Band"@de, "position in volume"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/item> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#decimal> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/titleCat> a <http://www.w3.org/2002/07/owl#DatatypeProperty>, <http://www.w3.org/2002/07/owl#Class>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Katalogtitel"@de, "title in catalogue"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/mentioning> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/titleBib> a <http://www.w3.org/2002/07/owl#DatatypeProperty>, <http://www.w3.org/2002/07/owl#Class>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Bibliographischer titel"@de, "Bibliographical title"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/manifestation> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/system> a <http://www.w3.org/2002/07/owl#DatatypeProperty>, <http://www.w3.org/2002/07/owl#Class>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Nachweissystem"@de, "Online catalogue"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/manifestation> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/idManifestation> a <http://www.w3.org/2002/07/owl#DatatypeProperty>, <http://www.w3.org/2002/07/owl#Class>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Datensatzkennung"@de, "Identifier in online catalogue"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/manifestation> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/name> a <http://www.w3.org/2002/07/owl#DatatypeProperty>, <http://www.w3.org/2002/07/owl#Class>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Name"@de, "name"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/person> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/gnd> a <http://www.w3.org/2002/07/owl#DatatypeProperty>, <http://www.w3.org/2002/07/owl#Class>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "GND-Nummer"@de, "GND identifier"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/person> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/target> a <http://www.w3.org/2002/07/owl#DatatypeProperty>, <http://www.w3.org/2002/07/owl#Class>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "GND-Nummer"@de, "GND identifier"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/bioDB> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/geoData> a <http://www.w3.org/2002/07/owl#DatatypeProperty>, <http://www.w3.org/2002/07/owl#Class>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Geodaten"@de, "Coordinates"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/place> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/placeName> a <http://www.w3.org/2002/07/owl#DatatypeProperty>, <http://www.w3.org/2002/07/owl#Class>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Geodaten"@de, "Coordinates"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/place> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/getty> a <http://www.w3.org/2002/07/owl#DatatypeProperty>, <http://www.w3.org/2002/07/owl#Class>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Geodaten"@de, "Coordinates"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/place> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/institution> a <http://www.w3.org/2002/07/owl#DatatypeProperty>, <http://www.w3.org/2002/07/owl#Class>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Besitzende Institution"@de, "institution"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/originalCopy> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/shelfmark> a <http://www.w3.org/2002/07/owl#DatatypeProperty>, <http://www.w3.org/2002/07/owl#Class>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Signatur"@de, "shelfmark"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/originalCopy> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/shelfmark> a <http://www.w3.org/2002/07/owl#DatatypeProperty>, <http://www.w3.org/2002/07/owl#Class>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Signatur"@de, "shelfmark"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/originalCopy> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/provenanceAttribute> a <http://www.w3.org/2002/07/owl#DatatypeProperty>, <http://www.w3.org/2002/07/owl#Class>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Provenienzmerkmal"@de, "provenance attribute"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/originalCopy> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/titleWork> a <http://www.w3.org/2002/07/owl#DatatypeProperty>, <http://www.w3.org/2002/07/owl#Class>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Titel eines Werkes"@de, "title of a work"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/work> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/databaseWork> a <http://www.w3.org/2002/07/owl#DatatypeProperty>, <http://www.w3.org/2002/07/owl#Class>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Titel eines Werkes"@de, "title of a work"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/work> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://hartmut-beyer.bplaced.net/liddel-tool/idWork> a <http://www.w3.org/2002/07/owl#DatatypeProperty>, <http://www.w3.org/2002/07/owl#Class>, <http://www.w3.org/2002/07/owl#FunctionalProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Titel eines Werkes"@de, "title of a work"@en ;
+    <http://www.w3.org/2000/01/rdf-schema#domain> <http://hartmut-beyer.bplaced.net/liddel-tool/work> ;
+    <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .

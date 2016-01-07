@@ -1,0 +1,82 @@
+html {font-family:sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}
+body {margin:0}
+* {-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
+:after,:before {-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
+html {font-size:10px;-webkit-tap-highlight-color:rgba(0,0,0,0)}
+body {font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;line-height:1.42857143;color:#333;background-color:#fff}
+a {background-color:transparent}
+a:active,a:hover {outline:0}
+a {color:#337ab7;text-decoration:none}
+a:focus,a:hover {color:#23527c;text-decoration:underline}
+a:focus {outline:thin dotted;outline:5px auto -webkit-focus-ring-color;outline-offset:-2px}
+.h1,.h2,.h3,.h4,.h5,.h6,h1,h2,h3,h4,h5,h6 {font-family:inherit;font-weight:500;line-height:1.1;color:inherit}
+.h1 .small,.h1 small,.h2 .small,.h2 small,.h3 .small,.h3 small,.h4 .small,.h4 small,.h5 .small,.h5 small,.h6 .small,.h6 small,h1 .small,h1 small,h2 .small,h2 small,h3 .small,h3 small,h4 .small,h4 small,h5 .small,h5 small,h6 .small,h6 small {font-weight:400;line-height:1;color:#777}
+.h1,.h2,.h3,h1,h2,h3 {margin-top:20px;margin-bottom:10px}
+.h1 .small,.h1 small,.h2 .small,.h2 small,.h3 .small,.h3 small,h1 .small,h1 small,h2 .small,h2 small,h3 .small,h3 small {font-size:65%}
+.h4,.h5,.h6,h4,h5,h6 {margin-top:10px;margin-bottom:10px}
+.h4 .small,.h4 small,.h5 .small,.h5 small,.h6 .small,.h6 small,h4 .small,h4 small,h5 .small,h5 small,h6 .small,h6 small {font-size:75%}
+.h1,h1 {font-size:36px}
+.h2,h2 {font-size:30px}
+.h3,h3 {font-size:24px}
+.h4,h4 {font-size:18px}
+.h5,h5 {font-size:14px}
+.h6,h6 {font-size:12px}
+ol,ul {margin-top:0;margin-bottom:10px}
+ol ol,ol ul,ul ol,ul ul {margin-bottom:0}
+.list-unstyled {padding-left:0;list-style:none}
+.list-inline {padding-left:0;margin-left:-5px;list-style:none}
+.list-inline>li {display:inline-block;padding-right:5px;padding-left:5px}
+.btn-group-vertical>.btn-group:after,.btn-group-vertical>.btn-group:before,.btn-toolbar:after,.btn-toolbar:before,.clearfix:after,.clearfix:before,.container-fluid:after,.container-fluid:before,.container:after,.container:before,.dl-horizontal dd:after,.dl-horizontal dd:before,.form-horizontal .form-group:after,.form-horizontal .form-group:before,.modal-footer:after,.modal-footer:before,.nav:after,.nav:before,.navbar-collapse:after,.navbar-collapse:before,.navbar-header:after,.navbar-header:before,.navbar:after,.navbar:before,.pager:after,.pager:before,.panel-body:after,.panel-body:before,.row:after,.row:before {display:table;content:" "}
+.btn-group-vertical>.btn-group:after,.btn-toolbar:after,.clearfix:after,.container-fluid:after,.container:after,.dl-horizontal dd:after,.form-horizontal .form-group:after,.modal-footer:after,.nav:after,.navbar-collapse:after,.navbar-header:after,.navbar:after,.pager:after,.panel-body:after,.row:after {clear:both}
+.container {padding-right:15px;padding-left:15px;margin-right:auto;margin-left:auto}
+.nav {padding-left:0;margin-bottom:0;list-style:none}
+.nav>li {position:relative;display:block}
+.nav>li>a {position:relative;display:block;padding:10px 15px}
+.nav>li>a:focus,.nav>li>a:hover {text-decoration:none;background-color:#eee}
+.nav>li.disabled>a {color:#777}
+.nav>li.disabled>a:focus,.nav>li.disabled>a:hover {color:#777;text-decoration:none;cursor:not-allowed;background-color:transparent}
+.nav .open>a,.nav .open>a:focus,.nav .open>a:hover {background-color:#eee;border-color:#337ab7}
+.nav .nav-divider {height:1px;margin:9px 0;overflow:hidden;background-color:#e5e5e5}
+.nav>li>a>img {max-width:none}
+.nav-tabs {border-bottom:1px solid #ddd}
+.nav-tabs>li {float:left;margin-bottom:-1px}
+.nav-tabs>li>a {margin-right:2px;line-height:1.42857143;border:1px solid transparent;border-radius:4px 4px 0 0}
+.nav-tabs>li>a:hover {border-color:#eee #eee #ddd}
+.nav-tabs>li.active>a,.nav-tabs>li.active>a:focus,.nav-tabs>li.active>a:hover {color:#555;cursor:default;background-color:#fff;border:1px solid #ddd;border-bottom-color:transparent}
+.nav-tabs.nav-justified {width:100%;border-bottom:0}
+.nav-tabs.nav-justified>li {float:none}
+.nav-tabs.nav-justified>li>a {margin-bottom:5px;text-align:center}
+.nav-tabs.nav-justified>.dropdown .dropdown-menu {top:auto;left:auto}
+@media (min-width:768px) {.nav-tabs.nav-justified>li {display:table-cell;width:1%}
+.nav-tabs.nav-justified>li>a {margin-bottom:0}
+}
+.nav-tabs.nav-justified>li>a {margin-right:0;border-radius:4px}
+.nav-tabs.nav-justified>.active>a,.nav-tabs.nav-justified>.active>a:focus,.nav-tabs.nav-justified>.active>a:hover {border:1px solid #ddd}
+@media (min-width:768px) {.nav-tabs.nav-justified>li>a {border-bottom:1px solid #ddd;border-radius:4px 4px 0 0}
+.nav-tabs.nav-justified>.active>a,.nav-tabs.nav-justified>.active>a:focus,.nav-tabs.nav-justified>.active>a:hover {border-bottom-color:#fff}
+}
+@media (min-width:768px) {.container {width:750px}
+}
+@media (min-width:992px) {.container {width:970px}
+}
+@media (min-width:1200px) {.container {width:1170px}
+}
+
+/* 
+Folgende Zeilen wurden aus bootstrap-min.css im selben Verzeichnis übernommen:
+6
+7
+12
+13
+328
+329
+330
+331
+346-357
+394-398
+423-428
+932-357
+1436
+1437
+
+*/
