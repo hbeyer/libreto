@@ -96,8 +96,8 @@ function load_data_mysql($server, $user, $password, $database, $table) {
 	return($dataArray);
 }
 	
-function addBeacon($data, $thisCatalogue) {
-	$beaconString = file_get_contents('beaconStore-'.$thisCatalogue);
+function addBeacon($data, $folderName, $keyCat) {
+	$beaconString = file_get_contents($folderName.'/beaconStore-'.$keyCat);
 	$beaconObject = unserialize($beaconString);
 	foreach($data as $item) {
 		foreach($item->persons as $person) {

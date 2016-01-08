@@ -1,6 +1,6 @@
 <?php
 
-function makeKML($data, $fileName) {
+function makeKML($data, $folderName) {
 	$placeArray = array();
 	foreach($data as $item) {
 		$year = normalizeYear($item->year);
@@ -47,7 +47,7 @@ function makeKML($data, $fileName) {
 		}
 		
 		$content .= $foot;
-		$fileName = 'kml/'.$fileName.'.kml';
+		$fileName = $folderName.'/printingPlaces.kml';
 		$datei = fopen($fileName,"w");
 		fwrite($datei, $content, 3000000);
 		fclose($datei);

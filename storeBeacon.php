@@ -12,7 +12,7 @@ function arrayGND($data) {
 	return($gndArray);
 }
 
-function storeBeacon($data, $keyCat) {
+function storeBeacon($data, $folderName, $keyCat) {
 	include('beaconSources.php');
 	$gndArray = arrayGND($data);
 	unset($data);
@@ -44,7 +44,7 @@ function storeBeacon($data, $keyCat) {
 		$beaconData->content[] = $extract;
 	}
 	$serialize = serialize($beaconData);
-	file_put_contents('beaconStore-'.$keyCat, $serialize);
+	file_put_contents($folderName.'/beaconStore-'.$keyCat, $serialize);
 }
 
 ?>
