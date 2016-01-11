@@ -1,16 +1,5 @@
 ﻿<?php
 
-/* include('classDefinition.php');
-include('makeEntry.php');
-include('ingest.php');
-include('sort.php');
-include('encode.php');
-include('makeIndex.php');
-include('makeSection.php');
-include('makeNavigation.php');
-include('makeHead.php'); */
-
-
 function makeGeoDataSheet($data, $folderName, $format) {
 	$ending = strtolower($format);
 	$index = makeIndex($data, 'places');
@@ -87,12 +76,5 @@ function makePlaceEntryKML($rowObject) {
 			</Placemark>';	
 	return($row);
 }
-
-/* $dataString = file_get_contents('BibliothekBenediktBahnsens/data-bahn');
-$data = unserialize($dataString);
-unset($dataString);
-
-makeGeoDataSheet($data, 'BibliothekBenediktBahnsens', 'KML');
-makeGeoDataSheet($data, 'BibliothekBenediktBahnsens', 'CSV'); */
 	
 ?>
