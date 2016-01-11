@@ -65,15 +65,19 @@ function makePlaceEntryCSV($rowObject) {
 	
 function makePlaceEntryKML($rowObject) {
 	$row = '
-			<Placemark>
-				<address>'.$rowObject->label.'</address>
-				<TimeStamp>
-					<when>'.$rowObject->timeStamp.'</when>
-				</TimeStamp>
-				<Point>
-					<coordinates>'.$rowObject->long.','.$rowObject->lat.'</coordinates>
-				</Point>
-			</Placemark>';	
+		<Placemark>
+			<address>'.$rowObject->label.'</address>';
+	if($rowObject->timeStamp) {
+		$row .=	'
+			<TimeStamp>
+				<when>'.$rowObject->timeStamp.'</when>
+			</TimeStamp>';
+	}
+	$row .= '
+			<Point>
+				<coordinates>'.$rowObject->long.','.$rowObject->lat.'</coordinates>
+			</Point>
+		</Placemark>';	
 	return($row);
 }
 	
