@@ -54,7 +54,7 @@ function makePublished($places, $publisher, $year) {
 function makeSourceLink($titleOriginal, $base, $imageCat, $pageCat, $numberCat)	{
 	$result = '';
 	if($imageCat != '') {
-		$result = 'Eintrag im Altkatalog:<span class="titleOriginal-single"> '.$titleOriginal.'</span> <a href="'.$base.$imageCat.'" title="Titel im Altkatalog" target="_blank">S. '.$pageCat.', Nr. '.$numberCat.'</a><br/>';
+		$result = 'Titel im Altkatalog:<span class="titleOriginal-single"> '.$titleOriginal.'</span> <a href="'.$base.$imageCat.'" title="Titel im Altkatalog" target="_blank">S. '.$pageCat.', Nr. '.$numberCat.'</a><br/>';
 	}
 	return($result);
 }	
@@ -126,7 +126,7 @@ function makeTitle($titleBib, $titleCat) {
 		$result = '<span class="titleBib">'.$titleBib.'</span><span class="titleOriginal" style="display:none">[Recherchierter Titel:] '.$titleBib.'</span>';		
 	}
 	elseif($titleCat) {
-		$result = '<span class="titleBib">[Titel der Vorlage:] '.$titleCat.'</span><span class="titleOriginal" style="display:none">'.$titleCat.'</span>';
+		$result = '<span class="titleBib">[Titel im Altkatalog:] '.$titleCat.'</span><span class="titleOriginal" style="display:none">'.$titleCat.'</span>';
 	}
 	return($result);
 }	

@@ -77,7 +77,7 @@ function makePlaceEntryKML($rowObject) {
 			<Point>
 				<coordinates>'.$rowObject->long.','.$rowObject->lat.'</coordinates>
 			</Point>
-		</Placemark>';	
+		</Placemark>';
 	return($row);
 }
 	

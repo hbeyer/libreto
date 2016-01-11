@@ -18,9 +18,10 @@
 			public $numberCat; //Number of the item as found in catalogue
 			public $itemInVolume = 0; //If the item is part of a volume, the number indicates its position, otherwise it is 0.
 			public $work = array('title' => '', 'system' => '', 'id' => ''); //Entry for the work in a public database.
-			public $quality;
+			public $bibliographicalLevel; // Possible values: "work", "manifestation", "copy", "noEvidence"
 			public $titleCat; //The title as found in the catalogue
 			public $titleBib;	//The title as copied from a bibliographic database (cf. $manifestation)
+			public $titleNormalized; // A normalized form of the title to facilitate reading and searching
 			public $persons = array(); //Objects of the class person
 			public $places = array(); //Objects of the class place
 			public $publisher;

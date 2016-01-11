@@ -19,7 +19,7 @@ function load_data_mysql($server, $user, $password, $database, $table) {
 				$thisBook->pageCat = $rowBooks['seite'];
 				$thisBook->numberCat = getNumberCat($rowBooks['nr']);
 				$thisBook->itemInVolume = getItemInVolume($rowBooks['nr']);
-				$thisBook->quality = $rowBooks['qualitaet'];
+				$thisBook->bibliographicalLevel = translateLevelEn($rowBooks['qualitaet']);
 				$thisBook->titleCat = htmlspecialchars($rowBooks['titel_vorlage']);
 				$thisBook->titleBib = htmlspecialchars($rowBooks['titel_bibliographiert']);
 				$thisBook->publisher = htmlspecialchars($rowBooks['drucker_verleger']);
@@ -36,6 +36,10 @@ function load_data_mysql($server, $user, $password, $database, $table) {
 				}
 				$thisBook->comment = $rowBooks['freitext'];
 				$thisBook->digitalCopy = $rowBooks['digital'];
+				
+				if($thisBook->bibliographicalLevel == 'work' and $thisBook->work['title'] == '') {
+					$thisBook->work['title'] = $thisBook->titleBib;
+				}
 				
 				$authorFields = array('autor', 'autor2', 'autor3', 'autor4');
 				foreach($authorFields as $field) {
@@ -145,6 +149,16 @@ function getItemInVolume($number) {
 	else {
 		return('');
 	}
+}
+
+function translateLevelEn($value) {
+	$translation = array(
+		'w' => 'work',
+		'a' => 'manifestation',
+		'e' => 'copy',
+		'o' => 'noEvidence');
+	$value = strtr($value, $translation);
+	return($value);
 }	
 
 ?>
