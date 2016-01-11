@@ -1,11 +1,5 @@
-<?php
+﻿<?php
 
-/* include('classDefinition.php');
-//include('ingest.php');
-include('makeSection.php');
-include('sort.php');
-include('encode.php');
- */
 function removeSpecial($name) {
 	$translation = array('Á' => 'A', 'Ł' => 'L', 'Ǧ' => 'G');
 	$name = strtr($name, $translation);
@@ -183,25 +177,6 @@ function getYearFromTitle($title) {
 		}
 	}
 	return($yearAssign);	
-}	
-
-/* $dataString = file_get_contents('data-rehl');
-$data = unserialize($dataString);
-unset($dataString);
-	
-$test = makeIndex($data, 'persons');
-var_dump($test); */
-
-/* foreach($data as $item) {
-	echo '<p>'.implode('/', $item->language).': '.$item->titleBib.'</p>';
-} */
-
-/*  foreach($test as $entry) {
-	echo '<p><b>'.$entry->label.'</b>: ';
-	foreach($entry->content as $id) {
-		var_dump($data[$id]->places).'<br />';
-	}
-	echo '</p>';
-} */
+}
 
 ?>

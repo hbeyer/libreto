@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 function makeHead($heading, $year, $abstract, $navigation) {
 	$fileName = fileNameTrans($heading);

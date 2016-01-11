@@ -1,13 +1,4 @@
-<?php
-
-/* include('classDefinition.php');
-include('sort.php');
-include('encode.php');
-include('beaconSources.php');
-include('makeIndex.php'); */
-
-//$data = load_data_mysql('localhost', 'root', '', 'bahnsen', 'zusammenfassung');
-//$data = load_data_mysql('localhost', 'root', 'blumentrost', 'bahnsen', 'zusammenfassung');
+﻿<?php
 
 // The following functions serve to convert an array of objects of the type indexEntry into an array of objects of the type section. The function to select depends on the facet chosen. For the facets cat, persons and year there are special functions. All other facets are covered by the function makeSections.
 
@@ -189,13 +180,6 @@ function makeBeaconLink($gnd, $target) {
 	$link = strtr($target, $translate);
 	return($link);
 }
-
-/* $dataString = file_get_contents('data-bahn');
-$data = unserialize($dataString);
-unset($dataString);
-	
-$test = makeSectionsYear($data);
-var_dump($test); */
 
 	
 ?>

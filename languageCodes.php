@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 //Language codes according to ISO 639.2
 $languageCodes = array(
