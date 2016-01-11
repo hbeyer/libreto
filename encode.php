@@ -5,6 +5,12 @@ function replaceArrowBrackets($string) {
 	$string = strtr($string, $translate);
 	return($string);
 }
+
+function replaceSlash($string) {
+	$translate = array('/' => ' ');
+	$string = strtr($string, $translate);
+	return($string);
+}
 	
 function translateAnchor($anchor) {
 	$translate = array('Ä' => 'ae', 'Ö' => 'oe', 'Ü' => 'ue', 'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'ß' => 'ss', ' ' => '', '&' => 'Et');
@@ -53,6 +59,12 @@ function insertSpace($genre) {
 	$replacement = ': $1';
 	$genre = preg_replace($pattern, $replacement, $genre);
 	return($genre);
+}
+
+function cleanCoordinate($coordinate) {
+	$translation = array(',' => '.');
+	$coordinate = strtr($coordinate, $translation);
+	return($coordinate);
 }
 
 ?>

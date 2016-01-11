@@ -133,6 +133,7 @@ function makeSections($data, $field) {
 // This function converts an array of objects of the class section into a list in HTML format. The variable $thisCatalogue contains an object of the type catalogue and supplies information on the fileName ($thisCatalogue->key) and the URL base of the digitized version ($thisCatalogue->base).
 	
 function makeList($structuredData, $thisCatalogue) {	
+	$folderName = fileNameTrans($thisCatalogue->heading);
 	$count = 1;
 	$content = '';
 	foreach($structuredData as $section) {
@@ -142,7 +143,7 @@ function makeList($structuredData, $thisCatalogue) {
 			$levelHeading = '3';
 		}
 		if($section->authority['system'] == 'gnd') {
-			$info = makeCollapseBeacon($section->authority['id'], $thisCatalogue->key);
+			$info = makeCollapseBeacon($section->authority['id'], $folderName, $thisCatalogue->key);
 		}
 		if($section->label) {
 			$headline = $section->label;
@@ -164,8 +165,8 @@ function makeList($structuredData, $thisCatalogue) {
 
 // The function produces a link to further information on persons. It is called by the function makeList, if GND data is submitted in $section->authority. To work, it needs serialized BEACON data in a file named beaconStore-{catalogue key}. Therefore you have to run the function storeBeacon previously.
 	
-function makeCollapseBeacon($gnd, $thisCatalogue) {
-	$beaconString = file_get_contents('beaconStore-'.$thisCatalogue);
+function makeCollapseBeacon($gnd, $folderName, $thisCatalogue) {
+	$beaconString = file_get_contents($folderName.'/beaconStore-'.$thisCatalogue);
 	$beaconObject = unserialize($beaconString);
 	unset($beaconString);
 	$link = '';

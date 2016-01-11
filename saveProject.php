@@ -9,13 +9,13 @@ include('makeIndex.php');
 include('makeSection.php');
 include('makeNavigation.php');
 include('makeHead.php');
-include('makeKML.php');
+include('makeGeoDataSheet.php');
 include('storeBeacon.php');
 
 $thisCatalogue = new catalogue();
 
 // Beginn Konfiguration Rehlinger
-/* $thisCatalogue->key = 'rehl';
+$thisCatalogue->key = 'rehl';
 $thisCatalogue->base = 'http://diglib.hab.de/drucke/bc-kapsel-19-7s/start.htm?image=';
 $thisCatalogue->heading = 'Bibliothek Karl Wolfgang Rehlingers';
 $thisCatalogue->database = 'rehlinger';
@@ -23,13 +23,11 @@ $thisCatalogue->title = 'Index Librorvm: Qvos Nobilis Et Ornatissimvs Vir Carolv
 $thisCatalogue->year = '1575';
 $thisCatalogue->nachweis['institution'] = 'HAB Wolfenbüttel';
 $thisCatalogue->nachweis['shelfmark'] = 'M: Bc Kapsel 19 (7)';
-$facets = array('cat', 'persons', 'year', 'places', 'language', 'publisher', 'format', 'manifestation'); */
+$facets = array('cat', 'persons', 'year', 'places', 'language', 'publisher', 'format', 'manifestation');
 // Ende Konfiguration Rehlinger
 
-
-
 // Beginn Konfiguration Bahnsen
-$thisCatalogue->base = 'http://diglib.hab.de/drucke/bc-kapsel-7-23s/start.htm?image=';
+/* $thisCatalogue->base = 'http://diglib.hab.de/drucke/bc-kapsel-7-23s/start.htm?image=';
 $thisCatalogue->key = 'bahn';
 $thisCatalogue->heading = 'Bibliothek Benedikt Bahnsens';
 $thisCatalogue->database = 'bahnsen';
@@ -37,7 +35,7 @@ $thisCatalogue->title = 'Catalogus Variorum, insignium, rarißimorumque tàm The
 $thisCatalogue->year = '1670';
 $thisCatalogue->copy['institution'] = 'HAB Wolfenbüttel';
 $thisCatalogue->copy['shelfmark'] = 'M: Bc Kapsel 7 (23)'; 
-$facets = array('cat', 'persons', 'year', 'subject', 'genre', 'places', 'language', 'publisher');
+$facets = array('cat', 'persons', 'year', 'subject', 'genre', 'places', 'language', 'publisher'); */
 // Ende Konfiguration Bahnsen
 
 
@@ -45,8 +43,8 @@ $facets = array('cat', 'persons', 'year', 'subject', 'genre', 'places', 'languag
 //$facets = array('cat', 'persons', 'year', 'subject', 'genre', 'places', 'language', 'publisher', 'format', 'manifestation');
 
 //Erstelle ein Verzeichnis für das Projekt (wird momentan vom Skript storeData.php erledigt.
-/*$folderName = fileNameTrans($thisCatalogue->heading);
-if(is_dir($folderName) == FALSE) {
+$folderName = fileNameTrans($thisCatalogue->heading);
+/*if(is_dir($folderName) == FALSE) {
 	mkdir($folderName, 0700);
 } */
 
@@ -59,8 +57,9 @@ $dataString = file_get_contents($folderName.'/data-'.$thisCatalogue->key);
 $data = unserialize($dataString);
 unset($dataString);
 
-// Füge die KML-Datei dem Projektverzeichnis hinzu.
-makeKML($data, $folderName);
+// Füge die Datasheets für den GeoBrowser dem Projektverzeichnis hinzu
+makeGeoDataSheet($data, $folderName, 'KML');
+makeGeoDataSheet($data, $folderName, 'CSV');
 
 /* Weil einige Facetten zusätzliche Berechnungen erfordern (z. B. die Anfangsbuchstaben der Autoren), 
 wird die Listenstruktur teils von speziellen Funktionen, teils von der allgemeinen Funktion makeSections 
@@ -116,5 +115,7 @@ foreach($structures as $structure) {
 	$count++;	
 }
 
+// Lösche die von storeBeacon erzeugte temporäre Datei
+//unlink($folderName.'/beaconStore-'.$thisCatalogue->key);
 
 ?>

@@ -49,6 +49,7 @@ function makeIndex($data, $field) {
 	}
 	elseif($field == 'places') {
 		$geoArray = array();
+		$gettyArray = array();
 		$count = 0;
 		foreach($data as $item) {
 			foreach($item->places as $place) {
@@ -60,6 +61,7 @@ function makeIndex($data, $field) {
 					$collect[$key] = array();
 					if($place->geoData) {					
 						$geoArray[$key] = $place->geoData;
+						$gettyArray[$key] = $place->getty;
 					}					
 				}
 				$collect[$key][] = $count;
@@ -73,6 +75,10 @@ function makeIndex($data, $field) {
 			$entry->content = $content;
 			if(isset($geoArray[$place])) {
 				$entry->geoData = array('lat' => $geoArray[$place]['lat'], 'long' => $geoArray[$place]['long']);
+			}
+			if(isset($gettyArray[$place])) {
+				$entry->authority['system'] = 'getty';
+				$entry->authority['id'] = $gettyArray[$place];
 			}
 			$index[] = $entry;
 		}

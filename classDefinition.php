@@ -76,6 +76,19 @@
 		public $key; //An index from the associative array $beaconSources
 		public $target;
 		public $content = array(); //The GND identifiers
-	}	
+	}
+
+	class geoDataRow { //Row in a file for upload in a geolocation system (KML, CSV or else)
+			public $label;
+			public $description;
+			public $address;
+			public $weight;
+			public $lat;
+			public $long;
+			public $timeStamp;
+			public $timeSpanBegin;
+			public $timeSpanEnd;
+			public $getty;
+	}
 	
 ?>	

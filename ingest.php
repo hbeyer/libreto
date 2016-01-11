@@ -79,8 +79,8 @@ function load_data_mysql($server, $user, $password, $database, $table) {
 						if($resultPlaces = $db->query('SELECT x, y, tgn FROM ort WHERE ort="'.$rowBooks[$field].'"')) {
 							$rowGeo = $resultPlaces->fetch_assoc();
 							$place->getty = $rowGeo['tgn'];
-							$place->geoData['lat'] = $rowGeo['x'];
-							$place->geoData['long'] = $rowGeo['y']; 
+							$place->geoData['long'] = $rowGeo['x'];
+							$place->geoData['lat'] = $rowGeo['y']; 
 						}
 						$thisBook->places[] = $place;
 					}
