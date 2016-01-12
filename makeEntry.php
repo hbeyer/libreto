@@ -1,5 +1,17 @@
 ﻿<?php
 
+/* include('classDefinition.php');
+include('ingest.php');
+include('sort.php');
+include('encode.php');
+include('makeIndex.php');
+include('makeSection.php');
+include('makeNavigation.php');
+include('makeHead.php');
+include('makeGeoDataSheet.php');
+include('storeBeacon.php');
+include('setConfiguration.php'); */
+
 function makeAuthors($personList) {
 	$result = '';
 	$separator = '</span>/<span class="authorName">';
@@ -74,29 +86,31 @@ function makeDigiLink($digi) {
 	return($result);
 }
 	
-function makeProof($system, $id) {
+function makeProof($thisBook) {
 	include('targetData.php');
+	$system = $thisBook->manifestation['system'];
+	$id = $thisBook->manifestation['id'];
+	$level = $thisBook->bibliographicalLevel;
 	$result = '';
-	$translate = array('Ä' => 'ae', 'Ö' => 'oe', 'Ü' => 'ue', 'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'ß' => 'ss');
-	$systemClean = strtr($system, $translate);
+	$systemClean = translateAnchor($system);
 	$systemClean = strtolower(str_replace(' ', '', $systemClean));
 	$hay = strtolower('#'.$system.$id);
-	$test = strrpos($hay, 'bestimm');
-	if($test != 0 or ($system == '' and $id == '')) {
+	if(strrpos($hay, 'bestimm') != 0 or ($system == '' and $id == '')) {
 		$result = 'Ausgabe nicht bestimmbar<br/>';
 	}
-	elseif(array_key_exists($systemClean, $bases)) {
-		$ending = '';
-		if(array_key_exists($systemClean, $endings)) {
-			$ending = $endings[$systemClean];
+	elseif(strrpos($hay, 'nach') != 0 or $level == 'noEvidence') {
+		$result = 'Ausgabe nicht nachgewiesen<br/>';
 		}
+	elseif(array_key_exists($systemClean, $bases)) {
 		if($systemClean == 'parisbnf' and substr($id, 5, 0 == 'FRBNF')) {
-			$id = substr($id, 5);			
+			$id = substr($id, 5);
 		}
 		if($systemClean == 'buva') {
 			$id = str_pad($id, 9, '0');			
 		}
-		$result = '<span class="heading_info">Nachweis: </span><a href="'.$bases[$systemClean].$id.$ending.'" target="_blank">'.$system.'</a><br/>';
+		$translateID = array('{ID}' => $id);
+		$link = strtr($bases[$systemClean], $translateID);
+		$result = '<span class="heading_info">Nachweis: </span><a href="'.$link.'" target="_blank">'.$system.'</a><br/>';
 	}
 	else {
 		$page = '';
@@ -109,13 +123,47 @@ function makeProof($system, $id) {
 }
 
 function makeComment($text) {
+	include('targetData.php');
 	$result = '';
 	if($text != '') {
-		//preg_replace('~(VD1[67]\s[A-Z0-9 :]+)~', '~<a href="http://gateway-bayern.de/$0">$0</a>~', $text);
+		foreach($patternSystems as $key => $pattern) {
+			$target = $bases[$key];
+			$text = insertLink($text, $pattern, $target);
+			}
 		$result = '<span class="comment">'.$text.'</span>';
 	}
 	return($result);
 }
+
+function insertLink($text, $pattern, $target) {
+	$targetArray = explode('{ID}', $target, 2);
+	$base = $targetArray[0];
+	$end = $targetArray[1];
+	$replacement = '<a href="'.$base.'$1'.$end.'" target="_blank">$0</a>';
+	$text = preg_replace($pattern, $replacement, $text);
+	return($text);
+}
+
+// Diese Funktion soll alternative reguläre Ausdrücke wie ~PPN ([0-9X]{9})|GBV ([0-9X]{9})~ verarbeiten, ist aber schwierig.
+function insertLinkNew($text, $pattern, $target) {
+	$id = '';
+	$targetArray = explode('{ID}', $target, 2);
+	$base = $targetArray[0];
+	$end = $targetArray[1];
+	preg_match_all($pattern, $text, $matches);
+	if($matches[0][0]) {
+		$linkText = $matches[0][0];
+		$id = $matches[1][0];
+		if($id == '' and isset($matches[2][0])) {
+			$id = $matches[2][0];
+		}
+	}
+	echo '<p>'.$linkText.' '.$id.'</p>';
+}
+
+//insertLinkNew('Das steht im Zusammenhang mit GBV 61857879X ', '~PPN ([0-9X]{9})|GBV ([0-9X]{9})~', 'http://gso.gbv.de/DB=2.1/PPNSET?PPN={ID}');
+//insertLinkNew('Das steht im Zusammenhang mit GBV 61857879X ', '~GBV ([0-9X]{9})~', 'http://gso.gbv.de/DB=2.1/PPNSET?PPN={ID}');
+
 
 function makeTitle($titleBib, $titleCat) {
 	$result = '';
@@ -133,7 +181,7 @@ function makeTitle($titleBib, $titleCat) {
 
 function makeEntry($thisBook, $thisCatalogue, $id) {
 	$buffer = makeAuthors($thisBook->persons).makeTitle($thisBook->titleBib, $thisBook->titleCat).makePublished(makePlaces($thisBook->places), $thisBook->publisher, $thisBook->year).' <a id="linkid'.$id.'" href="javascript:toggle(\'id'.$id.'\')">Mehr</a>
-				<div id="id'.$id.'" style="display:none; padding-top:0px; padding-bottom:15px; padding-left:10px;">'.makeSourceLink($thisBook->titleCat, $thisCatalogue->base, $thisBook->imageCat, $thisBook->pageCat, $thisBook->numberCat).makeDigiLink($thisBook->digitalCopy).makeProof($thisBook->manifestation['system'], $thisBook->manifestation['id']).makeComment($thisBook->comment).'</div>';
+				<div id="id'.$id.'" style="display:none; padding-top:0px; padding-bottom:15px; padding-left:10px;">'.makeSourceLink($thisBook->titleCat, $thisCatalogue->base, $thisBook->imageCat, $thisBook->pageCat, $thisBook->numberCat).makeDigiLink($thisBook->digitalCopy).makeProof($thisBook).makeComment($thisBook->comment).'</div>';
 	return($buffer);
 }
 	

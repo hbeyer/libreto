@@ -9,6 +9,8 @@
 		public $printer;
 		public $year;
 		public $copy = array('institution' => '', 'shelfmark' => ''); //The copy used for the reconstruction of the catalogue
+		public $GeoBrowserStorageID;
+		public $facets = array();
 	}
 	
 	class item	{ //Refers to an item (book, manuscript, etc.) listed in the catalogue

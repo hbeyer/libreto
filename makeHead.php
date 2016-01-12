@@ -1,6 +1,6 @@
 ﻿<?php
 
-function makeHead($heading, $year, $abstract, $navigation) {
+function makeHead($heading, $year, $abstract, $navigation, $GeoBrowserStorageID) {
 	$fileName = fileNameTrans($heading);
 	if($year) {
 		$title = 	$heading.' ('.$year.')';
@@ -34,7 +34,7 @@ function makeHead($heading, $year, $abstract, $navigation) {
 		</div>
 		<nav class="navbar navbar-default" data-spy="affix" data-offset-top="197">'.$navigation.'
 			<ul class="nav navbar-nav navbar-right" style="padding-right:15px">
-				<li><a href="http://geobrowser.de.dariah.eu/?local1=GeoBrowser_dataset_'.$fileName.'.kml&currentStatus=mapChanged=Historical+Map+of+1650" target="_blank" title="Druckorte in Kartenansicht"><span class="glyphicon glyphicon-globe"></span> GeoBrowser</a></li>
+				<li><a href="https://geobrowser.de.dariah.eu/?csv1=http://geobrowser.de.dariah.eu./storage/'.$GeoBrowserStorageID.'&currentStatus=mapChanged=Historical+Map+of+1650" target="_blank" title="Druckorte in Kartenansicht"><span class="glyphicon glyphicon-globe"></span> GeoBrowser</a></li>
 			</ul>
 		</nav>
 		<div class="container-fluid">';
