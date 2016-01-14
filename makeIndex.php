@@ -88,6 +88,31 @@ function makeEntries($data, $collect) {
 function mergeIndices($index1, $index2) {
 	$commonIndex = array();
 	foreach($index1 as $index1) {
+		$specialContent = $index1->content;
+		$buffer = array();
+		foreach($index2 as $index2) {
+			$intersection = array_intersect($index1->content, $index2->content);
+			$specialContent = array_diff($specialContent, $index2->content);
+			$entry2 = new indexEntry();
+			$entry2->level = 2;
+			$entry2->label = $index2->label;
+			$entry2->content = $intersection;
+			$buffer[] = $entry2;
+			}
+		$entry1 = new indexEntry();
+		$entry1->label = $index1->label;
+		$commonIndex[] = $entry1;
+		foreach($buffer as $entryDown) {
+			$commonIndex[] = $entryDown; 
+		}
+		if($specialContent) {
+			$entryRemains = new indexEntry();
+			$entryRemains->level = 2;
+			$entryRemains->label = 'ohne Kategorie';
+			$entryRemains->content = $specialContent;
+			$commonIndex[] = $entryRemains;
+		}
+		
 		/* Für jeden Eintrag des ersten Index {
 				Für jeden Eintrag des zweiten Index die Schnittmenge mit den Identifiern des ersten Index bestimmen (array_intersect).
 				Die Schnittmenge in einer Variable speichern, den Sonderbestand des ersten Index in einer anderen. 
