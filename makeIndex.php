@@ -1,14 +1,114 @@
 ﻿<?php
 
-function removeSpecial($name) {
-	$translation = array('Á' => 'A', 'Ł' => 'L', 'Ǧ' => 'G');
-	$name = strtr($name, $translation);
-	return($name);	
+function preprocessValues($value, $field) {
+	if($field == 'person') {
+		$value = removeSpecial(trim($value, '[]'));
+	}
+	elseif($field == 'place') {
+		$value = trim($value, '[]');
+	}
+	elseif($field == 'year') {
+		$value = normalizeYear($value);
+	}
+	return($value);
 }
+
+function treatVoid($data, $field, $id) {
+	if($field == 'year') {
+		$value = getYearFromTitle($data[$id]->titleCat);
+		if($value == '') {
+			$value = 'ohne Jahr';
+		}
+	}
+	if($value == '') {
+		$value = 'ohne Kategorie';
+	}
+	return($value);
+}
+
+function collectIDs($data, $field) {
+	$collect = array();
+	$index = array();
+	$count = 0;
+	foreach($data as $item) {
+		if(array_key_exists($item->$field, $collect) == FALSE) {
+			$collect[$item->$field] = array();
+		}
+		$collect[$item->$field][] = $count;
+		$count ++;
+	}
+	return($collect);
+}
+
+function collectIDsArrayValues($data, $field) {
+	$collect = array();
+	$index = array();
+	$count = 0;
+	foreach($data as $item) {
+		foreach($item->$field as $value) {
+			if(array_key_exists($value, $collect) == FALSE) {
+				$collect[$value] = array();
+			}
+			$collect[$value][] = $count;
+		}
+		$count ++;
+	}
+	return($collect);
+}
+
+function collectIDsSubObjects($data, $field, $subField) {
+	$collect = array();
+	$index = array();
+	$count = 0;
+	foreach($data as $item) {
+		foreach($item->field as $subItem) {
+			if(array_key_exists($subItem->$subField, $collect) == FALSE) {
+				$collect[$subItem->$subField] = array();
+			}
+			$collect[$subItem->$subField][] = $count;
+		}
+	$count ++;
+	}
+	return($collect);
+}
+
+function makeEntries($data, $collect) {
+	$index = array();
+	foreach($collect as $value => $IDs) {
+		$entry = new indexEntry();
+		$entry->label = $value;
+		foreach($IDs as $id) {
+			$entry->content[] = $data[$id];
+		}
+		// Hier müsste man noch GND-Nummern und Geodaten hinzufügen (etwa aus dem ersten Objekt), sofern sich das nicht intelligenter lösen lässt.
+	}
+	return($index);
+}
+
+function mergeIndices($index1, $index2) {
+	$commonIndex = array();
+	foreach($index1 as $index1) {
+		/* Für jeden Eintrag des ersten Index {
+				Für jeden Eintrag des zweiten Index die Schnittmenge mit den Identifiern des ersten Index bestimmen (array_intersect).
+				Die Schnittmenge in einer Variable speichern, den Sonderbestand des ersten Index in einer anderen. 
+				In einer dritten Variable die Schnittmenge zwischen dem aktuellen und dem vorherigen Sonderbestand speichern.
+			}
+			Für jeden Eintrag des ersten Index ein Objekt anlegen, das den verbleibenden Sonderbestand als Content enthält.
+			Für jede dazu gefundene Schnittmenge ein Unterobjekt anlegen, das diese enthält.
+		*/
+	}
+	return($commonIndex);
+}
+
+/* 
+Zu lösendes Problem: Das collect-Array für Autoren muss nach der GND-Nummer, soweit vorhanden, gebildet werden, als Label für den Index müssen aber die Namen stehen. Funktion collectIDsByOtherField()?
+*/
+
 
 function makeIndex($data, $field) {
 	$collect = array();
 	$index = array();
+	
 	if($field == 'persons') {
 		$nameArray = array();
 		$count = 0;
@@ -16,7 +116,7 @@ function makeIndex($data, $field) {
 			foreach($item->persons as $person) {
 				$key = $person->gnd;
 				$name = removeSpecial(trim($person->name, '[]'));
-				$name = $name;
+				//$name = $name;
 				if($key == '') {
 					$key = $name;
 				}

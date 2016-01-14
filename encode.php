@@ -67,4 +67,10 @@ function cleanCoordinate($coordinate) {
 	return($coordinate);
 }
 
+function removeSpecial($name) {
+	$translation = array('Á' => 'A', 'Ł' => 'L', 'Ǧ' => 'G');
+	$name = strtr($name, $translation);
+	return($name);	
+}
+
 ?>
