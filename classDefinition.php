@@ -51,6 +51,7 @@
 	class place {
 		public $name;
 		public $getty;
+		public $geoNames;
 		public $geoData = array('lat' => '', 'long' => '');
 	}
 

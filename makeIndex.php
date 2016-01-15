@@ -26,6 +26,13 @@ function treatVoid($data, $field, $id) {
 	return($value);
 }
 
+function assignCollectFunction($data, $field) {
+	$simpleFields = array('id', 'pageCat', 'imageCat', 'numberCat', 'itemInVolume', 'bibliographicalLevel', 'titleCat', 'titleBib', 'titleNormalized', 'publisher', 'year', 'format', 'histSubject', 'subject', 'genre', 'mediaType', 'bound', 'comment', 'digitalCopy');
+	$personFields = array('name', 'gnd', 'role');
+	$placeFields = array('name', 'getty', 'geoNames');
+	$arrayFields = array('language');
+}
+
 function collectIDs($data, $field) {
 	$collect = array();
 	$index = array();
@@ -72,6 +79,20 @@ function collectIDsSubObjects($data, $field, $subField) {
 	return($collect);
 }
 
+function makeConcordance($data, $collectField, $correspField) {
+	$index = makeIndex($data, $collectField);
+	$concordance = array();
+	foreach($index as $entry) {
+		foreach($entry->content as $itemID) {
+			if($data[$itemID]->field) {
+				$concordance[$entry->label] = $data[$itemID]->field;
+				break;
+			}
+		}
+	}
+	return($concordance);
+}
+
 function makeEntries($data, $collect) {
 	$index = array();
 	foreach($collect as $value => $IDs) {
@@ -80,6 +101,7 @@ function makeEntries($data, $collect) {
 		foreach($IDs as $id) {
 			$entry->content[] = $data[$id];
 		}
+		
 		// Hier müsste man noch GND-Nummern und Geodaten hinzufügen (etwa aus dem ersten Objekt), sofern sich das nicht intelligenter lösen lässt.
 	}
 	return($index);
@@ -112,15 +134,6 @@ function mergeIndices($index1, $index2) {
 			$entryRemains->content = $specialContent;
 			$commonIndex[] = $entryRemains;
 		}
-		
-		/* Für jeden Eintrag des ersten Index {
-				Für jeden Eintrag des zweiten Index die Schnittmenge mit den Identifiern des ersten Index bestimmen (array_intersect).
-				Die Schnittmenge in einer Variable speichern, den Sonderbestand des ersten Index in einer anderen. 
-				In einer dritten Variable die Schnittmenge zwischen dem aktuellen und dem vorherigen Sonderbestand speichern.
-			}
-			Für jeden Eintrag des ersten Index ein Objekt anlegen, das den verbleibenden Sonderbestand als Content enthält.
-			Für jede dazu gefundene Schnittmenge ein Unterobjekt anlegen, das diese enthält.
-		*/
 	}
 	return($commonIndex);
 }
