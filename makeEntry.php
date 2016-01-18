@@ -19,7 +19,7 @@ function makeAuthors($personList) {
 	if(isset($personList[0])) {
 		foreach($personList as $person) {
 			//if($person->role == 'author') {
-				$list[$person->gnd] = $person->name;
+				$list[$person->gnd] = $person->persName;
 				//}
 		}
 		$result = '<span class="authorName">'.implode($separator, $list).': </span>';
@@ -31,7 +31,7 @@ function makePlaces($placeList) {
 	$separator = '/';
 	$list = array();
 	foreach($placeList as $place) {
-			$list[] = $place->name;
+			$list[] = $place->placeName;
 	}
 	$result = implode($separator, $list);
 	return($result);
@@ -160,9 +160,6 @@ function insertLinkNew($text, $pattern, $target) {
 	}
 	echo '<p>'.$linkText.' '.$id.'</p>';
 }
-
-//insertLinkNew('Das steht im Zusammenhang mit GBV 61857879X ', '~PPN ([0-9X]{9})|GBV ([0-9X]{9})~', 'http://gso.gbv.de/DB=2.1/PPNSET?PPN={ID}');
-//insertLinkNew('Das steht im Zusammenhang mit GBV 61857879X ', '~GBV ([0-9X]{9})~', 'http://gso.gbv.de/DB=2.1/PPNSET?PPN={ID}');
 
 
 function makeTitle($titleBib, $titleCat) {

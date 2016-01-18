@@ -1,295 +1,210 @@
 ﻿<?php
 
-function preprocessValues($value, $field) {
-	if($field == 'person') {
-		$value = removeSpecial(trim($value, '[]'));
+function makeIndex($data, $field) {
+	$index = '';
+	$normalFields = array('id', 'pageCat', 'imageCat', 'numberCat', 'itemInVolume', 'bibliographicalLevel', 'titleCat', 'titleBib', 'titleNormalized', 'publisher', 'year', 'format', 'histSubject', 'subject', 'genre', 'mediaType', 'bound', 'comment', 'digitalCopy');
+	$personFields = array('gnd', 'role');
+	$placeFields = array('getty', 'geoNames');
+	$arrayFields = array('language');
+	
+	if(in_array($field, $normalFields)) {
+		$collect = collectIDs($data, $field);
 	}
-	elseif($field == 'place') {
+	elseif($field == 'persName') {
+		$collect = collectIDsPersons($data);
+	}
+	elseif($field == 'placeName') {
+		$collect = collectIDsPlaces($data);
+	}
+	elseif(in_array($field, $personFields)) {
+		$collect = collectIDsSubObjects($data, 'persons', $subField);
+	}
+	elseif(in_array($field, $placeFields)) {
+		$collect = collectIDsSubObjects($data, 'places', $subField);
+	}
+	elseif(in_array($field, $arrayFields)) {
+		$collect = collectIDsArrayValues($data, $field);
+	}
+	
+	if(isset($collect)) {
+		$collect = sortCollect($collect);
+		$index = makeEntries($collect);
+	}
+	elseif($field == 'cat') {
+		$collect1 = collectIDs($data, 'histSubject');
+		$index1 = makeEntries($collect1);
+		unset($collect1);
+		$collect2 = collectIDs($data, 'format');
+		$index2 = makeEntries($collect2);
+		unset($collect2);
+		$index = mergeIndices($index1, $index2);
+	}
+	
+	return($index);
+}
+
+function makeEntries($collect) {
+	$collectLoop = $collect['collect'];
+	$index = array();
+	foreach($collectLoop as $value => $IDs) {
+		$entry = new indexEntry();
+		// Prüfen, ob Personennamen in einem eigenen Array hinterlegt wurden (Funktion collectIDsPersons)
+		if(isset($collect['concordanceGND'])) {
+			$entry->label = $collect['concordanceGND'][$value];
+			if(is_numeric($value)) {
+				$entry->authority['system'] = 'gnd';
+				$entry->authority['id'] = strval($value);
+			}
+		}
+		else {
+			$entry->label = $value;
+		}
+		// Prüfen, ob Geodaten in einem eigenen Array hinterlegt wurden (Funktion collectIDsPlaces)
+		if(isset($collect['concordanceGeoData'])) {
+			$entry->geoData = $collect['concordanceGeoData'][$value];
+		}
+		$entry->content = $IDs;
+		$index[] = $entry;
+	}
+	return($index);
+}
+
+function collectIDs($data, $field) {
+	$collect = array();
+	$count = 0;
+	foreach($data as $item) {
+		$key = preprocessFields($field, $item->$field, $item);
+		if(array_key_exists($key, $collect) == FALSE) {
+			$collect[$key] = array();
+		}
+		$collect[$key][] = $count;
+		$count ++;
+	}
+	$return = array('collect' => $collect);
+	return($return);
+}
+
+function collectIDsArrayValues($data, $field) {
+	$collect = array();
+	$count = 0;
+	foreach($data as $item) {
+		foreach($item->$field as $key) {
+			$key = preprocessFields($field, $key, $item);
+			if(array_key_exists($key, $collect) == FALSE) {
+				$collect[$key] = array();
+			}
+			$collect[$key][] = $count;
+		}
+		$count ++;
+	}
+	$return = array('collect' => $collect);
+	return($return);
+}
+
+function collectIDsSubObjects($data, $field, $subField) {
+	$collect = array();
+	$count = 0;
+	foreach($data as $item) {
+		foreach($item->$field as $subItem) {
+			$key = preprocessFields($subField, $subItem->$subField, $item);
+			if(array_key_exists($key, $collect) == FALSE) {
+				$collect[$key] = array();
+			}
+			$collect[$key][] = $count;
+		}
+	$count ++;
+	}
+	$return = array('collect' => $collect);
+	return($return);
+}
+
+function collectIDsPersons($data) {
+	$collectGND = array();
+	$collectName = array();
+	$count = 0;
+	foreach($data as $item) {
+		foreach($item->persons as $person) {
+		$key = $person->gnd;
+		$name = preprocessFields('persName', $person->persName, $item);
+		if($key == '') {
+				$key = $name;
+		}
+		if(array_key_exists($key, $collectGND) == FALSE) {
+			$collectGND[$key] = array();
+			$collectName[$key] = $name;
+		}
+		$collectGND[$key][] = $count;
+	}
+	$count++;
+	}
+	$return = array('collect' => $collectGND, 'concordanceGND' => $collectName);
+	return($return);
+}
+
+function collectIDsPlaces($data) {
+	$collectPlaceName = array();
+	$collectGeoData = array();
+	$count = 0;
+	foreach($data as $item) {
+		foreach($item->places as $place) {
+			$key = preprocessFields('placeName', $place->placeName, $item);
+			if(array_key_exists($key, $collectPlaceName) == FALSE) {
+				$collectPlaceName[$key] = array();
+				$collectGeoData[$key] = $place->geoData;
+			}
+			$collectPlaceName[$key][] = $count;
+		}
+	$count++;
+	}
+	$return = array('collect' => $collectPlaceName, 'concordanceGeoData' => $collectGeoData);
+	return($return);
+}
+
+function preprocessFields($field, $value, $item) {
+	if($field == 'persName') {
+		$value = removeSpecial(trim($value, '[]'));
+		$value = replaceArrowBrackets($value);
+	}
+	elseif($field == 'placeName') {
 		$value = trim($value, '[]');
+		$test = preg_match('~[oOsS][\. ]?[OlL]|[oO]hne Ort|[sS]ine [lL]oco|[oO]hne Druckort|[oO]hne Angabe~', $value);
+		if($value == '' or $test == 1) {
+			$value = 's. l.';
+		}
 	}
 	elseif($field == 'year') {
 		$value = normalizeYear($value);
-	}
-	return($value);
-}
-
-function treatVoid($data, $field, $id) {
-	if($field == 'year') {
-		$value = getYearFromTitle($data[$id]->titleCat);
+		if($value == '') {
+			$value = getYearFromTitle($item->titleCat);
+		}
 		if($value == '') {
 			$value = 'ohne Jahr';
 		}
 	}
-	if($value == '') {
+	elseif($field == 'format') {
+		$value = sortingFormat($value);
+	}
+	elseif($value == '') {
 		$value = 'ohne Kategorie';
 	}
 	return($value);
 }
 
-function assignCollectFunction($data, $field) {
-	$simpleFields = array('id', 'pageCat', 'imageCat', 'numberCat', 'itemInVolume', 'bibliographicalLevel', 'titleCat', 'titleBib', 'titleNormalized', 'publisher', 'year', 'format', 'histSubject', 'subject', 'genre', 'mediaType', 'bound', 'comment', 'digitalCopy');
-	$personFields = array('name', 'gnd', 'role');
-	$placeFields = array('name', 'getty', 'geoNames');
-	$arrayFields = array('language');
-}
-
-function collectIDs($data, $field) {
-	$collect = array();
-	$index = array();
-	$count = 0;
-	foreach($data as $item) {
-		if(array_key_exists($item->$field, $collect) == FALSE) {
-			$collect[$item->$field] = array();
+function sortCollect($collect) {
+	if(isset($collect['concordanceGND'])) {
+		$sortingConcordance = array_flip($collect['concordanceGND']);
+		ksort($sortingConcordance);
+		$new = array();
+		foreach($sortingConcordance as $name => $gnd) {
+			$new[$gnd] = $collect['collect'][$gnd];
 		}
-		$collect[$item->$field][] = $count;
-		$count ++;
+		$collect['collect'] = $new;
 	}
-	return($collect);
-}
-
-function collectIDsArrayValues($data, $field) {
-	$collect = array();
-	$index = array();
-	$count = 0;
-	foreach($data as $item) {
-		foreach($item->$field as $value) {
-			if(array_key_exists($value, $collect) == FALSE) {
-				$collect[$value] = array();
-			}
-			$collect[$value][] = $count;
-		}
-		$count ++;
-	}
-	return($collect);
-}
-
-function collectIDsSubObjects($data, $field, $subField) {
-	$collect = array();
-	$index = array();
-	$count = 0;
-	foreach($data as $item) {
-		foreach($item->field as $subItem) {
-			if(array_key_exists($subItem->$subField, $collect) == FALSE) {
-				$collect[$subItem->$subField] = array();
-			}
-			$collect[$subItem->$subField][] = $count;
-		}
-	$count ++;
-	}
-	return($collect);
-}
-
-function makeConcordance($data, $collectField, $correspField) {
-	$index = makeIndex($data, $collectField);
-	$concordance = array();
-	foreach($index as $entry) {
-		foreach($entry->content as $itemID) {
-			if($data[$itemID]->field) {
-				$concordance[$entry->label] = $data[$itemID]->field;
-				break;
-			}
-		}
-	}
-	return($concordance);
-}
-
-function makeEntries($data, $collect) {
-	$index = array();
-	foreach($collect as $value => $IDs) {
-		$entry = new indexEntry();
-		$entry->label = $value;
-		foreach($IDs as $id) {
-			$entry->content[] = $data[$id];
-		}
-		
-		// Hier müsste man noch GND-Nummern und Geodaten hinzufügen (etwa aus dem ersten Objekt), sofern sich das nicht intelligenter lösen lässt.
-	}
-	return($index);
-}
-
-function mergeIndices($index1, $index2) {
-	$commonIndex = array();
-	foreach($index1 as $index1) {
-		$specialContent = $index1->content;
-		$buffer = array();
-		foreach($index2 as $index2) {
-			$intersection = array_intersect($index1->content, $index2->content);
-			$specialContent = array_diff($specialContent, $index2->content);
-			$entry2 = new indexEntry();
-			$entry2->level = 2;
-			$entry2->label = $index2->label;
-			$entry2->content = $intersection;
-			$buffer[] = $entry2;
-			}
-		$entry1 = new indexEntry();
-		$entry1->label = $index1->label;
-		$commonIndex[] = $entry1;
-		foreach($buffer as $entryDown) {
-			$commonIndex[] = $entryDown; 
-		}
-		if($specialContent) {
-			$entryRemains = new indexEntry();
-			$entryRemains->level = 2;
-			$entryRemains->label = 'ohne Kategorie';
-			$entryRemains->content = $specialContent;
-			$commonIndex[] = $entryRemains;
-		}
-	}
-	return($commonIndex);
-}
-
-/* 
-Zu lösendes Problem: Das collect-Array für Autoren muss nach der GND-Nummer, soweit vorhanden, gebildet werden, als Label für den Index müssen aber die Namen stehen. Funktion collectIDsByOtherField()?
-*/
-
-
-function makeIndex($data, $field) {
-	$collect = array();
-	$index = array();
-	
-	if($field == 'persons') {
-		$nameArray = array();
-		$count = 0;
-		foreach($data as $item) {
-			foreach($item->persons as $person) {
-				$key = $person->gnd;
-				$name = removeSpecial(trim($person->name, '[]'));
-				//$name = $name;
-				if($key == '') {
-					$key = $name;
-				}
-				if(array_key_exists($key, $collect) == FALSE) {
-					$collect[$key] = array();
-					$nameArray[$name] = $key;					
-				}
-				$collect[$key][] = $count;
-			}			
-				$count++;
-		}
-		uksort($nameArray, 'strnatcasecmp');
-		foreach($nameArray as $name => $gnd) {
-			$entry = new indexEntry();
-			$entry->label = $name;
-			$entry->type = 'author';
-			if(preg_match('~[0-9]+~', $gnd) == 1) {
-				$entry->authority['system'] = 'gnd';
-				$entry->authority['id'] = $gnd;
-			}
-			$entry->content = $collect[$gnd];
-			$index[] = $entry;
-		}
-	}
-	elseif($field == 'places') {
-		$geoArray = array();
-		$gettyArray = array();
-		$count = 0;
-		foreach($data as $item) {
-			foreach($item->places as $place) {
-				$key = trim($place->name, '[]');
-				if($key == '' or preg_match('~[sSo][\.]?[ ]?[lLO][\.]?~', $key)) {
-					$key = 's.l.';
-				}
-				if(array_key_exists($key, $collect) == FALSE) {
-					$collect[$key] = array();
-					if($place->geoData) {					
-						$geoArray[$key] = $place->geoData;
-						$gettyArray[$key] = $place->getty;
-					}					
-				}
-				$collect[$key][] = $count;
-			}
-			$count++;
-		}
-		ksort($collect);
-		foreach($collect as $place => $content) {
-			$entry = new indexEntry();
-			$entry->label = $place;
-			$entry->content = $content;
-			if(isset($geoArray[$place])) {
-				$entry->geoData = array('lat' => $geoArray[$place]['lat'], 'long' => $geoArray[$place]['long']);
-			}
-			if(isset($gettyArray[$place])) {
-				$entry->authority['system'] = 'getty';
-				$entry->authority['id'] = $gettyArray[$place];
-			}
-			$index[] = $entry;
-		}
-	}
-	elseif($field == 'language') {
-		include('languageCodes.php');
-		$count = 0;
-		foreach($data as $item) {
-			foreach($item->language as $language) {
-				$key = $language;	
-				if($key == '') {
-					$key = 'ohne Sprachangabe';
-				}
-				if(array_key_exists($key, $collect) == FALSE) {
-					$collect[$key] = array();
-				}
-				$collect[$key][] = $count;
-			}
-			$count++;	
-		}
-		foreach($collect as $language => $occurrences)	{
-			$entry = new indexEntry();
-			$entry->label = $languageCodes[$language];
-			if($entry->label == '') {
-				$entry->label = $language;
-			}
-			$entry->authority['system'] = 'ISO 639.2';
-			$entry->authority['id'] = $language;
-			$entry->content = $occurrences;
-			$index[] = $entry;
-		}
-		usort($index, 'languageIndex');
-	} 
 	else {
-		$count = 0;
-		foreach($data as $item) {
-			if($field == 'manifestation') {
-				$key = $item->manifestation['system'];
-			}
-			else {
-				$key = trim($item->$field, '[]');
-			}
-			if($field == 'year') {
-				$key = normalizeYear($item->$field);
-				if($key == '') {
-					$key = getYearFromTitle($item->titleCat);
-				}
-			}
-			if($field == 'format') {
-				$key = sortingFormat($key);
-			}
-			if($field == 'genre') {
-				$key = insertSpace($key);
-			}
-			if($key == '') {
-				$key = 'leer';
-			}
-			if(array_key_exists($key, $collect) == FALSE) {
-				$collect[$key] = array();
-			}
-				$collect[$key][] = $count;
-			$count++;
-		}
-		ksort($collect);
-		foreach($collect as $key => $content) {
-			$entry = new indexEntry();
-			if($field == 'format') {
-				$entry->label = reverseSortingFormat($key);
-			}
-			else {
-				$entry->label = $key;
-			}
-			$entry->content = $content;
-			$index[] = $entry;
-		}
+		ksort($collect['collect']);
 	}
-
-	return($index);
-}
+	return($collect);
+	}
 
 function normalizeYear($year) {
 	if(preg_match('~([12][0-9][0-9][0-9])[-– ]{1,3}([12][0-9][0-9][0-9])~', $year, $treffer)) {
@@ -314,7 +229,38 @@ function getYearFromTitle($title) {
 			$yearAssign = $treffer[1];
 		}
 	}
-	return($yearAssign);	
+	return($yearAssign);
+}
+
+function mergeIndices($index1, $index2) {
+	$commonIndex = array();
+	foreach($index1 as $entry1) {
+		$specialContent = $entry1->content;
+		$buffer = array();
+		foreach($index2 as $entry2) {
+			$intersection = array_intersect($entry1->content, $entry2->content);
+			$specialContent = array_diff($specialContent, $entry2->content);
+			$newEntry = new indexEntry();
+			$newEntry->level = 2;
+			$newEntry->label = $entry2->label;
+			$newEntry->content = $intersection;
+			$buffer[] = $newEntry;
+			}
+		$previousEntry = new indexEntry();
+		$previousEntry->label = $entry1->label;
+		$commonIndex[] = $previousEntry;
+		foreach($buffer as $entryDown) {
+			$commonIndex[] = $entryDown; 
+		}
+		if($specialContent) {
+			$entryRemains = new indexEntry();
+			$entryRemains->level = 2;
+			$entryRemains->label = 'ohne Kategorie';
+			$entryRemains->content = $specialContent;
+			$commonIndex[] = $entryRemains;
+		}
+	}
+	return($commonIndex);
 }
 
 ?>

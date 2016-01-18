@@ -6,7 +6,7 @@ function makeGeoDataSheet($data, $folderName, $format) {
 	$rowArray = array();
 
 		foreach($index as $entry) {
-			$name = '';
+			$placeName = '';
 			$lat = '';
 			$long = '';
 			$year = '';

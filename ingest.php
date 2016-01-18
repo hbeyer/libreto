@@ -45,7 +45,7 @@ function load_data_mysql($server, $user, $password, $database, $table) {
 				foreach($authorFields as $field) {
 					if($rowBooks[$field]) {
 						$person = new person();
-						$person->name = htmlspecialchars($rowBooks[$field]);
+						$person->persName = htmlspecialchars($rowBooks[$field]);
 						$person->role = 'author';
 						if($resultAuthors = $db->query('SELECT gnd FROM autor WHERE name LIKE "%'.$rowBooks[$field].'%"')) {
 							$person->gnd = trim($resultAuthors->fetch_assoc()['gnd']); 
@@ -58,7 +58,7 @@ function load_data_mysql($server, $user, $password, $database, $table) {
 				foreach($contributorFields as $field) {
 					if($rowBooks[$field]) {
 						$person = new person();
-						$person->name = htmlspecialchars($rowBooks[$field]);
+						$person->persName = htmlspecialchars($rowBooks[$field]);
 						$person->role = 'contributor';
 						if($resultContributors = $db->query('SELECT gnd FROM autor WHERE name LIKE "%'.$rowBooks[$field].'%"')) {
 							$person->gnd = trim($resultContributors->fetch_assoc()['gnd']); 
@@ -79,7 +79,7 @@ function load_data_mysql($server, $user, $password, $database, $table) {
 				foreach($placeFields as $field) {
 					if($rowBooks[$field]) {
 						$place = new place();
-						$place->name = htmlspecialchars($rowBooks[$field]);
+						$place->placeName = htmlspecialchars($rowBooks[$field]);
 						if($resultPlaces = $db->query('SELECT x, y, tgn FROM ort WHERE ort="'.$rowBooks[$field].'"')) {
 							$rowGeo = $resultPlaces->fetch_assoc();
 							$place->getty = $rowGeo['tgn'];
@@ -94,7 +94,7 @@ function load_data_mysql($server, $user, $password, $database, $table) {
 	}
 	foreach($dataArray as $item) {
 		foreach($item->persons as $person) {
-			$person->name = replaceArrowBrackets($person->name);
+			$person->perName = replaceArrowBrackets($person->persName);
 			}
 		}	
 	return($dataArray);
