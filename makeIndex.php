@@ -6,7 +6,7 @@ function mergeIndices($index1, $index2) {
 		$higherEntry = new indexEntry();
 		$higherEntry->label = $entry1->label;
 		$higherEntry->authority = $entry1->authority;
-		$higherEntry->geoData = $entry1->GeoData;
+		$higherEntry->geoData = $entry1->geoData;
 		$commonIndex[] = $higherEntry;
 		foreach($index2 as $entry2) {
 			$intersection = array_intersect($entry1->content, $entry2->content);
@@ -15,7 +15,7 @@ function mergeIndices($index1, $index2) {
 				$lowerEntry->level = 2;
 				$lowerEntry->label = $entry2->label;
 				$lowerEntry->authority = $entry2->authority;
-				$lowerEntry->geoData = $entry2->GeoData;
+				$lowerEntry->geoData = $entry2->geoData;
 				$lowerEntry->content = $intersection;
 				$commonIndex[] = $lowerEntry;
 			}
