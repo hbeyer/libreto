@@ -93,6 +93,7 @@
 			public $timeSpanBegin;
 			public $timeSpanEnd;
 			public $getty;
+			public $geoNames;
 	}
 	
 ?>	

@@ -2,33 +2,39 @@
 
 function makeGeoDataSheet($data, $folderName, $format) {
 	$ending = strtolower($format);
-	$index = makeIndex($data, 'places');
+	$index1 = makeIndex($data, 'placeName');
+	$index2 = makeIndex($data, 'year');
+	$commonIndex = mergeIndices($index1, $index2);
+	
 	$rowArray = array();
-
-		foreach($index as $entry) {
-			$placeName = '';
-			$lat = '';
-			$long = '';
-			$year = '';
-			$getty = '';
-			
+	$placeName = '';
+	
+	var_dump($commonIndex);
+	
+	foreach($commonIndex as $entry) {
+	
+		if($entry->level == 1) {
+			$placeName = $entry->label;
+			$latitude = cleanCoordinate($entry->geoData['lat']);
+			$longitude = cleanCoordinate($entry->geoData['long']);
+		}
+		if($entry->level == 2) {
 			$row = new geoDataRow;
-			$row->label = replaceSlash($entry->label);
+			$row->label = $placeName;
 			$row->lat = cleanCoordinate($entry->geoData['lat']);
 			$row->long = cleanCoordinate($entry->geoData['long']);
-			foreach($entry->content as $itemID) {
-				$row->timeStamp = normalizeYear($data[$itemID]->year);
-				if($row->timeStamp == '') {
-					$row->timeStamp = getYearFromTitle($data[$itemID]->titleCat);
-					}
-				if(strtolower($entry->authority['system']) == 'getty') {
-					$row->getty = $entry->authority['id'];
-				}
-			$rowArray[] = $row;
+			$row->timeStamp = $entry->label;
+			$row->lat = $latitude;
+			$row->long = $longitude;
+			if($entry->authority['system'] == 'getty') {
+				$row->getty = $entry->authority['id'];
 			}
+			elseif($entry->authority['system'] == 'geoNames') {
+				$row->geoNames = $entry->authority['id'];
+			}
+			$rowArray[] = $row;
 		}
-		
-		unset($row);
+	}		
 		
 		if($ending == 'csv') {
 			$content = '"Name","Address","Description","Longitude","Latitude","TimeStamp","TimeSpan:begin","TimeSpan:end","GettyID",""
@@ -50,9 +56,9 @@ function makeGeoDataSheet($data, $folderName, $format) {
 	</kml>';
 		}
 		
-	$fileName = $folderName.'/printingPlaces.'.$ending;
+	$fileName = $folderName.'/printingPlaces1.'.$ending;
 	$datei = fopen($fileName,"w");
-	fwrite($datei, $content, 3000000);
+	fwrite($datei, $content, 30000000);
 	fclose($datei);
 	
 }

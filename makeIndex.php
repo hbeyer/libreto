@@ -1,5 +1,29 @@
 ﻿<?php
 
+function mergeIndices($index1, $index2) {
+	$commonIndex = array();
+	foreach($index1 as $entry1) {
+		$higherEntry = new indexEntry();
+		$higherEntry->label = $entry1->label;
+		$higherEntry->authority = $entry1->authority;
+		$higherEntry->geoData = $entry1->GeoData;
+		$commonIndex[] = $higherEntry;
+		foreach($index2 as $entry2) {
+			$intersection = array_intersect($entry1->content, $entry2->content);
+			if($intersection) {
+				$lowerEntry = new indexEntry();
+				$lowerEntry->level = 2;
+				$lowerEntry->label = $entry2->label;
+				$lowerEntry->authority = $entry2->authority;
+				$lowerEntry->geoData = $entry2->GeoData;
+				$lowerEntry->content = $intersection;
+				$commonIndex[] = $lowerEntry;
+			}
+		}
+	}
+	return($commonIndex);
+}
+
 function makeIndex($data, $field) {
 	$index = '';
 	$normalFields = array('id', 'pageCat', 'imageCat', 'numberCat', 'itemInVolume', 'bibliographicalLevel', 'titleCat', 'titleBib', 'titleNormalized', 'publisher', 'year', 'format', 'histSubject', 'subject', 'genre', 'mediaType', 'bound', 'comment', 'digitalCopy');
@@ -46,7 +70,6 @@ function makeIndex($data, $field) {
 	
 	return($index);
 }
-
 function makeEntries($collect) {
 	$collectLoop = $collect['collect'];
 	$index = array();
@@ -71,37 +94,6 @@ function makeEntries($collect) {
 		$index[] = $entry;
 	}
 	return($index);
-}
-
-function mergeIndices($index1, $index2) {
-	$commonIndex = array();
-	foreach($index1 as $entry1) {
-		$specialContent = $entry1->content;
-		$buffer = array();
-		foreach($index2 as $entry2) {
-			$intersection = array_intersect($entry1->content, $entry2->content);
-			$specialContent = array_diff($specialContent, $entry2->content);
-			$newEntry = new indexEntry();
-			$newEntry->level = 2;
-			$newEntry->label = $entry2->label;
-			$newEntry->content = $intersection;
-			$buffer[] = $newEntry;
-			}
-		$previousEntry = new indexEntry();
-		$previousEntry->label = $entry1->label;
-		$commonIndex[] = $previousEntry;
-		foreach($buffer as $entryDown) {
-			$commonIndex[] = $entryDown; 
-		}
-		if($specialContent) {
-			$entryRemains = new indexEntry();
-			$entryRemains->level = 2;
-			$entryRemains->label = 'ohne Kategorie';
-			$entryRemains->content = $specialContent;
-			$commonIndex[] = $entryRemains;
-		}
-	}
-	return($commonIndex);
 }
 
 function collectIDs($data, $field) {

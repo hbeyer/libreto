@@ -1,28 +1,5 @@
 ﻿<?php
 
-include('classDefinition.php');
-include('makeEntry.php');
-include('sort.php');
-include('encode.php');
-include('makeIndex.php');
-include('makeNavigation.php');
-include('makeHead.php');
-include('makeGeoDataSheet.php');
-include('storeBeacon.php');
-include('setConfiguration.php');
-
-
-$thisCatalogue = setConfiguration('bahn');
-$folderName = fileNameTrans($thisCatalogue->heading);
-
-$dataString = file_get_contents($folderName.'/data-'.$thisCatalogue->key);
-$data = unserialize($dataString);
-unset($dataString);
-
-$test = makeSections($data, 'year');
-$testHigher = addHigherLevel($test, 'year');
-var_dump($testHigher);
-
 // The following functions serve to convert an array of objects of the type indexEntry into an array of objects of the type section. The function to select depends on the facet chosen. For the facets cat, persons and year there are special functions. All other facets are covered by the function makeSections.
 
 function makeSections($data, $field) {

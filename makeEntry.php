@@ -1,17 +1,5 @@
 ﻿<?php
 
-/* include('classDefinition.php');
-include('ingest.php');
-include('sort.php');
-include('encode.php');
-include('makeIndex.php');
-include('makeSection.php');
-include('makeNavigation.php');
-include('makeHead.php');
-include('makeGeoDataSheet.php');
-include('storeBeacon.php');
-include('setConfiguration.php'); */
-
 function makeAuthors($personList) {
 	$result = '';
 	$separator = '</span>/<span class="authorName">';
