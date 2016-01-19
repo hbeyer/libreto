@@ -43,14 +43,16 @@ function translateFieldNames($field) {
 }
 
 function sortingFormat($format) {
-	$translation = array('2°' => '02°', '4°' => '04°', '8°' => '08°');
-	$format = strtr($format, $translation);
+	$pattern = '~^([248])°$~';
+	$replacement = '0$1°';
+	$format = preg_replace($pattern, $replacement, $format);
 	return($format);
 }
 
 function reverseSortingFormat($format) {
-	$translation = array('02°' => '2°', '04°' => '4°', '08°' => '8°');
-	$format = strtr($format, $translation);
+	$pattern = '~^0([248])°$~';
+	$replacement = '$1°';
+	$format = preg_replace($pattern, $replacement, $format);
 	return($format);
 }
 

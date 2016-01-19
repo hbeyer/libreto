@@ -1,125 +1,88 @@
 ﻿<?php
 
+include('classDefinition.php');
+include('makeEntry.php');
+include('sort.php');
+include('encode.php');
+include('makeIndex.php');
+include('makeNavigation.php');
+include('makeHead.php');
+include('makeGeoDataSheet.php');
+include('storeBeacon.php');
+include('setConfiguration.php');
+
+
+$thisCatalogue = setConfiguration('bahn');
+$folderName = fileNameTrans($thisCatalogue->heading);
+
+$dataString = file_get_contents($folderName.'/data-'.$thisCatalogue->key);
+$data = unserialize($dataString);
+unset($dataString);
+
+$test = makeSections($data, 'year');
+$testHigher = addHigherLevel($test, 'year');
+var_dump($testHigher);
+
 // The following functions serve to convert an array of objects of the type indexEntry into an array of objects of the type section. The function to select depends on the facet chosen. For the facets cat, persons and year there are special functions. All other facets are covered by the function makeSections.
-
-function makeSectionsCat($data) {
-	usort($data, 'compareCatalogue');
-	$structuredData = array();
-	$collectData = array();
-	$lastLabel = $data[0]->histSubject;
-	foreach($data as $item) {
-		$collectData[] = $item;
-		if($item->histSubject != $lastLabel) {
-			$section = new section();
-			$section->label = $lastLabel;
-			$section->content = $collectData;
-			$structuredData[] = $section;			
-			$lastLabel = $item->histSubject;
-			$collectData = array();
-		}	
-	}
-		if(isset($collectData[0])) {
-			$collectData[] = $item;
-			$section = new section();
-			$section->label = $lastLabel;
-			$section->content = $collectData;
-			$structuredData[] = $section;
-		}
-	return($structuredData);	
-}
-
-function makeSectionsAuthor($data) {
-	$index = makeIndex($data, 'persons');
-	$structuredData = array();
-	$lastLetter = '0';
-	foreach($index as $entry) {
-		$letter = strtoupper(substr($entry->label, 0, 1));
-		if($letter != $lastLetter) {
-			$section = new section();
-			$section->label = $letter;
-			$lastLetter = $letter;
-			$structuredData[] = $section;
-		}
-		$section = new section();
-		$section->label = $entry->label;
-		$section->level = 2;
-		$section->authority = $entry->authority;
-		foreach($entry->content as $itemID) {
-			$section->content[] = $data[$itemID];	
-		}
-		$structuredData[] = $section;
-	}
-	return($structuredData);
-}
-
-// This is an auxiliary function for makeSectionsYear
-function makeDecadeFromTo($year) {
-	$decadeStart = $year - ($year % 10);
-	$decadeEnd = $decadeStart + 10;
-	$fromTo = $decadeStart.'–'.$decadeEnd;
-	return($fromTo);
-}	
-
-function makeSectionsYear($data) {
-	$index = makeIndex($data, 'year');
-	$decades = array();
-	$structuredData = array();
-	$collectWithoutYear = array();
-	$currentDecade = '';
-	foreach($index as $entry) {
-		if($entry->label == 'leer') {
-			$collectWithoutYear[] = $entry;
-		}
-		elseif(is_numeric($entry->label)) {
-			$year = $entry->label;
-			$decade = makeDecadeFromTo($year);
-			if($decade != $currentDecade) {
-				$section = new section();
-				$section->label = $decade;
-				$structuredData[] = $section;
-				$currentDecade = $decade;
-			}
-			$section = new section();
-			$section->label = $year;
-			$section->level = 2;
-			foreach($entry->content as $keyBook) {
-				$section->content[] = $data[$keyBook];
-			}
-			$structuredData[] = $section;
-			unset($section);
-		}
-	}
-		if(isset($collectWithoutYear[0])) {
-			$section = new section();
-			$section->label = 'ohne Jahr';
-			foreach($collectWithoutYear as $entryWithoutYear) {
-				foreach($entryWithoutYear->content as $keyBook) {
-					$section->content[] = $data[$keyBook];
-				} 
-			}
-			$structuredData[] = $section;
-		}
-		return($structuredData);
-}
 
 function makeSections($data, $field) {
 	$index = makeIndex($data, $field);
 	$structuredData = array();
 	foreach($index as $entry) {
 		$section = new section();
-		if($entry->label == 'leer') {
-			$section->label = 'ohne Kategorie';
-		}
-		else {
-			$section->label = $entry->label;
-		}
-		foreach($entry->content as $keyBook) {
-			$section->content[] = $data[$keyBook];
+		$section->label = $entry->label;
+		$section->level = $entry->level;
+		foreach($entry->content as $idItem) {
+			$section->content[] = $data[$idItem];
 		}
 		$structuredData[] = $section;
 	}
-	return($structuredData);	
+	return($structuredData);
 }
+
+function addHigherLevel($structuredData, $field) {
+	$newStructure = array();
+	$previousSection = new section();
+	foreach($structuredData as $section) {
+		$section->level = 2;
+		$higherSection = makeHigherSection($section, $previousSection, $field);
+		if(is_object($higherSection) == TRUE) {
+			$newStructure[] = $higherSection;
+		}
+		$newStructure[] = $section;
+		$previousSection = $section;
+	}
+	return($newStructure);
+}
+
+function makeHigherSection($section, $previousSection, $field) {
+	$higherSection = '';
+	if($field == 'persName') {
+		$previousLetter = substr($previousSection->label, 0, 1);
+		$currentLetter = substr($section->label, 0, 1);
+		if($previousLetter != $currentLetter) {
+			$higherSection = new section();
+			$higherSection->label = $currentLetter;
+		}
+	}
+	elseif($field == 'year') {
+		$previousDecade = makeDecadeFromTo($previousSection->label);
+		$currentDecade = makeDecadeFromTo($section->label);
+		if($previousDecade != $currentDecade) {
+			$higherSection = new section();
+			$higherSection->label = $currentDecade;
+		}
+	}
+	return($higherSection);
+}
+
+// This is an auxiliary function for makeHigherSection
+function makeDecadeFromTo($year) {
+	$decadeStart = $year - ($year % 10);
+	$decadeEnd = $decadeStart + 10;
+	$fromTo = $decadeStart.'–'.$decadeEnd;
+	return($fromTo);
+}	
 
 // This function converts an array of objects of the class section into a list in HTML format. The variable $thisCatalogue contains an object of the type catalogue and supplies information on the fileName ($thisCatalogue->key) and the URL base of the digitized version ($thisCatalogue->base).
 	

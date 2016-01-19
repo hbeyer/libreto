@@ -40,6 +40,10 @@ function makeIndex($data, $field) {
 		$index = mergeIndices($index1, $index2);
 	}
 	
+	foreach($index as $entry) {
+		$entry->label = postprocessFields($field, $entry->label);
+	}
+	
 	return($index);
 }
 
@@ -67,6 +71,37 @@ function makeEntries($collect) {
 		$index[] = $entry;
 	}
 	return($index);
+}
+
+function mergeIndices($index1, $index2) {
+	$commonIndex = array();
+	foreach($index1 as $entry1) {
+		$specialContent = $entry1->content;
+		$buffer = array();
+		foreach($index2 as $entry2) {
+			$intersection = array_intersect($entry1->content, $entry2->content);
+			$specialContent = array_diff($specialContent, $entry2->content);
+			$newEntry = new indexEntry();
+			$newEntry->level = 2;
+			$newEntry->label = $entry2->label;
+			$newEntry->content = $intersection;
+			$buffer[] = $newEntry;
+			}
+		$previousEntry = new indexEntry();
+		$previousEntry->label = $entry1->label;
+		$commonIndex[] = $previousEntry;
+		foreach($buffer as $entryDown) {
+			$commonIndex[] = $entryDown; 
+		}
+		if($specialContent) {
+			$entryRemains = new indexEntry();
+			$entryRemains->level = 2;
+			$entryRemains->label = 'ohne Kategorie';
+			$entryRemains->content = $specialContent;
+			$commonIndex[] = $entryRemains;
+		}
+	}
+	return($commonIndex);
 }
 
 function collectIDs($data, $field) {
@@ -178,7 +213,7 @@ function preprocessFields($field, $value, $item) {
 			$value = getYearFromTitle($item->titleCat);
 		}
 		if($value == '') {
-			$value = 'ohne Jahr';
+			$value = 9999; // Makes empty year fields be sorted to the end
 		}
 	}
 	elseif($field == 'format') {
@@ -186,6 +221,20 @@ function preprocessFields($field, $value, $item) {
 	}
 	elseif($value == '') {
 		$value = 'ohne Kategorie';
+	}
+	return($value);
+}
+
+function postprocessFields($field, $value) {
+	/* Ist nicht ideal, weil auch label vom Typ histSubject erfasst werden, aber vermutl. 
+	keine praktische Auswirkung, weil die Ersetzungsfunktion sehr eng gefasst ist. */
+	if($field == 'cat') {
+		$value = reverseSortingFormat($value);
+	}
+	if($field == 'year') {
+		if($value == 9999) {
+			$value = 'ohne Jahr';
+		}
 	}
 	return($value);
 }
@@ -204,7 +253,7 @@ function sortCollect($collect) {
 		ksort($collect['collect']);
 	}
 	return($collect);
-	}
+}
 
 function normalizeYear($year) {
 	if(preg_match('~([12][0-9][0-9][0-9])[-– ]{1,3}([12][0-9][0-9][0-9])~', $year, $treffer)) {
@@ -230,37 +279,6 @@ function getYearFromTitle($title) {
 		}
 	}
 	return($yearAssign);
-}
-
-function mergeIndices($index1, $index2) {
-	$commonIndex = array();
-	foreach($index1 as $entry1) {
-		$specialContent = $entry1->content;
-		$buffer = array();
-		foreach($index2 as $entry2) {
-			$intersection = array_intersect($entry1->content, $entry2->content);
-			$specialContent = array_diff($specialContent, $entry2->content);
-			$newEntry = new indexEntry();
-			$newEntry->level = 2;
-			$newEntry->label = $entry2->label;
-			$newEntry->content = $intersection;
-			$buffer[] = $newEntry;
-			}
-		$previousEntry = new indexEntry();
-		$previousEntry->label = $entry1->label;
-		$commonIndex[] = $previousEntry;
-		foreach($buffer as $entryDown) {
-			$commonIndex[] = $entryDown; 
-		}
-		if($specialContent) {
-			$entryRemains = new indexEntry();
-			$entryRemains->level = 2;
-			$entryRemains->label = 'ohne Kategorie';
-			$entryRemains->content = $specialContent;
-			$commonIndex[] = $entryRemains;
-		}
-	}
-	return($commonIndex);
 }
 
 ?>
