@@ -76,8 +76,8 @@ function makeDigiLink($digi) {
 	
 function makeProof($thisBook) {
 	include('targetData.php');
-	$system = $thisBook->manifestation['system'];
-	$id = $thisBook->manifestation['id'];
+	$system = $thisBook->manifestation['systemManifestation'];
+	$id = $thisBook->manifestation['idManifestation'];
 	$level = $thisBook->bibliographicalLevel;
 	$result = '';
 	$systemClean = translateAnchor($system);

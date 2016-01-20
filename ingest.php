@@ -29,16 +29,16 @@ function load_data_mysql($server, $user, $password, $database, $table) {
 				$thisBook->subject = $rowBooks['sachbegriff'];
 				$thisBook->genre = $rowBooks['gattungsbegriff'];
 				$thisBook->mediaType = translateTermsDeEn($rowBooks['medium']);
-				$thisBook->manifestation['system'] = $rowBooks['nachweis'];				
-				$thisBook->manifestation['id'] = $rowBooks['datensatz'];
+				$thisBook->manifestation['systemManifestation'] = $rowBooks['nachweis'];				
+				$thisBook->manifestation['idManifestation'] = $rowBooks['datensatz'];
 				if(strtolower($rowBooks['form']) == 'ungebunden') {
 					$thisBook->bound = 0;
 				}
 				$thisBook->comment = $rowBooks['freitext'];
 				$thisBook->digitalCopy = $rowBooks['digital'];
 				
-				if($thisBook->bibliographicalLevel == 'work' and $thisBook->work['title'] == '') {
-					$thisBook->work['title'] = $thisBook->titleBib;
+				if($thisBook->bibliographicalLevel == 'work' and $thisBook->work['titleWork'] == '') {
+					$thisBook->work['titleWork'] = $thisBook->titleBib;
 				}
 				
 				$authorFields = array('autor', 'autor2', 'autor3', 'autor4');

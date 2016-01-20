@@ -26,8 +26,8 @@ include('makeGeoDataSheet.php');
 include('storeBeacon.php');
 include('setConfiguration.php');
 
-$thisCatalogue = setConfiguration('bahn');
-//$thisCatalogue = setConfiguration('rehl');
+//$thisCatalogue = setConfiguration('bahn');
+$thisCatalogue = setConfiguration('rehl');
 $facets = $thisCatalogue->facets;
 
 // Erstelle ein Verzeichnis für das Projekt

@@ -1,28 +1,4 @@
-ï»¿<?php
-
-function mergeIndices($index1, $index2) {
-	$commonIndex = array();
-	foreach($index1 as $entry1) {
-		$higherEntry = new indexEntry();
-		$higherEntry->label = $entry1->label;
-		$higherEntry->authority = $entry1->authority;
-		$higherEntry->geoData = $entry1->geoData;
-		$commonIndex[] = $higherEntry;
-		foreach($index2 as $entry2) {
-			$intersection = array_intersect($entry1->content, $entry2->content);
-			if($intersection) {
-				$lowerEntry = new indexEntry();
-				$lowerEntry->level = 2;
-				$lowerEntry->label = $entry2->label;
-				$lowerEntry->authority = $entry2->authority;
-				$lowerEntry->geoData = $entry2->geoData;
-				$lowerEntry->content = $intersection;
-				$commonIndex[] = $lowerEntry;
-			}
-		}
-	}
-	return($commonIndex);
-}
+<?php
 
 function makeIndex($data, $field) {
 	$index = '';
@@ -30,6 +6,9 @@ function makeIndex($data, $field) {
 	$personFields = array('gnd', 'role');
 	$placeFields = array('getty', 'geoNames');
 	$arrayFields = array('language');
+	$workFields = array('titleWork', 'systemWork');
+	$manifestationFields = array('systemManifestation');
+	$originalItemFields = array('institutionOriginal', 'shelfmarkOriginal', 'provenanceAttribute');
 	
 	if(in_array($field, $normalFields)) {
 		$collect = collectIDs($data, $field);
@@ -41,11 +20,20 @@ function makeIndex($data, $field) {
 		$collect = collectIDsPlaces($data);
 	}
 	elseif(in_array($field, $personFields)) {
-		$collect = collectIDsSubObjects($data, 'persons', $subField);
+		$collect = collectIDsSubObjects($data, 'persons', $field);
 	}
 	elseif(in_array($field, $placeFields)) {
-		$collect = collectIDsSubObjects($data, 'places', $subField);
+		$collect = collectIDsSubObjects($data, 'places', $field);
 	}
+	elseif(in_array($field, $manifestationFields)) {
+		$collect = collectIDsAssocArrayValues($data, 'manifestation', $field);
+	}
+	elseif(in_array($field, $workFields)) {
+		$collect = collectIDsAssocArrayValues($data, 'work', $field);
+	}
+	elseif(in_array($field, $originalItemFields)) {
+		$collect = collectIDsAssocArrayValues($data, 'originalItem', $field);
+	}			
 	elseif(in_array($field, $arrayFields)) {
 		$collect = collectIDsArrayValues($data, $field);
 	}
@@ -70,12 +58,13 @@ function makeIndex($data, $field) {
 	
 	return($index);
 }
+
 function makeEntries($collect) {
 	$collectLoop = $collect['collect'];
 	$index = array();
 	foreach($collectLoop as $value => $IDs) {
 		$entry = new indexEntry();
-		// PrÃ¼fen, ob Personennamen in einem eigenen Array hinterlegt wurden (Funktion collectIDsPersons)
+		// Prüfen, ob Personennamen in einem eigenen Array hinterlegt wurden (Funktion collectIDsPersons)
 		if(isset($collect['concordanceGND'])) {
 			$entry->label = $collect['concordanceGND'][$value];
 			if(is_numeric($value)) {
@@ -86,7 +75,7 @@ function makeEntries($collect) {
 		else {
 			$entry->label = $value;
 		}
-		// PrÃ¼fen, ob Geodaten in einem eigenen Array hinterlegt wurden (Funktion collectIDsPlaces)
+		// Prüfen, ob Geodaten in einem eigenen Array hinterlegt wurden (Funktion collectIDsPlaces)
 		if(isset($collect['concordanceGeoData'])) {
 			$entry->geoData = $collect['concordanceGeoData'][$value];
 		}
@@ -94,6 +83,30 @@ function makeEntries($collect) {
 		$index[] = $entry;
 	}
 	return($index);
+}
+
+function mergeIndices($index1, $index2) {
+	$commonIndex = array();
+	foreach($index1 as $entry1) {
+		$higherEntry = new indexEntry();
+		$higherEntry->label = $entry1->label;
+		$higherEntry->authority = $entry1->authority;
+		$higherEntry->geoData = $entry1->geoData;
+		$commonIndex[] = $higherEntry;
+		foreach($index2 as $entry2) {
+			$intersection = array_intersect($entry1->content, $entry2->content);
+			if($intersection) {
+				$lowerEntry = new indexEntry();
+				$lowerEntry->level = 2;
+				$lowerEntry->label = $entry2->label;
+				$lowerEntry->authority = $entry2->authority;
+				$lowerEntry->geoData = $entry2->geoData;
+				$lowerEntry->content = $intersection;
+				$commonIndex[] = $lowerEntry;
+			}
+		}
+	}
+	return($commonIndex);
 }
 
 function collectIDs($data, $field) {
@@ -122,6 +135,25 @@ function collectIDsArrayValues($data, $field) {
 			}
 			$collect[$key][] = $count;
 		}
+		$count ++;
+	}
+	$return = array('collect' => $collect);
+	return($return);
+}
+
+function collectIDsAssocArrayValues($data, $field, $subfield) {
+	$collect = array();
+	$count = 0;
+	foreach($data as $item) {
+		// Der folgende Umweg wird nötig, weil $item->$field[$subfield] eine Fehlermeldung produziert.
+		$keyArray = $item->$field;
+		$index = $subfield;
+		$key = $keyArray[$subfield];
+		$key = preprocessFields($subfield, $key, $item);
+		if(array_key_exists($key, $collect) == FALSE) {
+			$collect[$key] = array();
+		}
+		$collect[$key][] = $count;
 		$count ++;
 	}
 	$return = array('collect' => $collect);
@@ -211,6 +243,11 @@ function preprocessFields($field, $value, $item) {
 	elseif($field == 'format') {
 		$value = sortingFormat($value);
 	}
+	elseif($field == 'titleWork') {
+		if($value == '') {
+			$value = 'ohne Werktitel';
+		}
+	}	
 	elseif($value == '') {
 		$value = 'ohne Kategorie';
 	}
@@ -248,7 +285,7 @@ function sortCollect($collect) {
 }
 
 function normalizeYear($year) {
-	if(preg_match('~([12][0-9][0-9][0-9])[-â€“ ]{1,3}([12][0-9][0-9][0-9])~', $year, $treffer)) {
+	if(preg_match('~([12][0-9][0-9][0-9])[-– ]{1,3}([12][0-9][0-9][0-9])~', $year, $treffer)) {
 		$yearAssign = intval(($treffer[1] + $treffer[2]) / 2);
 	}
 	elseif(preg_match('~[12][0-9][0-9][0-9]~', $year, $treffer)) {

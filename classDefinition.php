@@ -19,7 +19,7 @@
 			public $imageCat; //Image number of the page in the digitized catalogue
 			public $numberCat; //Number of the item as found in catalogue
 			public $itemInVolume = 0; //If the item is part of a volume, the number indicates its position, otherwise it is 0.
-			public $work = array('title' => '', 'system' => '', 'id' => ''); //Entry for the work in a public database.
+			public $work = array('titleWork' => '', 'systemWork' => '', 'idWork' => ''); //Entry for the work in a public database.
 			public $bibliographicalLevel; // Possible values: "work", "manifestation", "copy", "noEvidence"
 			public $titleCat; //The title as found in the catalogue
 			public $titleBib;	//The title as copied from a bibliographic database (cf. $manifestation)
@@ -34,8 +34,8 @@
 			public $genre;
 			public $mediaType; //Book, Manuscript, Physical Object, etc.
 			public $language = array(); //One or more language codes according to ISO 639.2
-			public $manifestation = array('system' => '', 'id' => ''); //Entry in a bibliographic database or library catalogue
-			public $originalItem =  array('institution' => '', 'shelfmark' => '', 'provenanceAttribute' => '', 'digitalCopy' => '');			
+			public $manifestation = array('systemManifestation' => '', 'idManifestation' => ''); //Entry in a bibliographic database or library catalogue
+			public $originalItem =  array('institutionOriginal' => '', 'shelfmarkOriginal' => '', 'provenanceAttribute' => '', 'digitalCopyOriginal' => '');			
 			public $bound = 1;
 			public $comment;
 			public $digitalCopy;

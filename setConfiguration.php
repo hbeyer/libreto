@@ -14,7 +14,7 @@ function setConfiguration($key) {
 		$thisCatalogue->nachweis['institution'] = 'HAB Wolfenbüttel';
 		$thisCatalogue->nachweis['shelfmark'] = 'M: Bc Kapsel 19 (7)';
 		$thisCatalogue->GeoBrowserStorageID = '267901';
-		$thisCatalogue->facets = array('cat', 'persons', 'year', 'places', 'language', 'publisher', 'format', 'manifestation');
+		$thisCatalogue->facets = array('cat', 'persName', 'year', 'placeName', 'language', 'publisher', 'format', 'manifestation');
 		return($thisCatalogue);
 	}
 	elseif($key == 'bahn') {
@@ -26,13 +26,13 @@ function setConfiguration($key) {
 		$thisCatalogue->copy['institution'] = 'HAB Wolfenbüttel';
 		$thisCatalogue->copy['shelfmark'] = 'M: Bc Kapsel 7 (23)';
 		$thisCatalogue->GeoBrowserStorageID = '267851';
-		$thisCatalogue->facets = array('cat', 'persons', 'year', 'subject', 'genre', 'places', 'language', 'publisher');
+		$thisCatalogue->facets = array('cat', 'persName', 'year', 'subject', 'genre', 'placeName', 'language', 'publisher');
 		return($thisCatalogue);
 	}
 	
 }
 
 // Maximale Facettierung
-//$thisCatalogue->facets = array('cat', 'persons', 'year', 'subject', 'genre', 'places', 'language', 'publisher', 'format', 'manifestation');
+//$thisCatalogue->facets = array('cat', 'persName', 'year', 'subject', 'genre', 'placeName', 'language', 'publisher', 'format', 'manifestation');
 
 ?>
