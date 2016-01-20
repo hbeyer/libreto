@@ -5,6 +5,7 @@ include('makeEntry.php');
 include('ingest.php');
 include('sort.php');
 include('encode.php');
+include('languageCodes.php');
 include('makeIndex.php');
 include('makeSection.php');
 include('makeNavigation.php');
@@ -20,33 +21,42 @@ $dataString = file_get_contents($folderName.'/data-'.$thisCatalogue->key);
 $data = unserialize($dataString);
 unset($dataString);
 
-$limit = 50;
-$cloudArrays = makeCloudListPersons($data);
-$weightArray = $cloudArrays['weightArray'];
-$size = $weightArray;
-if($limit >= $size) {
-	$weightArray = shortenWeightArray($cloudArrays['weightArray']);
+makeCloudFile($data, 'pageCat', 50);
+
+function makeCloudFile($data, $field, $limit) {
+	if($field == 'persName') {
+		$cloudArrays = makeCloudArraysPersons($data);
+	}
+	else {
+		$cloudArrays = makeCloudArrays($data, $field);
+	}
+	$weightArray = $cloudArrays['weightArray'];
+	$size = count($weightArray);
+	if($limit <= $size) {
+		$weightArray = shortenWeightArray($cloudArrays['weightArray']);
+	}
+	$cloudContent = fillCloudList($weightArray, $cloudArrays['nameArray'], $limit);
+	saveCloudList($cloudContent);
 }
-$cloudContent = fillCloudList($weightArray, $cloudArrays['nameArray'], $limit);
-saveCloudList($cloudContent);
 
-
-function makeCloudList($data, $field) {
+function makeCloudArrays($data, $field) {
 	$index = makeIndex($data, $field);
 	$count = 0;
 	foreach($index as $entry) {
-		$name = $entry->label;
-		$weight = count($entry->content);
-		$weightArray[$count] = $weight;
-		$nameArray[$count] = $name;
-		$count ++;
+		if($entry->label != 'ohne Kategorie') {
+			$name = $entry->label;
+			$weight = count($entry->content);
+			$weightArray[$count] = $weight;
+			$nameArray[$count] = $name;
+			$count ++;
+		}
 	}
 	arsort($weightArray);
 	$return = array('weightArray' => $weightArray, 'nameArray' => $nameArray);
 	return($return);
 }
 
-function makeCloudListPersons($data) {
+function makeCloudArraysPersons($data) {
 	$index = makeIndex($data, 'persName');
 	$count = 0;
 	foreach($index as $entry) {

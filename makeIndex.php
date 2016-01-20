@@ -260,6 +260,10 @@ function postprocessFields($field, $value) {
 	if($field == 'cat') {
 		$value = reverseSortingFormat($value);
 	}
+	if($field == 'language') {
+		include('languageCodes.php');
+		$value = $languageCodes[$value];
+	}
 	if($field == 'year') {
 		if($value == 9999) {
 			$value = 'ohne Jahr';
