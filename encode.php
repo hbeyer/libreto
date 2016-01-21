@@ -1,7 +1,7 @@
 ﻿<?php
 
 function replaceArrowBrackets($string) {
-	$translate = array('&lt;' => '', '&gt;' => '', '<' => '', '>' => '');
+	$translate = array('&lt;' => '', '&gt;' => '', '<' => '', '>' => '', '&amp;lt;' => '', '&amp;gt;' => '');
 	$string = strtr($string, $translate);
 	return($string);
 }
