@@ -1,14 +1,8 @@
-<?php
+ï»¿<?php
 
 function makeIndex($data, $field) {
+	include('fieldList.php');
 	$index = '';
-	$normalFields = array('id', 'pageCat', 'imageCat', 'numberCat', 'itemInVolume', 'bibliographicalLevel', 'titleCat', 'titleBib', 'titleNormalized', 'publisher', 'year', 'format', 'histSubject', 'subject', 'genre', 'mediaType', 'bound', 'comment', 'digitalCopy');
-	$personFields = array('gnd', 'role');
-	$placeFields = array('getty', 'geoNames');
-	$arrayFields = array('language');
-	$workFields = array('titleWork', 'systemWork');
-	$manifestationFields = array('systemManifestation');
-	$originalItemFields = array('institutionOriginal', 'shelfmarkOriginal', 'provenanceAttribute');
 	
 	if(in_array($field, $normalFields)) {
 		$collect = collectIDs($data, $field);
@@ -40,7 +34,7 @@ function makeIndex($data, $field) {
 	
 	if(isset($collect)) {
 		$collect = sortCollect($collect);
-		$index = makeEntries($collect);
+		$index = makeEntries($collect, $field);
 	}
 	elseif($field == 'cat') {
 		$collect1 = collectIDs($data, 'histSubject');
@@ -59,12 +53,12 @@ function makeIndex($data, $field) {
 	return($index);
 }
 
-function makeEntries($collect) {
+function makeEntries($collect, $field = '') {
 	$collectLoop = $collect['collect'];
 	$index = array();
 	foreach($collectLoop as $value => $IDs) {
 		$entry = new indexEntry();
-		// Prüfen, ob Personennamen in einem eigenen Array hinterlegt wurden (Funktion collectIDsPersons)
+		// PrÃ¼fen, ob Personennamen in einem eigenen Array hinterlegt wurden (Funktion collectIDsPersons)
 		if(isset($collect['concordanceGND'])) {
 			$entry->label = $collect['concordanceGND'][$value];
 			if(is_numeric($value)) {
@@ -75,7 +69,14 @@ function makeEntries($collect) {
 		else {
 			$entry->label = $value;
 		}
-		// Prüfen, ob Geodaten in einem eigenen Array hinterlegt wurden (Funktion collectIDsPlaces)
+		// Bei Facettierung nach Personen oder Jahren wird der Anzeigelevel auf 2 gesetzt (Standard 1) und damit die Anzeige der einzelnen Personen oder Jahre im Inhaltsverzeichnis unterdrÃ¼ckt
+		if($field == 'persName') {
+			$entry->level = 2;
+		}
+		if($field == 'year' and $value != 9999) {
+			$entry->level = 2;
+		}
+		// PrÃ¼fen, ob Geodaten in einem eigenen Array hinterlegt wurden (Funktion collectIDsPlaces)
 		if(isset($collect['concordanceGeoData'])) {
 			$entry->geoData = $collect['concordanceGeoData'][$value];
 		}
@@ -145,7 +146,7 @@ function collectIDsAssocArrayValues($data, $field, $subfield) {
 	$collect = array();
 	$count = 0;
 	foreach($data as $item) {
-		// Der folgende Umweg wird nötig, weil $item->$field[$subfield] eine Fehlermeldung produziert.
+		// Der folgende Umweg wird nÃ¶tig, weil $item->$field[$subfield] eine Fehlermeldung produziert.
 		$keyArray = $item->$field;
 		$index = $subfield;
 		$key = $keyArray[$subfield];
@@ -289,7 +290,7 @@ function sortCollect($collect) {
 }
 
 function normalizeYear($year) {
-	if(preg_match('~([12][0-9][0-9][0-9])[-– ]{1,3}([12][0-9][0-9][0-9])~', $year, $treffer)) {
+	if(preg_match('~([12][0-9][0-9][0-9])[-â€“ ]{1,3}([12][0-9][0-9][0-9])~', $year, $treffer)) {
 		$yearAssign = intval(($treffer[1] + $treffer[2]) / 2);
 	}
 	elseif(preg_match('~[12][0-9][0-9][0-9]~', $year, $treffer)) {

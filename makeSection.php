@@ -9,11 +9,14 @@ function makeSections($data, $field) {
 		$section = new section();
 		$section->label = $entry->label;
 		$section->level = $entry->level;
+		$section->authority = $entry->authority;
+		$section->geoData = $entry->geoData;
 		foreach($entry->content as $idItem) {
 			$section->content[] = $data[$idItem];
 		}
 		$structuredData[] = $section;
 	}
+	$structuredData = addHigherLevel($structuredData, $field);
 	return($structuredData);
 }
 
@@ -21,7 +24,6 @@ function addHigherLevel($structuredData, $field) {
 	$newStructure = array();
 	$previousSection = new section();
 	foreach($structuredData as $section) {
-		$section->level = 2;
 		$higherSection = makeHigherSection($section, $previousSection, $field);
 		if(is_object($higherSection) == TRUE) {
 			$newStructure[] = $higherSection;
@@ -43,11 +45,13 @@ function makeHigherSection($section, $previousSection, $field) {
 		}
 	}
 	elseif($field == 'year') {
-		$previousDecade = makeDecadeFromTo($previousSection->label);
-		$currentDecade = makeDecadeFromTo($section->label);
-		if($previousDecade != $currentDecade) {
-			$higherSection = new section();
-			$higherSection->label = $currentDecade;
+		if($section->label != 'ohne Jahr') {
+			$previousDecade = makeDecadeFromTo($previousSection->label);
+			$currentDecade = makeDecadeFromTo($section->label);
+			if($previousDecade != $currentDecade) {
+				$higherSection = new section();
+				$higherSection->label = $currentDecade;
+			}
 		}
 	}
 	return($higherSection);

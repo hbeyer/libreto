@@ -13,8 +13,8 @@ include('makeGeoDataSheet.php');
 include('storeBeacon.php');
 include('setConfiguration.php');
 
-$thisCatalogue = setConfiguration('bahn');
-//$thisCatalogue = setConfiguration('rehl');
+//$thisCatalogue = setConfiguration('bahn');
+$thisCatalogue = setConfiguration('rehl');
 $facets = $thisCatalogue->facets;
 
 //Erstelle ein Verzeichnis für das Projekt (wird momentan vom Skript storeData.php erledigt.
@@ -32,38 +32,19 @@ $dataString = file_get_contents($folderName.'/data-'.$thisCatalogue->key);
 $data = unserialize($dataString);
 unset($dataString);
 
-// Füge die Datasheets für den GeoBrowser dem Projektverzeichnis hinzu
-makeGeoDataSheet($data, $folderName, 'KML');
-makeGeoDataSheet($data, $folderName, 'CSV');
-
-/* Weil einige Facetten zusätzliche Berechnungen erfordern (z. B. die Anfangsbuchstaben der Autoren), 
-wird die Listenstruktur teils von speziellen Funktionen, teils von der allgemeinen Funktion makeSections 
-übernommen. Die folgende Funktion odnet jeweils einer Facette die richtige Funktion zu.
-*/
-function makeSectionsByFacet($data, $facet) {
-	$structuredData = array();
-	$easyFacets = array('subject', 'histSubject', 'places', 'language', 'publisher', 'format', 'mediaType', 'genre', 'manifestation');
-	if($facet == 'cat') {
-		$structuredData = makeSectionsCat($data);
-	}
-	elseif($facet == 'persons') {
-		$structuredData = makeSectionsAuthor($data);
-	}
-	elseif($facet == 'year') {
-		$structuredData = makeSectionsYear($data);
-	}
-	elseif(in_array($facet, $easyFacets)) {
-		$structuredData = makeSections($data, $facet);
-	}
-	return($structuredData);
-}
+// Füge die Datasheets für den GeoBrowser dem Projektverzeichnis hinzu (zeitweise aufgehoben)
+//makeGeoDataSheet($data, $folderName, 'KML');
+//makeGeoDataSheet($data, $folderName, 'CSV');
 
 /* Hier werden die Strukturen (jeweils ein Array aus section-Objekten) gebildet 
 und im Array $structures zwischengespeichert.
 */
 $structures = array();
+include('fieldList.php');
 foreach($facets as $facet) {
-	$structures[] = makeSectionsByFacet($data, $facet);
+	if(in_array($facet, $indexFields)) {
+		$structures[] = makeSections($data, $facet);
+	}
 }
 unset($data);
 

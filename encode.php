@@ -27,16 +27,16 @@ function fileNameTrans($fileName) {
 function translateFieldNames($field) {
 	$translation = array(
 		'cat' => 'Katalog', 
-		'persons' => 'Personen', 
+		'persName' => 'Personen', 
 		'subject' => 'Inhalt', 
 		'histSubject' => 'alter Klassifikation', 
 		'year' => 'Jahr', 
-		'places' => 'Ort', 
+		'placeName' => 'Ort', 
 		'language' => 'Sprache', 
 		'publisher' => 'Drucker', 
 		'format' => 'Format', 
 		'mediaType' => 'Materialart', 
-		'manifestation' => 'Nachweis', 
+		'systemManifestation' => 'Nachweis', 
 		'genre' => 'Gattung');
 	$result = strtr($field, $translation);
 	return($result);		
