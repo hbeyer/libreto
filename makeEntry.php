@@ -63,10 +63,7 @@ function makeDigiLink($digi) {
 	$result = '';
 	$resolver = '';
 	if($digi != '') {
-		$split = strrpos($digi, 'urn:');
-		// Hier muss der Fall einkalkuliert werden, dass nur der URN vorhanden ist. S. Z. 82
-		if($split > 0) {
-			$digi = substr($digi, $split);
+		if(substr($digi, 0, 4) == 'urn:') {
 			$resolver = 'http://nbn-resolving.de/';
 		}
 		$result = '<span class="heading_info">Digitalisat: </span><a href="'.$resolver.$digi.'" target="_blank">'.$digi.'</a><br />';
@@ -132,7 +129,7 @@ function insertLink($text, $pattern, $target) {
 	return($text);
 }
 
-// Diese Funktion soll alternative reguläre Ausdrücke wie ~PPN ([0-9X]{9})|GBV ([0-9X]{9})~ verarbeiten, ist aber schwierig.
+// The function automatically replaces the identifiers the patterns of which are listed in targetData.php by links to the respective database
 function insertLinkNew($text, $pattern, $target) {
 	$id = '';
 	$targetArray = explode('{ID}', $target, 2);

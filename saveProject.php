@@ -3,7 +3,6 @@
 include('classDefinition.php');
 include('makeEntry.php');
 include('ingest.php');
-include('sort.php');
 include('encode.php');
 include('makeIndex.php');
 include('makeSection.php');
@@ -13,8 +12,8 @@ include('makeGeoDataSheet.php');
 include('storeBeacon.php');
 include('setConfiguration.php');
 
-//$thisCatalogue = setConfiguration('bahn');
-$thisCatalogue = setConfiguration('rehl');
+$thisCatalogue = setConfiguration('bahn');
+//$thisCatalogue = setConfiguration('rehl');
 $facets = $thisCatalogue->facets;
 
 //Erstelle ein Verzeichnis für das Projekt (wird momentan vom Skript storeData.php erledigt.

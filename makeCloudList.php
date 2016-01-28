@@ -2,8 +2,6 @@
 
 include('classDefinition.php');
 include('makeEntry.php');
-include('ingest.php');
-include('sort.php');
 include('encode.php');
 include('languageCodes.php');
 include('makeIndex.php');
@@ -18,13 +16,17 @@ include('setConfiguration.php');
 $thisCatalogue = setConfiguration('bahn');
 $folderName = fileNameTrans($thisCatalogue->heading);
 
+$field = 'persName';
+$path = '../'.$folderName.'/'.$folderName.'-'.$field.'.html#';
+$limit = 50;
+
 $dataString = file_get_contents($folderName.'/data-'.$thisCatalogue->key);
 $data = unserialize($dataString);
 unset($dataString);
 
-makeCloudFile($data, 'persName', 50);
+makeCloudFile($data, $field, $limit, $path);
 
-function makeCloudFile($data, $field, $limit) {
+function makeCloudFile($data, $field, $limit, $path) {
 	if($field == 'persName') {
 		$cloudArrays = makeCloudArraysPersons($data);
 	}
@@ -36,7 +38,7 @@ function makeCloudFile($data, $field, $limit) {
 	if($limit <= $size) {
 		$weightArray = shortenWeightArray($cloudArrays['weightArray']);
 	}
-	$cloudContent = fillCloudList($weightArray, $cloudArrays['nameArray'], $limit);
+	$cloudContent = fillCloudList($weightArray, $cloudArrays['nameArray'], $limit, $path);
 	saveCloudList($cloudContent);
 }
 
@@ -86,14 +88,15 @@ function shortenWeightArray($weightArray) {
 	return($weightArray);
 }
 
-function fillCloudList($weightArray, $nameArray, $limit) {
+function fillCloudList($weightArray, $nameArray, $limit, $path) {
 	$count = 0;
 	foreach($weightArray as $id => $weight) {
 		//$name = htmlspecialchars($nameArray[$id]);
 		$name = $nameArray[$id];
 		$row = array('text' => $name, 'weight' => $weight);
 		if(preg_match('~^[0-9X]{8,10}$~', $id)) {
-			$link = 'http://d-nb.info/gnd/'.$id;
+			//$link = 'http://d-nb.info/gnd/'.$id;
+			$link = $path.$id;
 			$row['link'] = $link;
 		}
 		$content[] = $row;

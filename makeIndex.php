@@ -61,7 +61,7 @@ function makeEntries($collect, $field = '') {
 		// Prüfen, ob Personennamen in einem eigenen Array hinterlegt wurden (Funktion collectIDsPersons)
 		if(isset($collect['concordanceGND'])) {
 			$entry->label = $collect['concordanceGND'][$value];
-			if(is_numeric($value)) {
+			if(preg_match('~[0-9X]{9}~', $value)) {
 				$entry->authority['system'] = 'gnd';
 				$entry->authority['id'] = strval($value);
 			}
