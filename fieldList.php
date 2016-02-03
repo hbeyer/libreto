@@ -13,9 +13,9 @@ $placeFields = array('placeName', 'getty', 'geoNames');
 $arrayFields = array('language');
 $workFields = array('titleWork', 'systemWork');
 $manifestationFields = array('systemManifestation');
-$originalItemFields = array('institutionOriginal', 'shelfmarkOriginal', 'provenanceAttribute');
+$originalItemFields = array('institutionOriginal', 'shelfmarkOriginal', 'provenanceAttribute', 'targetOPAC', 'searchID');
+$virtualFields = array('catSubjectFormat');
 
-$indexFields = array_merge($normalFields, $personFields, $placeFields, $arrayFields, $workFields, $manifestationFields, $originalItemFields);
-$indexFields[] = 'cat';
+$indexFields = array_merge($normalFields, $personFields, $placeFields, $arrayFields, $workFields, $manifestationFields, $originalItemFields, $virtualFields);
 
 ?>

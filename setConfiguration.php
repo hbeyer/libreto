@@ -14,7 +14,7 @@ function setConfiguration($key) {
 		$thisCatalogue->nachweis['institution'] = 'HAB Wolfenbüttel';
 		$thisCatalogue->nachweis['shelfmark'] = 'M: Bc Kapsel 19 (7)';
 		$thisCatalogue->GeoBrowserStorageID = '267901';
-		$thisCatalogue->facets = array('cat', 'persName', 'year', 'placeName', 'language', 'publisher', 'format', 'systemManifestation');
+		$thisCatalogue->facets = array('id', 'persName', 'year', 'placeName', 'language', 'publisher', 'format', 'systemManifestation');
 		return($thisCatalogue);
 	}
 	elseif($key == 'bahn') {
@@ -26,7 +26,7 @@ function setConfiguration($key) {
 		$thisCatalogue->copy['institution'] = 'HAB Wolfenbüttel';
 		$thisCatalogue->copy['shelfmark'] = 'M: Bc Kapsel 7 (23)';
 		$thisCatalogue->GeoBrowserStorageID = '267851';
-		$thisCatalogue->facets = array('cat', 'persName', 'year', 'subject', 'genre', 'placeName', 'language', 'publisher');
+		$thisCatalogue->facets = array('catSubjectFormat', 'persName', 'year', 'subject', 'genre', 'placeName', 'language', 'publisher');
 		return($thisCatalogue);
 	}
 	if($key == 'liddel') {
@@ -35,7 +35,7 @@ function setConfiguration($key) {
 		$thisCatalogue->title = 'Die Bibliothek des schottischen Mathematikers, Astronomomen und Mediziners Duncan Liddel (1561–1613) wurde von Jane Pierie aus den Beständen der Sir Duncan Rice Library rekonstruiert. Sie enthält ca. 420 Titel in 200 Bänden. Zum großen Teil sammelte Liddel diese zur Zeit seiner Lehrtätigkeit auf dem Kontinent, insbesondere seit 1590 in Helmstedt.';
 		$thisCatalogue->year = '1613';
 		$thisCatalogue->GeoBrowserStorageID = '';
-		$thisCatalogue->facets = array('cat', 'persName', 'year', 'placeName', 'subject', 'publisher', 'systemManifestation');
+		$thisCatalogue->facets = array('shelfmarkOriginal', 'persName', 'year', 'placeName', 'subject', 'publisher', 'systemManifestation');
 		return($thisCatalogue);
 	}	
 	

@@ -26,8 +26,10 @@ function fileNameTrans($fileName) {
 
 function translateFieldNames($field) {
 	$translation = array(
-		'cat' => 'Katalog', 
-		'persName' => 'Personen', 
+		'catSubjectFormat' => 'Katalog', 
+		'id' => 'Katalog', 
+		'shelfmarkOriginal' => 'Signatur', 		
+		'persName' => 'Personen',
 		'subject' => 'Inhalt', 
 		'histSubject' => 'alter Klassifikation', 
 		'year' => 'Jahr', 

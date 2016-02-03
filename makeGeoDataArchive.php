@@ -1,6 +1,28 @@
 ﻿<?php
 
-include('encode.php');
+//Laden aus der Bahnsen-Tabelle
+//load_from_mysql('bahnsen');
+
+//Einfügen neuer Einträge
+/* $archive = new geoDataArchive();
+$archive->loadFromFile();
+$entry = new geoDataArchiveEntry();
+$entry->label = 'Neustadt an der Weinstraße';
+$entry->getty = '7004417';
+$entry->lat = '49.3567';
+$entry->long = '8.1378';
+$entry->gnd = '4041946-0';
+$entry->altLabels[] = 'Neustadt an der Haardt';
+$entry->altLabels[] = 'Neapolis Nemetum';
+$entry->altLabels[] = 'Neapolis Casimiriana';
+$entry->altLabels[] = 'Neapolis Palatinorum';
+$entry->altLabels[] = 'Neustadt (Weinstraße)';
+$entry->altLabels[] = 'Neustadt a.d. Weinstraße';
+$archive->insertEntryIfNew($entry);
+$archive->saveToFile();
+var_dump($archive); */
+
+
 
 class geoDataArchive {
 	public $date;
@@ -39,6 +61,14 @@ class geoDataArchive {
 		$archive = unserialize($archiveString);
 		unset($archiveString);
 		$this->content = $archive->content;
+	}
+	function getByName($name) {
+		foreach($this->content as $entry) {
+			if($entry->label == $name) {
+				return($entry);
+				break;
+			}
+		}
 	}
 }
 
@@ -204,12 +234,5 @@ function load_from_mysql($database) {
 	var_dump($archive);
 	$archive->saveToFile();
 }
-
-$geoNamesArray = array('2879139', '2895044', '6548975', '2925533', '2925533', '2906676', '2886242', '2973783');
-$testArchive = new geoDataArchive();
-$testArchive->insertGeoNamesArray($geoNamesArray);
-
-var_dump($testArchive);
-
 
 ?>

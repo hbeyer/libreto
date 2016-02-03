@@ -36,7 +36,7 @@ function makeIndex($data, $field) {
 		$collect = sortCollect($collect);
 		$index = makeEntries($collect, $field);
 	}
-	elseif($field == 'cat') {
+	elseif($field == 'catSubjectFormat') {
 		$collect1 = collectIDs($data, 'histSubject');
 		$index1 = makeEntries($collect1);
 		unset($collect1);
@@ -73,8 +73,11 @@ function makeEntries($collect, $field = '') {
 		if($field == 'persName') {
 			$entry->level = 2;
 		}
-		if($field == 'year' and $value != 9999) {
+		elseif($field == 'year' and $value != 9999) {
 			$entry->level = 2;
+		}
+		elseif($field == 'id') {
+			$entry->level = 0;
 		}
 		// Prüfen, ob Geodaten in einem eigenen Array hinterlegt wurden (Funktion collectIDsPlaces)
 		if(isset($collect['concordanceGeoData'])) {
@@ -258,7 +261,7 @@ function preprocessFields($field, $value, $item) {
 function postprocessFields($field, $value) {
 	/* Ist nicht ideal, weil auch label vom Typ histSubject erfasst werden, aber vermutl. 
 	keine praktische Auswirkung, weil die Ersetzungsfunktion sehr eng gefasst ist. */
-	if($field == 'cat') {
+	if($field == ('format' or 'catSubjectFormat')) {
 		$value = reverseSortingFormat($value);
 	}
 	if($field == 'language') {

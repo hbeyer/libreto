@@ -107,9 +107,8 @@ function load_data_liddel($server, $user, $password, $database, $table) {
 		die ('Konnte keine Verbindung zur Datenbank aufbauen: '.mysqli_connect_error().'('.mysqli_connect_errno().')');
 	}
 	
-	$dbGeo1 = new mysqli('localhost', 'root', '', 'bahnsen');
-	$dbGeo2 = new mysqli('localhost', 'root', '', 'rehlinger');
-
+	$archive = new GeoDataArchive();
+	$archive->loadFromFile();
 	
 	if($result = $db->query('SELECT * FROM '.$table)) {
 		$dataArray = array();
@@ -127,6 +126,8 @@ function load_data_liddel($server, $user, $password, $database, $table) {
 			$thisBook->mediaType = 'Book';
 			$thisBook->originalItem['institutionOriginal'] = 'Aberdeen, Sir Duncan Rice Library';				
 			$thisBook->originalItem['shelfmarkOriginal'] = $rowBooks['shelfmark'];
+			$thisBook->originalItem['targetOPAC'] = 'https://aulib.abdn.ac.uk/F?func=direct&local_base=ABN01&doc_number={ID}';
+			$thisBook->originalItem['searchID'] = $rowBooks['system_no'];
 
 			$placeName = $rowBooks['place_ger'];
 			if($placeName == '') {
@@ -135,38 +136,29 @@ function load_data_liddel($server, $user, $password, $database, $table) {
 			
 			$placeNameSearch = $placeName;
 			
-			if($placeNameSearch == ('Frankfurt')) {
+			if($placeNameSearch == 'Frankfurt' or $placeNameSearch == 'Frankfurt am Main') {
 				$placeNameSearch = 'Frankfurt/M.';
 				$placeName = 'Frankfurt am Main';
 			}
-			elseif($placeNameSearch == ('Frankfurt an der Oder' or 'Frankfurt (Oder)')) {
+			elseif($placeNameSearch == 'Frankfurt an der Oder' or $placeNameSearch == 'Frankfurt (Oder)') {
 				$placeNameSearch = 'Frankfurt/O.';
 			}
 			
+			/* Folgende Einträge verursachen noch Probleme:
+
+			Görlitz (Dresden)
+			Middleburg
+			s. l.
+			Frankfurt am Main
+			Neustadt an der Haardt */
+			
+			
 			$place = new place();
 			$place->placeName = $placeName;
-			
-			if($resultGeo = $dbGeo1->query('SELECT * FROM ort WHERE ort LIKE "%'.$placeNameSearch.'%"')) {
-				while($rowGeo = $resultGeo->fetch_assoc()) {
-					if($rowGeo['x']) {
-						$rowGeoSelect = $rowGeo;
-						break;
-					}
-				}
-			}
-			elseif($resultGeo = $dbGeo2->query('SELECT * FROM ort WHERE ort LIKE "%'.$placeNameSearch.'%"')) {
-				while($rowGeo = $resultGeo->fetch_assoc()) {
-					if($rowGeo['x']) {
-						$rowGeoSelect = $rowGeo;
-						break;
-					}
-				}
-			}
-			
-			if($rowGeoSelect['x'] != '') {
-				$place->geoData['long'] = $rowGeoSelect['x'];
-				$place->geoData['lat'] = $rowGeoSelect['y'];
-				$place->getty = $rowGeoSelect['tgn'];
+			$placeFromArchive = $archive->getByName($placeNameSearch);
+			if($placeFromArchive) {
+				$place->geoData['lat'] = $placeFromArchive->lat;
+				$place->geoData['long'] = $placeFromArchive->long;
 			}
 			
 			$thisBook->places[] = $place;

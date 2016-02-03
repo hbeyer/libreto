@@ -16,7 +16,6 @@ data-{projektspezifische Endung} serialisiert.
 include('classDefinition.php');
 include('makeEntry.php');
 include('ingest.php');
-include('sort.php');
 include('encode.php');
 include('makeIndex.php');
 include('makeSection.php');
@@ -40,7 +39,7 @@ if(is_dir($folderName) == FALSE) {
 $data = load_data_mysql('localhost', 'root', '', $thisCatalogue->database, 'zusammenfassung');
 
 // Suche in BEACON-Dateien nach Einträgen zu den erwähnten Personen und füge diese den Daten hinzu
-storeBeacon($data, $folderName, $thisCatalogue->key);
+//storeBeacon($data, $folderName, $thisCatalogue->key);
 $data = addBeacon($data, $folderName, $thisCatalogue->key);
 
 // Speichere die Daten im Projektverzeichnis

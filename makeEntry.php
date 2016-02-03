@@ -57,6 +57,32 @@ function makeSourceLink($titleOriginal, $base, $imageCat, $pageCat, $numberCat)	
 		$result = 'Titel im Altkatalog:<span class="titleOriginal-single"> '.$titleOriginal.'</span> <a href="'.$base.$imageCat.'" title="Titel im Altkatalog" target="_blank">S. '.$pageCat.', Nr. '.$numberCat.'</a><br/>';
 	}
 	return($result);
+}
+
+function makeOriginalLink($originalItem) {
+	$result = '';
+	$institutionOriginal = $originalItem['institutionOriginal'];
+	$shelfmarkOriginal = $originalItem['shelfmarkOriginal'];
+	$targetOPAC = $originalItem['targetOPAC'];
+	$searchID = $originalItem['searchID'];
+	$provenanceAttribute = $originalItem['provenanceAttribute'];
+	$digitalCopyOriginal = $originalItem['digitalCopyOriginal'];
+	
+	if($institutionOriginal and $shelfmarkOriginal) {
+		$result = $institutionOriginal.', '.$shelfmarkOriginal;
+		if($targetOPAC and $searchID) {
+			$link = makeBeaconLink($searchID, $targetOPAC);
+			$result = '<a href="'.$link.'" target="_blank">'.$result.'</a>';
+		}
+		if($provenanceAttribute) {
+			$result .= '; Grund für Zuschreibung: '.$provenanceAttribute;
+		}
+		if($digitalCopyOriginal) {
+			$result .= '; Digitalisat: '.makeDigiLink($digitalCopyOriginal);
+		}
+		$result = 'Originalexemplar: '.$result.'<br/>';
+	}
+	return($result);
 }	
 	
 function makeDigiLink($digi) {
@@ -163,7 +189,7 @@ function makeTitle($titleBib, $titleCat) {
 
 function makeEntry($thisBook, $thisCatalogue, $id) {
 	$buffer = makeAuthors($thisBook->persons).makeTitle($thisBook->titleBib, $thisBook->titleCat).makePublished(makePlaces($thisBook->places), $thisBook->publisher, $thisBook->year).' <a id="linkid'.$id.'" href="javascript:toggle(\'id'.$id.'\')">Mehr</a>
-				<div id="id'.$id.'" style="display:none; padding-top:0px; padding-bottom:15px; padding-left:10px;">'.makeSourceLink($thisBook->titleCat, $thisCatalogue->base, $thisBook->imageCat, $thisBook->pageCat, $thisBook->numberCat).makeDigiLink($thisBook->digitalCopy).makeProof($thisBook).makeComment($thisBook->comment).'</div>';
+				<div id="id'.$id.'" style="display:none; padding-top:0px; padding-bottom:15px; padding-left:10px;">'.makeSourceLink($thisBook->titleCat, $thisCatalogue->base, $thisBook->imageCat, $thisBook->pageCat, $thisBook->numberCat).makeOriginalLink($thisBook->originalItem).makeDigiLink($thisBook->digitalCopy).makeProof($thisBook).makeComment($thisBook->comment).'</div>';
 	return($buffer);
 }
 	

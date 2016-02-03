@@ -35,7 +35,7 @@
 			public $mediaType; //Book, Manuscript, Physical Object, etc.
 			public $language = array(); //One or more language codes according to ISO 639.2
 			public $manifestation = array('systemManifestation' => '', 'idManifestation' => ''); //Entry in a bibliographic database or library catalogue
-			public $originalItem =  array('institutionOriginal' => '', 'shelfmarkOriginal' => '', 'provenanceAttribute' => '', 'digitalCopyOriginal' => '');			
+			public $originalItem =  array('institutionOriginal' => '', 'shelfmarkOriginal' => '', 'provenanceAttribute' => '', 'digitalCopyOriginal' => '', 'targetOPAC' => '', 'searchID' => '');
 			public $bound = 1;
 			public $comment;
 			public $digitalCopy;

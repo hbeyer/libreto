@@ -73,21 +73,10 @@ function makeList($structuredData, $thisCatalogue) {
 	$content = '';
 	foreach($structuredData as $section) {
 		$info = '';
-		$levelHeading = '2';
-		if($section->level == 2) {
-			$levelHeading = '3';
-		}
 		if($section->authority['system'] == 'gnd') {
 			$info = makeCollapseBeacon($section->authority['id'], $folderName, $thisCatalogue->key);
 		}
-		if($section->label) {
-			$headline = $section->label;
-			$content .= '<h'.$levelHeading.' id="'.translateAnchor($headline).'">'.$headline.$info.'</h'.$levelHeading.'>';
-		}
-		else {
-			$headline = 'Ohne Kategorie';
-			$content .= '<h'.$levelHeading.' id="ohneKategorie">'.$headline.$info.'</h'.$levelHeading.'>';
-		}
+		$content .= makeHeadline($section->level, $section->label, $info);
 		foreach($section->content as $thisBook) {
 			$content .= '
 			<div class="entry">'.makeEntry($thisBook, $thisCatalogue, $count).'
@@ -96,7 +85,19 @@ function makeList($structuredData, $thisCatalogue) {
 		}
 	}
 	return($content);	
-}	
+}
+
+// This is an auxiliary function for makeList, producing headlines or leaving them out (in case of facet id, 0 is assigned by function makeIndex)
+function makeHeadline($level, $text, $info) {
+	$result = '';
+	if($level == 2) {
+		$result = '<h3 id="'.translateAnchor($text).'">'.$text.$info.'</h3>';
+	}
+	elseif($level == 1) {
+		$result = '<h3 id="'.translateAnchor($text).'">'.$text.$info.'</h3>';
+	}
+	return($result);
+}
 
 // The function produces a link to further information on persons. It is called by the function makeList, if GND data is submitted in $section->authority. To work, it needs serialized BEACON data in a file named beaconStore-{catalogue key}. Therefore you have to run the function storeBeacon previously.
 	
