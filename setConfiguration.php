@@ -34,7 +34,7 @@ function setConfiguration($key) {
 		$thisCatalogue->database = 'helmstedt';
 		$thisCatalogue->title = 'Die Bibliothek des schottischen Mathematikers, Astronomomen und Mediziners Duncan Liddel (1561–1613) wurde von Jane Pierie aus den Beständen der Sir Duncan Rice Library rekonstruiert. Sie enthält ca. 420 Titel in 200 Bänden. Zum großen Teil sammelte Liddel diese zur Zeit seiner Lehrtätigkeit auf dem Kontinent, insbesondere seit 1590 in Helmstedt.';
 		$thisCatalogue->year = '1613';
-		$thisCatalogue->GeoBrowserStorageID = '';
+		$thisCatalogue->GeoBrowserStorageID = '272301';
 		$thisCatalogue->facets = array('shelfmarkOriginal', 'persName', 'year', 'placeName', 'subject', 'publisher', 'systemManifestation');
 		return($thisCatalogue);
 	}	

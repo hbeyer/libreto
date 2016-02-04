@@ -1,5 +1,5 @@
 ﻿<?php
-include('classDefinition-old.php');
+include('classDefinition.php');
 ?>
 
 <!DOCTYPE html>
@@ -47,7 +47,8 @@ include('classDefinition-old.php');
 				
 			}
 			?>
-				<h1>Tool zur Rekonstruktion historischer Bibliotheken</h1>
+				<h1>Tool zur Rekonstruktion historischer Bibliotheken<br />
+				***WORK IN PROGRESS***</h1>
 				<!-- <h2>Datenanreicherung</h2>
 				<form class="form-inline" role="form">
 				<label for="databaseBEACON"></label>
@@ -127,14 +128,6 @@ include('classDefinition-old.php');
 						<button type="submit" class="btn btn-default">Abschicken</button>
 					</div>
 				</form>	
-				<?php
-				echo '<p>';
-				var_dump($thisCatalogue);
-				echo '</p>';
-				echo '<p>';
-				var_dump($facets);
-				echo '</p>';
-				?>
 			</div>
 		</body>
 </html>

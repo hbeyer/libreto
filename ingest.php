@@ -1,5 +1,4 @@
-<?php
-
+﻿<?php
 function load_data_mysql($server, $user, $password, $database, $table) {
 	$db = new mysqli($server, $user, $password, $database);
 	$db->set_charset("utf8");
@@ -98,8 +97,6 @@ function load_data_mysql($server, $user, $password, $database, $table) {
 		}	
 	return($dataArray);
 }
-
-
 function load_data_liddel($server, $user, $password, $database, $table) {
 	$db = new mysqli($server, $user, $password, $database);
 	$db->set_charset("utf8");
@@ -110,12 +107,13 @@ function load_data_liddel($server, $user, $password, $database, $table) {
 	$archive = new GeoDataArchive();
 	$archive->loadFromFile();
 	
+	$translatePlaces = array('Görlitz (Dresden)' => 'Görlitz', 'Middleburg' => 'Middelburg', 'Neustadt an der Haardt' => 'Neustadt an der Weinstraße');
+	
 	if($result = $db->query('SELECT * FROM '.$table)) {
 		$dataArray = array();
 		while($rowBooks = $result->fetch_assoc()) {
 			$rowBooks = array_map('trim', $rowBooks);
 			$thisBook = new item();
-
 			$thisBook->id = $rowBooks['system_no'];
 			//$thisBook->itemInVolume = getItemInVolume($rowBooks['nr']);
 			$thisBook->bibliographicalLevel = 'copy';
@@ -128,11 +126,12 @@ function load_data_liddel($server, $user, $password, $database, $table) {
 			$thisBook->originalItem['shelfmarkOriginal'] = $rowBooks['shelfmark'];
 			$thisBook->originalItem['targetOPAC'] = 'https://aulib.abdn.ac.uk/F?func=direct&local_base=ABN01&doc_number={ID}';
 			$thisBook->originalItem['searchID'] = $rowBooks['system_no'];
-
 			$placeName = $rowBooks['place_ger'];
 			if($placeName == '') {
 				$placeName = $rowBooks['place'];
 			}
+			
+			$placeName = strtr($placeName, $translatePlaces);
 			
 			$placeNameSearch = $placeName;
 			
@@ -144,9 +143,8 @@ function load_data_liddel($server, $user, $password, $database, $table) {
 				$placeNameSearch = 'Frankfurt/O.';
 			}
 			
-			/* Folgende Eintr�ge verursachen noch Probleme:
-
-			G�rlitz (Dresden)
+			/* Folgende Einträge verursachen noch Probleme:
+			Görlitz (Dresden)
 			Middleburg
 			s. l.
 			Frankfurt am Main
@@ -162,7 +160,7 @@ function load_data_liddel($server, $user, $password, $database, $table) {
 			}
 			
 			$thisBook->places[] = $place;
-
+			
 			if(preg_match('~VD[ ]?(1[67]) (.+)~', $rowBooks['vd'], $matches)) {
 				$thisBook->manifestation['systemManifestation'] = 'VD'.$matches[1];
 				$thisBook->manifestation['idManifestation'] = $matches[2];
@@ -187,7 +185,6 @@ function load_data_liddel($server, $user, $password, $database, $table) {
 				}
 				$thisBook->persons[] = $person;
 			}
-
 			if($resultDigi = $db->query('SELECT * FROM liddel_library_digi WHERE id_print LIKE '.$rowBooks['id'])) {
 				while($rowDigi = $resultDigi->fetch_assoc()) {
 					$thisBook->digitalCopy = $rowDigi['value'];
@@ -203,7 +200,6 @@ function load_data_liddel($server, $user, $password, $database, $table) {
 	}	
 	return($dataArray);
 }
-
 	
 function addBeacon($data, $folderName, $keyCat) {
 	$beaconString = file_get_contents($folderName.'/beaconStore-'.$keyCat);
@@ -221,7 +217,6 @@ function addBeacon($data, $folderName, $keyCat) {
 	}
 	return($data);
 }
-
 function translateTermsDeEn($term) {
 	$translation = array(
 		'Druck' => 'Book', 
@@ -231,7 +226,6 @@ function translateTermsDeEn($term) {
 	$term = strtr($term, $translation);
 	return($term);
 }
-
 function translateGreGrc($code) {
 	$translation = array('gre' => 'grc');
 	$code = strtr($code, $translation);
@@ -245,7 +239,6 @@ function getNumberCat($number) {
 	}
 	return($number);
 }	
-
 function getItemInVolume($number) {
 	$parts = explode('S', $number);
 	if(isset($parts[1])) {
@@ -255,7 +248,6 @@ function getItemInVolume($number) {
 		return('');
 	}
 }
-
 function translateLevelEn($value) {
 	$translation = array(
 		'w' => 'work',
@@ -265,5 +257,4 @@ function translateLevelEn($value) {
 	$value = strtr($value, $translation);
 	return($value);
 }	
-
 ?>
