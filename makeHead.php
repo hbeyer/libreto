@@ -1,40 +1,67 @@
 ﻿<?php
 
-function makeHead($heading, $year, $abstract, $navigation, $GeoBrowserStorageID) {
-	$fileName = fileNameTrans($heading);
-	if($year) {
-		$title = 	$heading.' ('.$year.')';
+function makeHead($thisCatalogue, $navigation, $field) {
+	$fileName = fileNameTrans($thisCatalogue->heading);
+	if($thisCatalogue->year) {
+		$title = 	$thisCatalogue->heading.' ('.$thisCatalogue->year.')';
 	}
 	else {
-		$title = 	$heading;
+		$title = 	$thisCatalogue->heading;
+	}
+	$classLi = 'download';
+	$jqcloud = '';
+	if($field == 'jqcloud') {
+		$jqcloud = '
+		<script type="text/javascript">
+			var facet = "persName";
+			var xmlhttp = new XMLHttpRequest();
+			var url = "./cloudList-" + facet + ".json";
+			xmlhttp.onreadystatechange = function() {
+				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+					var myArr = JSON.parse(xmlhttp.responseText);
+					makeWordCloud(myArr);
+				}
+			};
+			xmlhttp.open("GET", url, true);
+			xmlhttp.send();
+			var dimensions = {  width: 800,  height: 500 };
+		</script>';
+		$classLi = 'active';
 	}
 	$frontMatter = '<!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>'.$heading.'</title>
+		<title>'.$thisCatalogue->heading.'</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="jsfunctions.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		<link rel="stylesheet" href="proprietary.css">
 		<script type="text/javascript">
 			window.addEventListener("load", function() { scrollBy(0, -65) })		
 			window.addEventListener("hashchange", function() { scrollBy(0, -65) })
 		</script>
+		'.$jqcloud.'
 	</head>
 	<body>
 		<div class="container">
 		<div class="container-fluid">
 			<h1>'.$title.'</h1>
-			<p>'.$abstract.'<br />
+			<p>'.$thisCatalogue->title.'<br />
 			<span id="switchLink"><a href="javascript:switchToOriginal()">Transkription des Katalogs</a></span><br/>&nbsp;</p>
 			<!-- <div id="button" style="text-align:left"><button class="btn btn-default" onclick="switchToOriginal()">Originaltitel</button></div> -->
 		</div>
 		<nav class="navbar navbar-default" data-spy="affix" data-offset-top="197">'.$navigation.'
 			<ul class="nav navbar-nav navbar-right" style="padding-right:15px">
-				<li><a href="https://geobrowser.de.dariah.eu/?csv1=http://geobrowser.de.dariah.eu./storage/'.$GeoBrowserStorageID.'&currentStatus=mapChanged=Historical+Map+of+1650" target="_blank" title="Druckorte in Kartenansicht"><span class="glyphicon glyphicon-globe"></span> GeoBrowser</a></li>
+				<li class="'.$classLi.'">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-picture"></span> Visualisierungen<span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="'.$fileName.'-wordCloud.html" title="Wortwolken zur Sammlung"><span class="glyphicon glyphicon-cloud"></span> Word Clouds</a></li>
+						<li><a href="https://geobrowser.de.dariah.eu/?csv1=http://geobrowser.de.dariah.eu./storage/'.$thisCatalogue->GeoBrowserStorageID.'&currentStatus=mapChanged=Historical+Map+of+1650" target="_blank" title="Druckorte in Kartenansicht"><span class="glyphicon glyphicon-globe"></span> GeoBrowser</a></li>
+					</ul>
+				</li>
 			</ul>
 		</nav>
 		<div class="container-fluid">';

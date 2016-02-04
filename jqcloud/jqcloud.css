@@ -59,48 +59,13 @@ div#wordcloud span.w2 {
 }
 div#wordcloud span.w1 {
 	font-size: 10px;
-	/* color: #126565; */
 	color: #003A3A;
 }
 
+/*
+MWW-Grundfarben:
 
-/* div#wordcloud span.w10 {
-  font-size: 54px;
-  color: #0cf;
-}
-div#wordcloud span.w9 {
-  font-size: 50px;
-  color: #0cf;
-}
-div#wordcloud span.w8 {
-  font-size: 44px;
-  color: #0cf;
-}
-div#wordcloud span.w7 {
-  font-size: 40px;
-  color: #39d;
-}
-div#wordcloud span.w6 {
-  font-size: 34px;
-  color: #90c5f0;
-}
-div#wordcloud span.w5 {
-  font-size: 30px;
-  color: #90a0dd;
-}
-div#wordcloud span.w4 {
-  font-size: 24px;
-  color: #90c5f0;
-}
-div#wordcloud span.w3 {
-  font-size: 20px;
-  color: #a0ddff;
-}
-div#wordcloud span.w2 {
-  font-size: 14px;
-  color: #99ccee;
-}
-div#wordcloud span.w1 {
-  font-size: 10px;
-  color: #aab5f0;
-} */
+#035151 (dunkelgrün)
+#a08246 (gold)
+
+*/

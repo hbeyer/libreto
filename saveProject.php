@@ -9,11 +9,13 @@ include('makeSection.php');
 include('makeNavigation.php');
 include('makeHead.php');
 include('makeGeoDataSheet.php');
+include('makeCloudList.php');
 include('storeBeacon.php');
 include('setConfiguration.php');
 
+$thisCatalogue = setConfiguration('liddel');
 //$thisCatalogue = setConfiguration('bahn');
-$thisCatalogue = setConfiguration('rehl');
+//$thisCatalogue = setConfiguration('rehl');
 $facets = $thisCatalogue->facets;
 
 //Erstelle ein Verzeichnis für das Projekt (wird momentan vom Skript storeData.php erledigt.
@@ -35,6 +37,11 @@ unset($dataString);
 //makeGeoDataSheet($data, $folderName, 'KML');
 //makeGeoDataSheet($data, $folderName, 'CSV');
 
+// Abspeichern der Quelldaten für die Wordclouds im Projektverzeichnis
+makeCloudFile($data, 'persName', 50, $folderName);
+makeCloudFile($data, 'subject', 50, $folderName);
+makeCloudFile($data, 'genre', 50, $folderName);
+
 /* Hier werden die Strukturen (jeweils ein Array aus section-Objekten) gebildet 
 und im Array $structures zwischengespeichert.
 */
@@ -47,7 +54,6 @@ foreach($facets as $facet) {
 			foreach($structure as $section) {
 				$section = makeVolumes($section);
 			}
-			var_dump($structure);
 		}
 		$structures[] = $structure;
 	}
@@ -67,7 +73,7 @@ $count = 0;
 foreach($structures as $structure) {
 	$facet = $facets[$count];
 	$navigation = makeNavigation($thisCatalogue->heading, $tocs, $facet);
-	$content = makeHead($thisCatalogue->heading, $thisCatalogue->year, $thisCatalogue->title, $navigation, $thisCatalogue->GeoBrowserStorageID);
+	$content = makeHead($thisCatalogue, $navigation, $facet);
 	$content .= makeList($structure, $thisCatalogue);
 	$content .= $foot;
 	$fileName = fileNameTrans($folderName.'/'.$thisCatalogue->heading).'-'.$facet.'.html';
@@ -76,6 +82,16 @@ foreach($structures as $structure) {
 	fclose($datei);
 	$count++;	
 }
+
+//Erzeugen der Seite mit den Word Clouds
+$navigation = makeNavigation($thisCatalogue->heading, $tocs, 'jqcloud');
+$content = makeHead($thisCatalogue, $navigation, 'jqcloud');
+$content .= makeCloudPageContent();
+$content .= $foot;
+$fileName = fileNameTrans($folderName.'/'.$thisCatalogue->heading).'-wordCloud.html';
+$datei = fopen($fileName,"w");
+fwrite($datei, $content, 3000000);
+fclose($datei);
 
 // Lösche die von storeBeacon erzeugte temporäre Datei
 //unlink($folderName.'/beaconStore-'.$thisCatalogue->key);

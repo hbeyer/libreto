@@ -58,7 +58,6 @@ function makePublished($places, $publisher, $year) {
 }
 	
 function makeSourceLink($item, $base)	{
-//function makeSourceLink($titleOriginal, $base, $imageCat, $pageCat, $numberCat)	{
 	$result = '';
 	if($item->imageCat != '') {
 		$result = 'Titel im Altkatalog:<span class="titleOriginal-single"> '.$item->titleCat.'</span> <a href="'.$base.$item->imageCat.'" title="Titel im Altkatalog" target="_blank">S. '.$item->pageCat.', Nr. '.$item->numberCat.'</a><br/>';

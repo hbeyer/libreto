@@ -73,6 +73,11 @@ function load_data_mysql($server, $user, $password, $database, $table) {
 					}
 				}
 				
+				preg_match('~weitere Sprache: ([a-z]{3})~', $thisBook->freitext, $matches);
+				if($matches[1]) {
+					$thisBook->language[] = $matches[1];
+				}
+				
 				$placeFields = array('ort', 'ort2');
 				foreach($placeFields as $field) {
 					if($rowBooks[$field]) {
@@ -142,13 +147,6 @@ function load_data_liddel($server, $user, $password, $database, $table) {
 			elseif($placeNameSearch == 'Frankfurt an der Oder' or $placeNameSearch == 'Frankfurt (Oder)') {
 				$placeNameSearch = 'Frankfurt/O.';
 			}
-			
-			/* Folgende Einträge verursachen noch Probleme:
-			Görlitz (Dresden)
-			Middleburg
-			s. l.
-			Frankfurt am Main
-			Neustadt an der Haardt */
 			
 			
 			$place = new place();
