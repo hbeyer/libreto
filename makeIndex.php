@@ -76,7 +76,7 @@ function makeEntries($collect, $field = '') {
 		elseif($field == 'year' and $value != 9999) {
 			$entry->level = 2;
 		}
-		elseif($field == 'id') {
+		elseif($field == 'id' or $field == 'numberCat') {
 			$entry->level = 0;
 		}
 		// Prüfen, ob Geodaten in einem eigenen Array hinterlegt wurden (Funktion collectIDsPlaces)

@@ -11,6 +11,16 @@ $beaconSources = array(
 		'location' => 'http://www.historische-kommission-muenchen-editionen.de/beacon_db_register.txt',
 		'target' => 'http://www.deutsche-biographie.de/pnd{ID}.html'
 	), 
+	'dbi' => array(
+		'label' => 'Dizionario Biografico degli Italiani',
+		'location' => 'http://beacon.findbuch.de/downloads/patchwork/pw_dbi-gndbeacon.txt',
+		'target' => 'http://beacon.findbuch.de/gnd-resolver/pw_dbi/{ID}'
+	),
+	'hls' => array(
+		'label' => 'Historisches Lexikon der Schweiz',
+		'location' => 'http://beacon.findbuch.de/downloads/hls/hls-pndbeacon.txt',
+		'target' => 'http://beacon.findbuch.de/pnd-resolver/hls/{ID}'
+	),	
 	'cph' => array(
 		'label' => 'Helmstedter Professorenkatalog',
 		'location' => 'http://uni-helmstedt.hab.de/beacon.php',
@@ -46,11 +56,11 @@ $beaconSources = array(
 		'location' => 'http://www.portraitindex.de/pnd_beacon.txt',
 		'target' => 'http://www.portraitindex.de/dokumente/pnd/{ID}'
 	),
-	'vkk' => array(
+/* 	'vkk' => array(
 		'label' => 'Virtuelles Kupferstichkabinett',
 		'location' => 'http://www.virtuelles-kupferstichkabinett.de/beacon.php',
 		'target' => 'http://www.virtuelles-kupferstichkabinett.de/index.php?reset=1&subPage=search&selTab=2&habFilter=1&haumFilter=1&selFilter=0&sKey1=pzusatz&sWord1={ID}'
-	),		
+	),	 */	
 	'trithemius' => array(
 		'label' => 'Trithemius, De scriptoribus ecclesiasticis',
 		'location' => 'http://www.mgh-bibliothek.de/beacon/trithemius',

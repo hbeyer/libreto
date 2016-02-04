@@ -18,4 +18,6 @@ $virtualFields = array('catSubjectFormat');
 
 $indexFields = array_merge($normalFields, $personFields, $placeFields, $arrayFields, $workFields, $manifestationFields, $originalItemFields, $virtualFields);
 
+$volumeFields = array('numberCat', 'catSubjectFormat');
+
 ?>

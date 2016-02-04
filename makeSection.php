@@ -1,29 +1,5 @@
 ﻿<?php
 
-include('classDefinition.php');
-include('makeEntry.php');
-include('ingest.php');
-include('encode.php');
-include('makeIndex.php');
-include('makeNavigation.php');
-include('makeHead.php');
-include('makeGeoDataSheet.php');
-include('storeBeacon.php');
-include('setConfiguration.php');
-
-$thisCatalogue = setConfiguration('rehl');
-$facets = $thisCatalogue->facets;
-$folderName = fileNameTrans($thisCatalogue->heading);
-$dataString = file_get_contents($folderName.'/data-'.$thisCatalogue->key);
-$data = unserialize($dataString);
-unset($dataString);
-
-$test = makeSections($data, 'numberCat');
-foreach($test as $test) {
-	//makeVolumes($test);
-}
-die;
-
 // The following functions serve to convert an array of objects of the type indexEntry into an array of objects of the type section. The function to select depends on the facet chosen. For the facets cat, persons and year there are special functions. All other facets are covered by the function makeSections.
 
 function makeSections($data, $field) {
@@ -90,34 +66,38 @@ function makeDecadeFromTo($year) {
 }
 
 //This function deletes items with $itemInVolume other than 0 from a section and replaces them with an object of the class volume, which contains these items as $content
+
+// Problem: Jedes Volume wird zunächst als Item ausgegeben
+
 function makeVolumes($section) {
 	$count = 0;
+	$sectionClone = clone $section;
 	foreach($section->content as $item) {
 		$number = $item->numberCat;
 		$position = $item->itemInVolume;
 		if($position > 0) {
 			$count2 = 0;
 			$volume = new volume();
-			foreach($section->content as $item2) {
+			foreach($sectionClone->content as $item2) {
 				if($item2->numberCat == $number) {
 					if($item2->itemInVolume == 1) {
-						$rememberPosition1 = $count2++;
+						$rememberPosition1 = $count2;
 					}
-				$volume->content[$item2->itemInVolume] = $item;
+				$volume->content[$item2->itemInVolume] = $item2;
 				unset($section->content[$count2]);
 				}
 				$count2++;
 			}
-			if($rememberPosition1) {
+			if(isset($rememberPosition1)) {
 				$section->content[$rememberPosition1] = $volume;
 			}
 			else {
 				$section->content[] = $volume;
 			}
-		var_dump($volume);
 		}
 		$count++;
 	}
+	return($section);
 }	
 
 // This function converts an array of objects of the class section into a list in HTML format. The variable $thisCatalogue contains an object of the type catalogue and supplies information on the fileName ($thisCatalogue->key) and the URL base of the digitized version ($thisCatalogue->base). The function displays content either as text, for monographic entries, or as unordered list, for miscellanies.
@@ -144,7 +124,7 @@ function makeList($structuredData, $thisCatalogue) {
 				<ul>';
 				foreach($item->content as $itemInVol) {
 					$content .= '
-					<li>'.makeEntry($itemInVol, $catalogue, $count).'
+					<li>'.makeEntry($itemInVol, $thisCatalogue, $count).'
 					</li>';
 					$count++;
 				}

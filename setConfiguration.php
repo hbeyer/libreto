@@ -14,7 +14,7 @@ function setConfiguration($key) {
 		$thisCatalogue->nachweis['institution'] = 'HAB Wolfenbüttel';
 		$thisCatalogue->nachweis['shelfmark'] = 'M: Bc Kapsel 19 (7)';
 		$thisCatalogue->GeoBrowserStorageID = '267901';
-		$thisCatalogue->facets = array('id', 'persName', 'year', 'placeName', 'language', 'publisher', 'format', 'systemManifestation');
+		$thisCatalogue->facets = array('numberCat', 'persName', 'year', 'placeName', 'language', 'publisher', 'format', 'systemManifestation');
 		return($thisCatalogue);
 	}
 	elseif($key == 'bahn') {

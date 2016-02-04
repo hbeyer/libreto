@@ -242,10 +242,10 @@ function getNumberCat($number) {
 function getItemInVolume($number) {
 	$parts = explode('S', $number);
 	if(isset($parts[1])) {
-		return($parts[1]);
+		return(intval($parts[1]));
 	}
 	else {
-		return('');
+		return(0);
 	}
 }
 function translateLevelEn($value) {

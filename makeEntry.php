@@ -1,5 +1,11 @@
 ﻿<?php
 
+function makeEntry($thisBook, $thisCatalogue, $id) {
+	$buffer = makeAuthors($thisBook->persons).makeTitle($thisBook->titleBib, $thisBook->titleCat).makePublished(makePlaces($thisBook->places), $thisBook->publisher, $thisBook->year).' <a id="linkid'.$id.'" href="javascript:toggle(\'id'.$id.'\')">Mehr</a>
+				<div id="id'.$id.'" style="display:none; padding-top:0px; padding-bottom:15px; padding-left:10px;">'.makeSourceLink($thisBook, $thisCatalogue->base).makeOriginalLink($thisBook->originalItem).makeDigiLink($thisBook->digitalCopy).makeProof($thisBook).makeComment($thisBook->comment).'</div>';
+	return($buffer);
+}
+
 function makeAuthors($personList) {
 	$result = '';
 	$separator = '</span>/<span class="authorName">';
@@ -51,10 +57,11 @@ function makePublished($places, $publisher, $year) {
 	return('<span class="published">'.$result.'</span>');
 }
 	
-function makeSourceLink($titleOriginal, $base, $imageCat, $pageCat, $numberCat)	{
+function makeSourceLink($item, $base)	{
+//function makeSourceLink($titleOriginal, $base, $imageCat, $pageCat, $numberCat)	{
 	$result = '';
-	if($imageCat != '') {
-		$result = 'Titel im Altkatalog:<span class="titleOriginal-single"> '.$titleOriginal.'</span> <a href="'.$base.$imageCat.'" title="Titel im Altkatalog" target="_blank">S. '.$pageCat.', Nr. '.$numberCat.'</a><br/>';
+	if($item->imageCat != '') {
+		$result = 'Titel im Altkatalog:<span class="titleOriginal-single"> '.$item->titleCat.'</span> <a href="'.$base.$item->imageCat.'" title="Titel im Altkatalog" target="_blank">S. '.$item->pageCat.', Nr. '.$item->numberCat.'</a><br/>';
 	}
 	return($result);
 }
@@ -185,12 +192,33 @@ function makeTitle($titleBib, $titleCat) {
 		$result = '<span class="titleBib">[Titel im Altkatalog:] '.$titleCat.'</span><span class="titleOriginal" style="display:none">'.$titleCat.'</span>';
 	}
 	return($result);
-}	
+}
 
-function makeEntry($thisBook, $thisCatalogue, $id) {
-	$buffer = makeAuthors($thisBook->persons).makeTitle($thisBook->titleBib, $thisBook->titleCat).makePublished(makePlaces($thisBook->places), $thisBook->publisher, $thisBook->year).' <a id="linkid'.$id.'" href="javascript:toggle(\'id'.$id.'\')">Mehr</a>
-				<div id="id'.$id.'" style="display:none; padding-top:0px; padding-bottom:15px; padding-left:10px;">'.makeSourceLink($thisBook->titleCat, $thisCatalogue->base, $thisBook->imageCat, $thisBook->pageCat, $thisBook->numberCat).makeOriginalLink($thisBook->originalItem).makeDigiLink($thisBook->digitalCopy).makeProof($thisBook).makeComment($thisBook->comment).'</div>';
-	return($buffer);
+// The function produces a link to further information on persons. It is called by the function makeList, if GND data is submitted in $section->authority. To work, it needs serialized BEACON data in a file named beaconStore-{catalogue key}. Therefore you have to run the function storeBeacon previously.
+	
+function makeCollapseBeacon($gnd, $folderName, $thisCatalogue) {
+	$beaconString = file_get_contents($folderName.'/beaconStore-'.$thisCatalogue);
+	$beaconObject = unserialize($beaconString);
+	unset($beaconString);
+	$link = '';
+	$linkData = array('<a href="http://d-nb.info/gnd/'.$gnd.'" title="Deutsche Nationalbibliothek" target="_blank">Deutsche Nationalbibliothek</a>');
+	foreach($beaconObject->content as $beaconExtract) {
+		if(in_array($gnd, $beaconExtract->content)) {
+			$link = '<a href="'.makeBeaconLink($gnd, $beaconExtract->target).'" title="'.$beaconExtract->label.'" target="_blank">'.$beaconExtract->label.'</a>';
+			$linkData[] = $link;
+		}
+	}
+	$content = implode(' | ', $linkData);
+	$collapse = '
+		<a href="#'.$gnd.'" data-toggle="collapse"><span class="glyphicon glyphicon-info-sign" style="font-size:14px"></span></a>
+		<div id="'.$gnd.'" class="collapse"><span style="font-size:14px">'.$content.'</span></div>';
+	return($collapse);
+}
+	
+function makeBeaconLink($gnd, $target) {
+	$translate = array('{ID}' => $gnd);
+	$link = strtr($target, $translate);
+	return($link);
 }
 	
 ?>	

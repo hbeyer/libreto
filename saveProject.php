@@ -12,8 +12,8 @@ include('makeGeoDataSheet.php');
 include('storeBeacon.php');
 include('setConfiguration.php');
 
-$thisCatalogue = setConfiguration('bahn');
-//$thisCatalogue = setConfiguration('rehl');
+//$thisCatalogue = setConfiguration('bahn');
+$thisCatalogue = setConfiguration('rehl');
 $facets = $thisCatalogue->facets;
 
 //Erstelle ein Verzeichnis für das Projekt (wird momentan vom Skript storeData.php erledigt.
@@ -42,7 +42,14 @@ $structures = array();
 include('fieldList.php');
 foreach($facets as $facet) {
 	if(in_array($facet, $indexFields)) {
-		$structures[] = makeSections($data, $facet);
+		$structure = makeSections($data, $facet);
+		if(in_array($facet, $volumeFields)) {
+			foreach($structure as $section) {
+				$section = makeVolumes($section);
+			}
+			var_dump($structure);
+		}
+		$structures[] = $structure;
 	}
 }
 unset($data);

@@ -18,12 +18,14 @@ include('makeEntry.php');
 include('ingest.php');
 include('encode.php');
 include('makeIndex.php');
-include('makeSection.php');
+//include('makeSection.php');
 include('makeNavigation.php');
 include('makeHead.php');
 include('makeGeoDataSheet.php');
 include('storeBeacon.php');
 include('setConfiguration.php');
+
+
 
 //$thisCatalogue = setConfiguration('bahn');
 $thisCatalogue = setConfiguration('rehl');
@@ -45,5 +47,7 @@ $data = addBeacon($data, $folderName, $thisCatalogue->key);
 // Speichere die Daten im Projektverzeichnis
 $serialize = serialize($data);
 file_put_contents($folderName.'/data-'.$thisCatalogue->key, $serialize);
+
+var_dump($data);
 
 ?>
