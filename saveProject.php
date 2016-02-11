@@ -38,9 +38,10 @@ unset($dataString);
 //makeGeoDataSheet($data, $folderName, 'CSV');
 
 // Abspeichern der Quelldaten für die Wordclouds im Projektverzeichnis
-makeCloudFile($data, 'persName', 50, $folderName);
-makeCloudFile($data, 'subject', 50, $folderName);
-makeCloudFile($data, 'genre', 50, $folderName);
+makeCloudFile($data, 'persName', 1000, $folderName);
+makeCloudFile($data, 'subject', 1000, $folderName);
+makeCloudFile($data, 'placeName', 1000, $folderName);
+makeCloudFile($data, 'publisher', 1000, $folderName);
 
 /* Hier werden die Strukturen (jeweils ein Array aus section-Objekten) gebildet 
 und im Array $structures zwischengespeichert.

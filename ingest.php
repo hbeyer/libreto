@@ -73,7 +73,7 @@ function load_data_mysql($server, $user, $password, $database, $table) {
 					}
 				}
 				
-				preg_match('~weitere Sprache: ([a-z]{3})~', $thisBook->freitext, $matches);
+				preg_match('~[Ww]eitere Sprache: ([a-z]{3})~', $thisBook->freitext, $matches);
 				if($matches[1]) {
 					$thisBook->language[] = $matches[1];
 				}
@@ -102,6 +102,7 @@ function load_data_mysql($server, $user, $password, $database, $table) {
 		}	
 	return($dataArray);
 }
+
 function load_data_liddel($server, $user, $password, $database, $table) {
 	$db = new mysqli($server, $user, $password, $database);
 	$db->set_charset("utf8");
