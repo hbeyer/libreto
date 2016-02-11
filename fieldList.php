@@ -4,7 +4,6 @@
 The following defines the fields which can be indexed and displayed. Each field listed in $indexFields can be 
 given as $field to the function makeIndex and inserted in setConfiguration.php under $catalogue->facets 
 to generate a separata page.
-The other variables are used by the funktion makeIndex to assign a "collect"-function.
  */
 
 $normalFields = array('id', 'pageCat', 'imageCat', 'numberCat', 'itemInVolume', 'bibliographicalLevel', 'titleCat', 'titleBib', 'titleNormalized', 'publisher', 'year', 'format', 'histSubject', 'subject', 'genre', 'mediaType', 'bound', 'comment', 'digitalCopy');
@@ -18,6 +17,10 @@ $virtualFields = array('catSubjectFormat');
 
 $indexFields = array_merge($normalFields, $personFields, $placeFields, $arrayFields, $workFields, $manifestationFields, $originalItemFields, $virtualFields);
 
+// The following fields are displayed with miscellanies as unordered lists
 $volumeFields = array('numberCat', 'catSubjectFormat');
+
+// The following fields get additional word clouds if they are selected
+$wordCloudFields = array('bibliographicalLevel', 'publisher', 'year', 'format', 'histSubject', 'subject', 'genre', 'mediaType', 'persName', 'gnd', 'role', 'placeName', 'language', 'systemManifestation', 'institutionOriginal', 'shelfmarkOriginal', 'provenanceAttribute');
 
 ?>

@@ -9,23 +9,7 @@ function makeHead($thisCatalogue, $navigation, $field) {
 		$title = 	$thisCatalogue->heading;
 	}
 	$classLi = 'download';
-	$jqcloud = '';
 	if($field == 'jqcloud') {
-		$jqcloud = '
-		<script type="text/javascript">
-			var facet = "persName";
-			var xmlhttp = new XMLHttpRequest();
-			var url = "./cloudList-" + facet + ".json";
-			xmlhttp.onreadystatechange = function() {
-				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-					var myArr = JSON.parse(xmlhttp.responseText);
-					makeWordCloud(myArr);
-				}
-			};
-			xmlhttp.open("GET", url, true);
-			xmlhttp.send();
-			var dimensions = {  width: 800,  height: 500 };
-		</script>';
 		$classLi = 'active';
 	}
 	$frontMatter = '<!DOCTYPE html>
@@ -36,14 +20,13 @@ function makeHead($thisCatalogue, $navigation, $field) {
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="jsfunctions.js"></script>
+		<script type="text/javascript" src="proprietary.js"></script>
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		<link rel="stylesheet" href="proprietary.css">
 		<script type="text/javascript">
 			window.addEventListener("load", function() { scrollBy(0, -65) })		
 			window.addEventListener("hashchange", function() { scrollBy(0, -65) })
 		</script>
-		'.$jqcloud.'
 	</head>
 	<body>
 		<div class="container">
@@ -51,7 +34,6 @@ function makeHead($thisCatalogue, $navigation, $field) {
 			<h1>'.$title.'</h1>
 			<p>'.$thisCatalogue->title.'<br />
 			<span id="switchLink"><a href="javascript:switchToOriginal()">Transkription des Katalogs</a></span><br/>&nbsp;</p>
-			<!-- <div id="button" style="text-align:left"><button class="btn btn-default" onclick="switchToOriginal()">Originaltitel</button></div> -->
 		</div>
 		<nav class="navbar navbar-default" data-spy="affix" data-offset-top="197">'.$navigation.'
 			<ul class="nav navbar-nav navbar-right" style="padding-right:15px">

@@ -45,6 +45,30 @@ function translateFieldNames($field) {
 	return($result);		
 }
 
+function translateFieldNamesButtons($field) {
+	$translation = array(
+		'shelfmarkOriginal' => 'Signaturen',
+		'persName' => 'Personen',
+		'subject' => 'Inhalte', 
+		'histSubject' => 'Alte Klassifikation',
+		'year' => 'Jahre',
+		'placeName' => 'Orte', 
+		'language' => 'Sprachen', 
+		'publisher' => 'Drucker', 
+		'format' => 'Formate', 
+		'mediaType' => 'Materialarten', 
+		'systemManifestation' => 'Nachweise', 
+		'gnd' => 'GND-Nummern',
+		'role' => 'Rollen',
+		'institutionOriginal' => 'Institutionen',
+		'provenanceAttribute' => 'Provenienzmerkmale',
+		'genre' => 'Gattungen',
+		'bibliographicalLevel' => 'Bibliographische Gattungen'
+		);
+	$result = strtr($field, $translation);
+	return($result);		
+}
+
 function sortingFormat($format) {
 	$pattern = '~^([248])°$~';
 	$replacement = '0$1°';

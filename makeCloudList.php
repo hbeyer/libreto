@@ -1,6 +1,6 @@
 ﻿<?php
 
-function makeCloudFile($data, $field, $limit, $folder) {
+function makeCloudJSON($data, $field, $limit, $folder) {
 	$path = '../'.$folder.'/'.$folder.'-'.$field.'.html#';
 	if($field == 'persName') {
 		$cloudArrays = makeCloudArraysPersons($data);
@@ -14,11 +14,38 @@ function makeCloudFile($data, $field, $limit, $folder) {
 		$weightArray = shortenWeightArray($cloudArrays['weightArray']);
 	}
 	$cloudContent = fillCloudList($weightArray, $cloudArrays['nameArray'], $limit, $path);
-	saveCloudList($cloudContent, $field, $folder);
+	$result = json_encode($cloudContent);
+	return($result);
 }
 
-function makeCloudPageContent() {
-	$content = '<div id="wordcloud"></div>';
+function makeCloudPageContent($data, $facets, $folder) {
+	include('fieldList.php');
+	$facets = array_intersect($facets, $wordCloudFields);
+	$content = makeDataScript($data, $facets, $folder);
+	foreach($facets as $facet) {
+		$status = '';
+		if($facet == 'persName') {
+			$status = ' active';
+		}
+		$content .= '<button type="button" class="btn btn-default'.$status.'" onclick="javascript:updateWordCloud('.$facet.')">'.translateFieldNamesButtons($facet).'</button>
+		';
+	}
+	$content .= '<div id="wordcloud"></div>';
+	return($content);
+}
+
+function makeDataScript($data, $facets, $folder) {
+	$content = '<script type="text/javascript">
+	';
+	foreach($facets as $facet) {
+		$json = makeCloudJSON($data, $facet, 1000, $folder);
+		$json = addslashes($json);
+		$content .= 'var '.$facet.' = \''.$json.'\'
+		';
+	}
+	$content .= 'makeWordCloud(persName);
+	</script>
+	';
 	return($content);
 }
 
@@ -77,7 +104,7 @@ function fillCloudList($weightArray, $nameArray, $limit, $path) {
 		$name = $nameArray[$id];
 		$row = array('text' => $name, 'weight' => $weight);
 		if(preg_match('~^[0-9X]{8,10}$~', $id)) {
-			$link = $path.$id;
+			$link = $path.'person'.$id;
 			$row['link'] = $link;
 		}
 		$content[] = $row;
@@ -100,12 +127,6 @@ function preprocessText($text, $field) {
 		$text = $shortText;
 	}
 	return($text);
-}
-
-function saveCloudList($content, $field, $folder) {
-	$file = fopen($folder.'/cloudList-'.$field.'.json', 'w');
-	fwrite($file, json_encode($content), 30000000);
-	fclose($file);
 }
 
 function prependForename($name) {

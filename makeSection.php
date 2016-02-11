@@ -108,10 +108,12 @@ function makeList($structuredData, $thisCatalogue) {
 	$content = '';
 	foreach($structuredData as $section) {
 		$info = '';
+		$anchor = '';
 		if($section->authority['system'] == 'gnd') {
 			$info = makeCollapseBeacon($section->authority['id'], $folderName, $thisCatalogue->key);
+			$anchor = 'person'.$section->authority['id'];
 		}
-		$content .= makeHeadline($section->level, $section->label, $info);
+		$content .= makeHeadline($section->level, $section->label, $info, $anchor);
 		foreach($section->content as $item) {
 			if(get_class($item) == 'item') {
 					$content .= '
@@ -139,13 +141,16 @@ function makeList($structuredData, $thisCatalogue) {
 }
 
 // This is an auxiliary function for makeList, producing headlines or leaving them out (in case of facet id, 0 is assigned by function makeIndex)
-function makeHeadline($level, $text, $info) {
+function makeHeadline($level, $text, $info, $anchor) {
 	$result = '';
+	if($anchor == '') {
+		$anchor = translateAnchor($text);
+	}
 	if($level == 2) {
-		$result = '<h3 id="'.translateAnchor($text).'">'.$text.$info.'</h3>';
+		$result = '<h3 id="'.$anchor.'">'.$text.$info.'</h3>';
 	}
 	elseif($level == 1) {
-		$result = '<h3 id="'.translateAnchor($text).'">'.$text.$info.'</h3>';
+		$result = '<h2 id="'.translateAnchor($text).'">'.$text.$info.'</h2>';
 	}
 	return($result);
 }

@@ -4,6 +4,7 @@ include('classDefinition.php');
 include('makeEntry.php');
 include('ingest.php');
 include('encode.php');
+include('parseDOM.php');
 include('makeIndex.php');
 include('makeSection.php');
 include('makeNavigation.php');
@@ -13,8 +14,8 @@ include('makeCloudList.php');
 include('storeBeacon.php');
 include('setConfiguration.php');
 
-$thisCatalogue = setConfiguration('liddel');
-//$thisCatalogue = setConfiguration('bahn');
+//$thisCatalogue = setConfiguration('liddel');
+$thisCatalogue = setConfiguration('bahn');
 //$thisCatalogue = setConfiguration('rehl');
 $facets = $thisCatalogue->facets;
 
@@ -26,7 +27,7 @@ $folderName = fileNameTrans($thisCatalogue->heading);
 
 // Erstellt Kopien der proprietären CSS- und JS-Datei im Projektverzeichnis
 copy ('proprietary.css', $folderName.'/proprietary.css');
-copy ('jsfunctions.js', $folderName.'/jsfunctions.js');
+copy ('proprietary.js', $folderName.'/proprietary.js');
 
 // Hole die vom Skript storeData.php zwischengespeicherten Daten aus dem Projektverzeichnis
 $dataString = file_get_contents($folderName.'/data-'.$thisCatalogue->key);
@@ -36,12 +37,6 @@ unset($dataString);
 // Füge die Datasheets für den GeoBrowser dem Projektverzeichnis hinzu (zeitweise aufgehoben)
 //makeGeoDataSheet($data, $folderName, 'KML');
 //makeGeoDataSheet($data, $folderName, 'CSV');
-
-// Abspeichern der Quelldaten für die Wordclouds im Projektverzeichnis
-makeCloudFile($data, 'persName', 1000, $folderName);
-makeCloudFile($data, 'subject', 1000, $folderName);
-makeCloudFile($data, 'placeName', 1000, $folderName);
-makeCloudFile($data, 'publisher', 1000, $folderName);
 
 /* Hier werden die Strukturen (jeweils ein Array aus section-Objekten) gebildet 
 und im Array $structures zwischengespeichert.
@@ -59,7 +54,6 @@ foreach($facets as $facet) {
 		$structures[] = $structure;
 	}
 }
-unset($data);
 
 // Zu jeder Struktur wird eine Liste mit Kategorien für das Inhaltsverzeichnis berechnet.
 $count = 0;
@@ -84,10 +78,12 @@ foreach($structures as $structure) {
 	$count++;	
 }
 
-//Erzeugen der Seite mit den Word Clouds
+unset($structures);
+
+// Erzeugen der Seite mit den Word Clouds
 $navigation = makeNavigation($thisCatalogue->heading, $tocs, 'jqcloud');
 $content = makeHead($thisCatalogue, $navigation, 'jqcloud');
-$content .= makeCloudPageContent();
+$content .= makeCloudPageContent($data, $facets, $folderName);
 $content .= $foot;
 $fileName = fileNameTrans($folderName.'/'.$thisCatalogue->heading).'-wordCloud.html';
 $datei = fopen($fileName,"w");

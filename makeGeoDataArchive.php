@@ -4,6 +4,7 @@ class geoDataArchive {
 	
 	public $date;
 	public $content = array();
+	
 	function __construct() {
        $this->date = date("Y-m-d H:i:s");
 	}
@@ -209,9 +210,9 @@ function load_from_mysql($database) {
 			}
 		}
 	}
-	
 	var_dump($archive);
 	$archive->saveToFile();
+	
 }
 
 ?>
