@@ -11,12 +11,13 @@ include('makeNavigation.php');
 include('makeHead.php');
 include('makeGeoDataSheet.php');
 include('makeCloudList.php');
+include('makeDoughnutList.php');
 include('storeBeacon.php');
 include('setConfiguration.php');
 
 //$thisCatalogue = setConfiguration('liddel');
-$thisCatalogue = setConfiguration('bahn');
-//$thisCatalogue = setConfiguration('rehl');
+//$thisCatalogue = setConfiguration('bahn');
+$thisCatalogue = setConfiguration('rehl');
 $facets = $thisCatalogue->facets;
 
 //Erstelle ein Verzeichnis für das Projekt (wird momentan vom Skript storeData.php erledigt.
@@ -28,6 +29,7 @@ $folderName = fileNameTrans($thisCatalogue->heading);
 // Erstellt Kopien der proprietären CSS- und JS-Datei im Projektverzeichnis
 copy ('proprietary.css', $folderName.'/proprietary.css');
 copy ('proprietary.js', $folderName.'/proprietary.js');
+copy ('chart.js', $folderName.'/chart.js');
 
 // Hole die vom Skript storeData.php zwischengespeicherten Daten aus dem Projektverzeichnis
 $dataString = file_get_contents($folderName.'/data-'.$thisCatalogue->key);
@@ -86,6 +88,16 @@ $content = makeHead($thisCatalogue, $navigation, 'jqcloud');
 $content .= makeCloudPageContent($data, $facets, $folderName);
 $content .= $foot;
 $fileName = fileNameTrans($folderName.'/'.$thisCatalogue->heading).'-wordCloud.html';
+$datei = fopen($fileName,"w");
+fwrite($datei, $content, 3000000);
+fclose($datei);
+
+// Erzeugen der Seite mit den Doughnut Charts
+$navigation = makeNavigation($thisCatalogue->heading, $tocs, 'doughnut');
+$content = makeHead($thisCatalogue, $navigation, 'doughnut');
+$content .= makeDoughnutPageContent($data, $facets, $folderName);
+$content .= $foot;
+$fileName = fileNameTrans($folderName.'/'.$thisCatalogue->heading).'-doughnut.html';
 $datei = fopen($fileName,"w");
 fwrite($datei, $content, 3000000);
 fclose($datei);

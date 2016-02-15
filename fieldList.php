@@ -13,6 +13,7 @@ $arrayFields = array('language');
 $workFields = array('titleWork', 'systemWork');
 $manifestationFields = array('systemManifestation');
 $originalItemFields = array('institutionOriginal', 'shelfmarkOriginal', 'provenanceAttribute', 'targetOPAC', 'searchID');
+// The following values do not correspond to a field, but they can be submitted to the function makeIndex
 $virtualFields = array('catSubjectFormat');
 
 $indexFields = array_merge($normalFields, $personFields, $placeFields, $arrayFields, $workFields, $manifestationFields, $originalItemFields, $virtualFields);
@@ -20,7 +21,8 @@ $indexFields = array_merge($normalFields, $personFields, $placeFields, $arrayFie
 // The following fields are displayed with miscellanies as unordered lists
 $volumeFields = array('numberCat', 'catSubjectFormat');
 
-// The following fields get additional word clouds if they are selected
+// The following fields get additional word clouds or doughnuts if they are selected
 $wordCloudFields = array('bibliographicalLevel', 'publisher', 'year', 'format', 'histSubject', 'subject', 'genre', 'mediaType', 'persName', 'gnd', 'role', 'placeName', 'language', 'systemManifestation', 'institutionOriginal', 'shelfmarkOriginal', 'provenanceAttribute');
+$doughnutFields = array('bibliographicalLevel', 'format', 'histSubject', 'subject', 'genre', 'mediaType', 'language', 'systemManifestation', 'institutionOriginal', 'provenanceAttribute', 'bound');
 
 ?>

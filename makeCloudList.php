@@ -1,5 +1,36 @@
 ﻿<?php
 
+function makeCloudPageContent($data, $facets, $folder) {
+	include('fieldList.php');
+	$facets = array_intersect($facets, $wordCloudFields);
+	$content = makeCloudScript($data, $facets, $folder);
+	foreach($facets as $facet) {
+		$status = '';
+		if($facet == 'persName') {
+			$status = ' active';
+		}
+		$content .= '<button type="button" class="btn btn-default'.$status.'" onclick="javascript:updateWordCloud('.$facet.')">'.translateFieldNamesButtons($facet).'</button>
+		';
+	}
+	$content .= '<div id="wordcloud"></div>';
+	return($content);
+}
+
+function makeCloudScript($data, $facets, $folder) {
+	$content = '<script type="text/javascript">
+	';
+	foreach($facets as $facet) {
+		$json = makeCloudJSON($data, $facet, 1000, $folder);
+		$json = addslashes($json);
+		$content .= 'var '.$facet.' = \''.$json.'\';
+		';
+	}
+	$content .= 'makeWordCloud(persName);
+	</script>
+	';
+	return($content);
+}
+
 function makeCloudJSON($data, $field, $limit, $folder) {
 	$path = '../'.$folder.'/'.$folder.'-'.$field.'.html#';
 	if($field == 'persName') {
@@ -16,37 +47,6 @@ function makeCloudJSON($data, $field, $limit, $folder) {
 	$cloudContent = fillCloudList($weightArray, $cloudArrays['nameArray'], $limit, $path);
 	$result = json_encode($cloudContent);
 	return($result);
-}
-
-function makeCloudPageContent($data, $facets, $folder) {
-	include('fieldList.php');
-	$facets = array_intersect($facets, $wordCloudFields);
-	$content = makeDataScript($data, $facets, $folder);
-	foreach($facets as $facet) {
-		$status = '';
-		if($facet == 'persName') {
-			$status = ' active';
-		}
-		$content .= '<button type="button" class="btn btn-default'.$status.'" onclick="javascript:updateWordCloud('.$facet.')">'.translateFieldNamesButtons($facet).'</button>
-		';
-	}
-	$content .= '<div id="wordcloud"></div>';
-	return($content);
-}
-
-function makeDataScript($data, $facets, $folder) {
-	$content = '<script type="text/javascript">
-	';
-	foreach($facets as $facet) {
-		$json = makeCloudJSON($data, $facet, 1000, $folder);
-		$json = addslashes($json);
-		$content .= 'var '.$facet.' = \''.$json.'\'
-		';
-	}
-	$content .= 'makeWordCloud(persName);
-	</script>
-	';
-	return($content);
 }
 
 function makeCloudArrays($data, $field) {
@@ -88,15 +88,6 @@ function makeCloudArraysPersons($data) {
 	return($return);
 }
 
-function shortenWeightArray($weightArray) {
-	$lastWeight = array_pop($weightArray);
-	$currentWeight = $lastWeight;
-	while($lastWeight == $currentWeight) {
-		$currentWeight = array_pop($weightArray);
-	}
-	return($weightArray);
-}
-
 function fillCloudList($weightArray, $nameArray, $limit, $path) {
 	$count = 0;
 	$content = '';
@@ -114,6 +105,15 @@ function fillCloudList($weightArray, $nameArray, $limit, $path) {
 		}
 	}
 	return($content);
+}
+
+function shortenWeightArray($weightArray) {
+	$lastWeight = array_pop($weightArray);
+	$currentWeight = $lastWeight;
+	while($lastWeight == $currentWeight) {
+		$currentWeight = array_pop($weightArray);
+	}
+	return($weightArray);
 }
 
 function preprocessText($text, $field) {
