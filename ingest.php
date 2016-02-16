@@ -132,6 +132,8 @@ function load_data_liddel($server, $user, $password, $database, $table) {
 			$thisBook->originalItem['shelfmarkOriginal'] = $rowBooks['shelfmark'];
 			$thisBook->originalItem['targetOPAC'] = 'https://aulib.abdn.ac.uk/F?func=direct&local_base=ABN01&doc_number={ID}';
 			$thisBook->originalItem['searchID'] = $rowBooks['system_no'];
+			$thisBook->language = explode(';', $rowBooks['language']);
+			
 			$placeName = $rowBooks['place_ger'];
 			if($placeName == '') {
 				$placeName = $rowBooks['place'];
