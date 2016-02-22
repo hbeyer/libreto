@@ -28,7 +28,7 @@ include('setConfiguration.php');
 
 
 //$thisCatalogue = setConfiguration('bahn');
-$thisCatalogue = setConfiguration('rehl');
+//$thisCatalogue = setConfiguration('rehl');
 $facets = $thisCatalogue->facets;
 
 // Erstelle ein Verzeichnis für das Projekt

@@ -73,8 +73,8 @@ function load_data_mysql($server, $user, $password, $database, $table) {
 					}
 				}
 				
-				preg_match('~[Ww]eitere Sprache: ([a-z]{3})~', $thisBook->freitext, $matches);
-				if($matches[1]) {
+				preg_match('~[Ww]eitere Sprache: ([a-z]{3})~', $rowBooks['freitext'], $matches);
+				if(isset($matches[1])) {
 					$thisBook->language[] = $matches[1];
 				}
 				
@@ -236,7 +236,7 @@ function translateGreGrc($code) {
 function getNumberCat($number) {
 	$parts = explode('S', $number);
 	if(isset($parts[0])) {
-		$number = $parts[0];
+		$number = intval($parts[0]);
 	}
 	return($number);
 }	

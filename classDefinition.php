@@ -55,11 +55,11 @@
 		public $geoData = array('lat' => '', 'long' => '');
 	}
 	
-	class volume {
+	class volume { // A list of items bound together in one volume
 		public $content = array();
 	}
 
-	class section { //A list of items with a title to be displayed as a chapter of a web page
+	class section { // A list of items with a title to be displayed as a chapter of a web page
 		public $label;
 		public $level = 1;
 		public $authority = array('system' => '', 'id' => ''); //An authority which describes the content of the section, especially a persons's GND identifier, cf. class indexEntry

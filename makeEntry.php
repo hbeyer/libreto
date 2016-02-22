@@ -154,6 +154,7 @@ function makeComment($text) {
 	return($result);
 }
 
+// The function automatically replaces the identifiers the patterns of which are listed in targetData.php by links to the respective database
 function insertLink($text, $pattern, $target) {
 	$targetArray = explode('{ID}', $target, 2);
 	$base = $targetArray[0];
@@ -161,23 +162,6 @@ function insertLink($text, $pattern, $target) {
 	$replacement = '<a href="'.$base.'$1'.$end.'" target="_blank">$0</a>';
 	$text = preg_replace($pattern, $replacement, $text);
 	return($text);
-}
-
-// The function automatically replaces the identifiers the patterns of which are listed in targetData.php by links to the respective database
-function insertLinkNew($text, $pattern, $target) {
-	$id = '';
-	$targetArray = explode('{ID}', $target, 2);
-	$base = $targetArray[0];
-	$end = $targetArray[1];
-	preg_match_all($pattern, $text, $matches);
-	if($matches[0][0]) {
-		$linkText = $matches[0][0];
-		$id = $matches[1][0];
-		if($id == '' and isset($matches[2][0])) {
-			$id = $matches[2][0];
-		}
-	}
-	echo '<p>'.$linkText.' '.$id.'</p>';
 }
 
 

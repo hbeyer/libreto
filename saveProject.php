@@ -50,7 +50,7 @@ foreach($facets as $facet) {
 		$structure = makeSections($data, $facet);
 		if(in_array($facet, $volumeFields)) {
 			foreach($structure as $section) {
-				$section = makeVolumes($section);
+				$section = joinVolumes($section);
 			}
 		}
 		$structures[] = $structure;

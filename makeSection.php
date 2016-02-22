@@ -65,43 +65,52 @@ function makeDecadeFromTo($year) {
 	return($fromTo);
 }
 
-//This function deletes items with $itemInVolume other than 0 from a section and replaces them by an object of the class volume, which contains these items as $content
+//This function replaces the content of the section-object, thereby putting item-objects with $itemInVolume > 0 into volume-objects
 
-/* 
-Vereinfachen
-Z. B: Array $section durchgehen und übernehmen in ein neues Array. Wenn $itemInVolume > 0 ist, ein volume aufmachen und solange befüllen, bis $itemInVolume wieder 0 ist.
-*/
-
-function makeVolumes($section) {
-	$count = 0;
-	$sectionClone = clone $section;
+function joinVolumes($section) {
+	$newContent = array();
+	$buffer = array();
+	$lastNumberCat = '';
 	foreach($section->content as $item) {
-		$number = intval($item->numberCat);
-		$position = intval($item->itemInVolume);
-		if($position > 0) {
-			$count2 = 0;
-			$volume = new volume();
-			foreach($sectionClone->content as $item2) {
-				if(intval($item2->numberCat) == $number) {
-					if(intval($item2->itemInVolume) == 1) {
-						$rememberPosition1 = $count2;
-					}
-				$volume->content[intval($item2->itemInVolume)] = $item2;
-				unset($section->content[$count2]);
-				}
-				$count2++;
+		if($item->itemInVolume == 0) {
+			if(isset($buffer[0])) {
+				$newContent[] = makeVolume($buffer);
+				$buffer = array();
 			}
-			if(isset($rememberPosition1)) {
-				$section->content[$rememberPosition1] = $volume;
-			}
-			else {
-				$section->content[] = $volume;
-			}
+			$newContent[] = $item;
 		}
-		$count++;
+		elseif($item->itemInVolume > 0 and $item->numberCat != $lastNumberCat and isset($buffer[0])) {
+			$newContent[] = makeVolume($buffer);
+			$buffer = array();
+			$buffer[] = $item;
+		}
+		elseif($item->itemInVolume > 0) {
+			$buffer[] = $item;
+		}
+		$lastNumberCat = $item->numberCat;
 	}
+	if(isset($buffer[0])) {
+		$newContent[] = makeVolume($buffer);
+	}
+	$section->content = $newContent;
 	return($section);
-}	
+}
+
+function makeVolume($buffer) {
+	uasort($buffer, 'compareItemInVolume');
+	$result = new volume();
+	$result->content = $buffer;
+	return($result);
+}
+
+function compareItemInVolume($a, $b) {
+	if($a->itemInVolume == $b->itemInVolume) {
+		return 0;
+	}
+	else {
+		return ($a->itemInVolume < $b->itemInVolume) ? -1 : 1;
+	}
+}
 
 // This function converts an array of objects of the class section into a list in HTML format. The variable $thisCatalogue contains an object of the type catalogue and supplies information on the fileName ($thisCatalogue->key) and the URL base of the digitized version ($thisCatalogue->base). The function displays content either as text, for monographic entries, or as unordered list, for miscellanies.
 	
