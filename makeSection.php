@@ -65,25 +65,28 @@ function makeDecadeFromTo($year) {
 	return($fromTo);
 }
 
-//This function deletes items with $itemInVolume other than 0 from a section and replaces them with an object of the class volume, which contains these items as $content
+//This function deletes items with $itemInVolume other than 0 from a section and replaces them by an object of the class volume, which contains these items as $content
 
-// Problem: Jedes Volume wird zunächst als Item ausgegeben
+/* 
+Vereinfachen
+Z. B: Array $section durchgehen und übernehmen in ein neues Array. Wenn $itemInVolume > 0 ist, ein volume aufmachen und solange befüllen, bis $itemInVolume wieder 0 ist.
+*/
 
 function makeVolumes($section) {
 	$count = 0;
 	$sectionClone = clone $section;
 	foreach($section->content as $item) {
-		$number = $item->numberCat;
-		$position = $item->itemInVolume;
+		$number = intval($item->numberCat);
+		$position = intval($item->itemInVolume);
 		if($position > 0) {
 			$count2 = 0;
 			$volume = new volume();
 			foreach($sectionClone->content as $item2) {
-				if($item2->numberCat == $number) {
-					if($item2->itemInVolume == 1) {
+				if(intval($item2->numberCat) == $number) {
+					if(intval($item2->itemInVolume) == 1) {
 						$rememberPosition1 = $count2;
 					}
-				$volume->content[$item2->itemInVolume] = $item2;
+				$volume->content[intval($item2->itemInVolume)] = $item2;
 				unset($section->content[$count2]);
 				}
 				$count2++;

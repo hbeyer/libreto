@@ -95,7 +95,9 @@ function makeDigiLink($digi) {
 	$result = '';
 	$resolver = '';
 	if($digi != '') {
-		if(substr($digi, 0, 4) == 'urn:') {
+		$urn = strstr($digi, 'urn:');
+		if($urn != FALSE) {
+			$digi = $urn;
 			$resolver = 'http://nbn-resolving.de/';
 		}
 		$result = '<span class="heading_info">Digitalisat: </span><a href="'.$resolver.$digi.'" target="_blank">'.$digi.'</a><br />';
