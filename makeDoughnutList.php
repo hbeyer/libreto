@@ -74,10 +74,11 @@ function fillDoughnutList($weightArray, $nameArray) {
 	$content = '';
 	$count = 0;
 	$weightOthers = 0;
+	$minWeight = calculateMinWeight($weightArray, 1);
 	foreach($weightArray as $id => $weight) {
 		$name = $nameArray[$id];
 		$color = assignColor($count);
-		if($color == 'outOfColors') {
+		if($color == 'outOfColors' or $weight < $minWeight) {
 			$weightOthers += $weight;
 		}
 		else {
@@ -93,6 +94,13 @@ function fillDoughnutList($weightArray, $nameArray) {
 	return($content);
 }
 
+function calculateMinWeight($weightArray, $percentage) {
+	$sum = array_sum($weightArray);
+	$minWeightFloat = $sum/100 * $percentage;
+	$minWeight = intval($minWeightFloat);
+	return($minWeight);
+}
+
 function assignColor($count) {
 	$colorsMWW = array(
 		'#035151', // MWW-grün
@@ -106,7 +114,14 @@ function assignColor($count) {
 		'#257878',
 		'#ecd5a7',
 		'#00b2b2',
-		'#808080' // Dunkelgrau
+		'#808080', // Dunkelgrau
+		'#00FF00', // Grün		
+		'#00FFFF', // Türkis
+		//'#FF0000', // Rot
+		//'#0000FF', // Blau
+		//'#CC00CC', // Lila
+		//'#ffcc00', // Dunkelgelb
+		'#33CCFF', // Hellblau
 	);
 	if(isset($colorsMWW[$count])) {
 		return($colorsMWW[$count]);
