@@ -7,7 +7,7 @@ function setConfiguration($key) {
 	
 	if($key == 'rehl') {
 		$thisCatalogue->base = 'http://diglib.hab.de/drucke/bc-kapsel-19-7s/start.htm?image=';
-		$thisCatalogue->heading = 'Bibliothek Karl Wolfgang Rehlingers';
+		$thisCatalogue->heading = 'Bibliothek Karl Wolfgang Rehlinger';
 		$thisCatalogue->database = 'rehlinger';
 		$thisCatalogue->title = 'Index Librorvm: Qvos Nobilis Et Ornatissimvs Vir Carolvs VVolfgangvs Relingervs synceri Euangelij ministrorum, Augustæ, vsui liberali sumptu comparauit, ijsq[ue] in omne æuum d.d. secundum altitudinem exemplarium dispositus';
 		$thisCatalogue->year = '1575';
@@ -19,7 +19,7 @@ function setConfiguration($key) {
 	}
 	elseif($key == 'bahn') {
 		$thisCatalogue->base = 'http://diglib.hab.de/drucke/bc-kapsel-7-23s/start.htm?image=';
-		$thisCatalogue->heading = 'Bibliothek Benedikt Bahnsens';
+		$thisCatalogue->heading = 'Bibliothek Benedikt Bahnsen';
 		$thisCatalogue->database = 'bahnsen';
 		$thisCatalogue->title = 'Catalogus Variorum, insignium, rarißimorumque tàm Theologicorum, Mathematicorum, Historicorum, Medicorum & Chymicorum, quàm Miscellaneorum, Compactorum & Incompactorum Librorum. Reverend. Dn. Petri Serrarii, Theologi. P.M. Et Experientiss. Dn. Benedicti Bahnsen, Mathemat. P.M. In quâvis Linguâ Hebraîca, Graecâ, Latinâ, Gallicâ & Italicâ scriptorum, Als mede Hoogh en Nederduytsche Boecken, Welcke sullen verkocht worden ... den [...] April 1670 ... / De Catalogen zijn te bekomen ten huyse van Hendrick en Dirck Boom, Boeckverkoopers op de Singel ...';
 		$thisCatalogue->year = '1670';
@@ -30,7 +30,7 @@ function setConfiguration($key) {
 		return($thisCatalogue);
 	}
 	if($key == 'liddel') {
-		$thisCatalogue->heading = 'Bibliothek Duncan Liddels';
+		$thisCatalogue->heading = 'Bibliothek Duncan Liddel';
 		$thisCatalogue->database = 'helmstedt';
 		$thisCatalogue->title = 'Die Bibliothek des schottischen Mathematikers, Astronomomen und Mediziners Duncan Liddel (1561–1613) wurde von Jane Pierie aus den Beständen der Sir Duncan Rice Library rekonstruiert. Sie enthält ca. 420 Titel in 200 Bänden. Zum großen Teil sammelte Liddel diese zur Zeit seiner Lehrtätigkeit auf dem Kontinent, insbesondere seit 1590 in Helmstedt.';
 		$thisCatalogue->year = '1613';

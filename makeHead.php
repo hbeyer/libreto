@@ -31,12 +31,8 @@ function makeHead($thisCatalogue, $navigation, $field) {
 		<script type="text/javascript" src="proprietary.js"></script>'.$chart.'
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		<link rel="stylesheet" href="proprietary.css">
-		<script type="text/javascript">
-			window.addEventListener("load", function() { scrollBy(0, -65) })		
-			window.addEventListener("hashchange", function() { scrollBy(0, -65) })
-		</script>
 	</head>
-	<body>
+	<body onload="javascript:x = getNavBarHeight();scrollNav(x);">
 		<div class="container">
 		<div class="container-fluid">
 			<h1>'.$title.'</h1>
@@ -55,7 +51,6 @@ function makeHead($thisCatalogue, $navigation, $field) {
 			</ul>
 		</nav>
 		<div class="container-fluid">';
-		
 		return($frontMatter);
 }
 

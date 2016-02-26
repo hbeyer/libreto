@@ -44,6 +44,35 @@ function switchToOriginal() {
 	z.innerHTML = "<a href='javascript:switchToBibl()'>Bibliographierte Daten anzeigen</a>";
 }
 
+/* 
+Die folgende Funktion ist ein Notbehelf und bewirkt, dass das automatische Scrollen 
+beim Laden der Seite verdoppelt wird, wenn die Navigationsleiste höher ist als 
+die Standardhöhe von 52px. So wird die gesuchte Sprungmarke zumindest sichtbar
+*/
+
+function scrollNav(x) {
+		var shiftWindow = function() { scrollBy(0, x) };
+		if (location.hash) { 
+			shiftWindow();
+			if(x < -52) {
+				shiftWindow();
+			}
+		}
+		window.addEventListener("hashchange", shiftWindow);
+	}
+
+// So lautete die Funktion ursprünglich
+/* function scrollNav(x) {
+		var shiftWindow = function() { scrollBy(0, x) };
+		if (location.hash) shiftWindow();
+		window.addEventListener("hashchange", shiftWindow);
+	} */
+
+function getNavBarHeight() {
+	var x = document.getElementsByTagName('nav')[0].offsetHeight;
+	return(-x);
+}
+
 function switchToBibl() {
 	var x = document.getElementsByClassName("titleBib");
 	var y = document.getElementsByClassName("titleOriginal");

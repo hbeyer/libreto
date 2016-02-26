@@ -15,8 +15,8 @@ include('makeDoughnutList.php');
 include('storeBeacon.php');
 include('setConfiguration.php');
 
-//$thisCatalogue = setConfiguration('liddel');
-$thisCatalogue = setConfiguration('bahn');
+$thisCatalogue = setConfiguration('liddel');
+//$thisCatalogue = setConfiguration('bahn');
 //$thisCatalogue = setConfiguration('rehl');
 $facets = $thisCatalogue->facets;
 
@@ -24,7 +24,7 @@ $facets = $thisCatalogue->facets;
 $folderName = fileNameTrans($thisCatalogue->heading);
 /*if(is_dir($folderName) == FALSE) {
 	mkdir($folderName, 0700);
-} */
+}*/
 
 // Erstellt Kopien der proprietären CSS- und JS-Datei im Projektverzeichnis
 copy ('proprietary.css', $folderName.'/proprietary.css');
