@@ -279,7 +279,7 @@ function postprocessFields($field, $value) {
 function sortCollect($collect) {
 	if(isset($collect['concordanceGND'])) {
 		$sortingConcordance = array_flip($collect['concordanceGND']);
-		ksort($sortingConcordance);
+		ksort($sortingConcordance, SORT_STRING | SORT_FLAG_CASE);
 		$new = array();
 		foreach($sortingConcordance as $name => $gnd) {
 			$new[$gnd] = $collect['collect'][$gnd];
@@ -287,7 +287,7 @@ function sortCollect($collect) {
 		$collect['collect'] = $new;
 	}
 	else {
-		ksort($collect['collect']);
+		ksort($collect['collect'], SORT_STRING | SORT_FLAG_CASE);
 	}
 	return($collect);
 }

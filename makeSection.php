@@ -37,8 +37,8 @@ function addHigherLevel($structuredData, $field) {
 function makeHigherSection($section, $previousSection, $field) {
 	$higherSection = '';
 	if($field == 'persName') {
-		$previousLetter = substr($previousSection->label, 0, 1);
-		$currentLetter = substr($section->label, 0, 1);
+		$previousLetter = strtoupper(substr($previousSection->label, 0, 1));
+		$currentLetter = strtoupper(substr($section->label, 0, 1));
 		if($previousLetter != $currentLetter) {
 			$higherSection = new section();
 			$higherSection->label = $currentLetter;
