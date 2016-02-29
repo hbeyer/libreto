@@ -224,8 +224,9 @@ function collectIDsPlaces($data) {
 }
 
 function preprocessFields($field, $value, $item) {
+	$value = trim($value, '[]');
 	if($field == 'persName') {
-		$value = removeSpecial(trim($value, '[]'));
+		$value = removeSpecial($value);
 		$value = replaceArrowBrackets($value);
 	}
 	elseif($field == 'placeName') {
