@@ -45,21 +45,23 @@ function switchToOriginal() {
 }
 
 /* 
-Die folgende Funktion ist ein Notbehelf und bewirkt, dass das automatische Scrollen 
-beim Laden der Seite verdoppelt wird, wenn die Navigationsleiste höher ist als 
-die Standardhöhe von 52px. So wird die gesuchte Sprungmarke zumindest sichtbar
+Die folgende Funktion scrollt die Seite beim Ansteuern interner Sprungmarken um die Breite der 
+Navigationsleiste nach oben. Das funktioniert in folgendem Fall noch nicht: Die Leiste ist breiter als
+Standard (52 px) und man kommt vom Anfang derselben Seite.
 */
 
 function scrollNav(x) {
-		var shiftWindow = function() { scrollBy(0, x) };
-		if (location.hash) { 
-			shiftWindow();
-			if(x < -52) {
-				shiftWindow();
-			}
+	var shiftWindow = function() { scrollBy(0, x) };
+	if (location.hash) { 
+		shiftWindow();
+		if(x < -52) {
+			var y = x + 52;
+			var shiftWindowMore = function() { scrollBy(0, y) };
+			shiftWindowMore();
 		}
-		window.addEventListener("hashchange", shiftWindow);
 	}
+	window.addEventListener("hashchange", shiftWindow);
+}
 
 // So lautete die Funktion ursprünglich
 /* function scrollNav(x) {

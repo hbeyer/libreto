@@ -15,9 +15,9 @@ include('makeDoughnutList.php');
 include('storeBeacon.php');
 include('setConfiguration.php');
 
-$thisCatalogue = setConfiguration('liddel');
+//$thisCatalogue = setConfiguration('liddel');
 //$thisCatalogue = setConfiguration('bahn');
-//$thisCatalogue = setConfiguration('rehl');
+$thisCatalogue = setConfiguration('rehl');
 $facets = $thisCatalogue->facets;
 
 //Erstelle ein Verzeichnis für das Projekt (wird momentan vom Skript storeData.php erledigt.
