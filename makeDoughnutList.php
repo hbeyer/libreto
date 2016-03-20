@@ -21,10 +21,10 @@ function makeDoughnutPageContent($data, $facets, $folder) {
 	$firstFacet = assignFirstFacet($facets);
 	$content = '			
 			<div class="row">
-				<div class="col-lg-6">
+				<div class="col-sm-6">
 					<canvas id="myDoughnutChart" width="400" height="400"></canvas>
 				</div>
-				<div class="col-lg-6">
+				<div class="col-sm-6">
 					'.makeDoughnutButtons($facets, $firstFacet).'
 					<div id="chart-legend" class="chart-legend"></div>
 				</div>

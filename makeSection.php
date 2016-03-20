@@ -138,7 +138,7 @@ function makeList($structuredData, $thisCatalogue) {
 				<ul>';
 				foreach($item->content as $itemInVol) {
 					$content .= '
-					<li>'.makeEntry($itemInVol, $thisCatalogue, $count).'
+					<li class="entry-list">'.makeEntry($itemInVol, $thisCatalogue, $count).'
 					</li>';
 					$count++;
 				}

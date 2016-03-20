@@ -132,3 +132,5 @@ div.chart-legend {
 }
 
 li { list-style-type: none }
+
+li.entry-list { list-style-type: auto }

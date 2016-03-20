@@ -9,7 +9,7 @@ function makeHead($thisCatalogue, $navigation, $field) {
 		$title = 	$thisCatalogue->heading;
 	}
 	$transcriptionLink = '<br />
-			<span id="switchLink"><a href="javascript:switchToOriginal()">Transkription des Katalogs</a></span><br/>&nbsp;</p>';
+			<span id="switchLink"><a href="javascript:switchToOriginal()">Transkription des Katalogs</a></span><br/>&nbsp;';
 	$classLi = 'download';
 	if($field == 'jqcloud' or $field == 'doughnut') {
 		$classLi = 'active';
@@ -36,7 +36,7 @@ function makeHead($thisCatalogue, $navigation, $field) {
 		<div class="container">
 		<div class="container-fluid">
 			<h1>'.$title.'</h1>
-			<p>'.$thisCatalogue->title.$transcriptionLink.'
+			<p>'.$thisCatalogue->title.$transcriptionLink.'</p>
 		</div>
 		<nav class="navbar navbar-default" data-spy="affix" data-offset-top="197">'.$navigation.'
 			<ul class="nav navbar-nav navbar-right" style="padding-right:15px">

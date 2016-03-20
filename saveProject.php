@@ -22,9 +22,9 @@ $facets = $thisCatalogue->facets;
 
 //Erstelle ein Verzeichnis für das Projekt (wird momentan vom Skript storeData.php erledigt.
 $folderName = fileNameTrans($thisCatalogue->heading);
-/*if(is_dir($folderName) == FALSE) {
+/* if(is_dir($folderName) == FALSE) {
 	mkdir($folderName, 0700);
-}*/
+} */
 
 // Erstellt Kopien der proprietären CSS- und JS-Datei im Projektverzeichnis
 copy ('proprietary.css', $folderName.'/proprietary.css');
@@ -37,8 +37,8 @@ $data = unserialize($dataString);
 unset($dataString);
 
 // Füge die Datasheets für den GeoBrowser dem Projektverzeichnis hinzu (zeitweise aufgehoben)
-//makeGeoDataSheet($data, $folderName, 'KML');
-//makeGeoDataSheet($data, $folderName, 'CSV');
+makeGeoDataSheet($data, $folderName, 'KML');
+makeGeoDataSheet($data, $folderName, 'CSV');
 
 /* Hier werden die Strukturen (jeweils ein Array aus section-Objekten) gebildet 
 und im Array $structures zwischengespeichert.
