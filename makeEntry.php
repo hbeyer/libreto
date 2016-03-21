@@ -16,7 +16,7 @@ function makeAuthors($personList) {
 				$list[$person->gnd] = $person->persName;
 				//}
 		}
-		$result = '<span class="authorName">'.implode($separator, $list).': </span>';
+		$result = '<span class="authorList"><span class="authorName">'.implode($separator, $list).': </span></span>';
 	}
 	return($result);
 }

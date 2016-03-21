@@ -29,18 +29,18 @@ function translateFieldNames($field) {
 		'catSubjectFormat' => 'Katalog', 
 		'numberCat' => 'Katalog', 
 		'id' => 'Katalog', 
-		'shelfmarkOriginal' => 'Signatur', 		
+		'shelfmarkOriginal' => 'Signaturen', 		
 		'persName' => 'Personen',
-		'subject' => 'Inhalt', 
-		'histSubject' => 'alter Klassifikation', 
-		'year' => 'Jahr', 
-		'placeName' => 'Ort', 
-		'language' => 'Sprache', 
+		'subject' => 'Inhalte', 
+		'histSubject' => 'Rubriken', 
+		'year' => 'Datierung', 
+		'placeName' => 'Orte', 
+		'language' => 'Sprachen', 
 		'publisher' => 'Drucker', 
-		'format' => 'Format', 
-		'mediaType' => 'Materialart', 
-		'systemManifestation' => 'Nachweis', 
-		'genre' => 'Gattung');
+		'format' => 'Formate', 
+		'mediaType' => 'Materialarten', 
+		'systemManifestation' => 'Nachweise', 
+		'genre' => 'Gattungen');
 	$result = strtr($field, $translation);
 	return($result);		
 }
@@ -50,7 +50,7 @@ function translateFieldNamesButtons($field) {
 		'shelfmarkOriginal' => 'Signaturen',
 		'persName' => 'Personen',
 		'subject' => 'Inhalte', 
-		'histSubject' => 'Alte Klassifikation',
+		'histSubject' => 'Rubriken',
 		'year' => 'Jahre',
 		'placeName' => 'Orte', 
 		'language' => 'Sprachen', 

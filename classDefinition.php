@@ -1,6 +1,7 @@
 ﻿<?php
 	class catalogue {
 		public $key; //A file name extension to specify the catalogue represented
+		public $fileName; //The file name to be used in the URL
 		public $database; //Name of the database under localhost, which contains the data in MySQL format.
 		public $base; //The string to be put before the image number of a digitized catalogue page
 		public $heading;
@@ -10,7 +11,9 @@
 		public $year;
 		public $copy = array('institution' => '', 'shelfmark' => ''); //The copy used for the reconstruction of the catalogue
 		public $GeoBrowserStorageID;
-		public $facets = array();
+		public $listFacets = array();
+		public $cloudFacets = array();
+		public $doughnutFacets = array();
 	}
 	
 	class item	{ //Refers to an item (book, manuscript, etc.) listed in the catalogue

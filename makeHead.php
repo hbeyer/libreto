@@ -1,7 +1,7 @@
 ﻿<?php
 
 function makeHead($thisCatalogue, $navigation, $field) {
-	$fileName = fileNameTrans($thisCatalogue->heading);
+	$fileName = fileNameTrans($thisCatalogue->fileName);
 	if($thisCatalogue->year) {
 		$title = 	$thisCatalogue->heading.' ('.$thisCatalogue->year.')';
 	}
@@ -41,11 +41,11 @@ function makeHead($thisCatalogue, $navigation, $field) {
 		<nav class="navbar navbar-default" data-spy="affix" data-offset-top="197">'.$navigation.'
 			<ul class="nav navbar-nav navbar-right" style="padding-right:15px">
 				<li class="'.$classLi.'">
-					<a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-picture"></span> Visualisierungen<span class="caret"></span></a>
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-picture"></span> Visualisierung<span class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<li><a href="'.$fileName.'-wordCloud.html" title="Wortwolken"><span class="glyphicon glyphicon-cloud"></span> Word Clouds</a></li>
-						<li><a href="'.$fileName.'-doughnut.html" title="Kreisdiagramme"><span class="glyphicon glyphicon-adjust"></span> Kreisdiagramme</a></li>				
-						<li><a href="https://geobrowser.de.dariah.eu/?csv1=http://geobrowser.de.dariah.eu./storage/'.$thisCatalogue->GeoBrowserStorageID.'&currentStatus=mapChanged=Historical+Map+of+1650" target="_blank" title="Druckorte in Kartenansicht"><span class="glyphicon glyphicon-globe"></span> GeoBrowser</a></li>
+						<li><a href="'.$fileName.'-wordCloud.html" title="Wortwolken">Word Clouds</a></li>
+						<li><a href="'.$fileName.'-doughnut.html" title="Kreisdiagramme">Kreisdiagramme</a></li>				
+						<li><a href="https://geobrowser.de.dariah.eu/?csv1=http://geobrowser.de.dariah.eu./storage/'.$thisCatalogue->GeoBrowserStorageID.'&currentStatus=mapChanged=Historical+Map+of+1650" target="_blank" title="Druckorte in Kartenansicht">GeoBrowser</a></li>
 					</ul>
 				</li>
 			</ul>

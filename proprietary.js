@@ -20,7 +20,7 @@ function plus(control) {
 function switchToOriginal() {
 	var x = document.getElementsByClassName("titleBib");
 	var y = document.getElementsByClassName("titleOriginal");
-	var a = document.getElementsByClassName("authorName");
+	var a = document.getElementsByClassName("authorList");
 	var p = document.getElementsByClassName("published");
 	var c = document.getElementsByClassName("titleOriginal-single");
 	var countA = a.length;

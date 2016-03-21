@@ -37,7 +37,7 @@ function makeNavigation($nameCat, $tocs, $type) {
 		$fieldGer = translateFieldNames($field);
 		$result .= '
 					<li class="'.$classLiTop.'">
-						<a class="dropdown-toggle" data-toggle="dropdown" href="'.$nameCat.'-'.$field.'.html">nach '.$fieldGer.'<span class="caret"></span></a>
+						<a class="dropdown-toggle" data-toggle="dropdown" href="'.$nameCat.'-'.$field.'.html">'.$fieldGer.'<span class="caret"></span></a>
 						<ul class="dropdown-menu">
 							<li><a href="'.$nameCat.'-'.$field.'.html">Seitenanfang</a></li>
 							'.$listItems.'

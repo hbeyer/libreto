@@ -10,9 +10,9 @@ function makeCloudPageContent($data, $facets, $folder) {
 			$status = ' active';
 		}
 		$content .= '<button type="button" class="btn btn-default'.$status.'" onclick="javascript:updateWordCloud('.$facet.')">'.translateFieldNamesButtons($facet).'</button>
-		';
+	';
 	}
-	$content .= '<div id="wordcloud"></div>';
+	$content = '<div id="wordCloudButtons">'.$content.'</div><div id="wordcloud"></div>';
 	return($content);
 }
 

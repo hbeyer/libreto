@@ -18,10 +18,12 @@ include('setConfiguration.php');
 //$thisCatalogue = setConfiguration('liddel');
 //$thisCatalogue = setConfiguration('bahn');
 $thisCatalogue = setConfiguration('rehl');
-$facets = $thisCatalogue->facets;
+$facets = $thisCatalogue->listFacets;
+$cloudFacets = $thisCatalogue->cloudFacets;
+$doughnutFacets = $thisCatalogue->doughnutFacets;
 
 //Erstelle ein Verzeichnis für das Projekt (wird momentan vom Skript storeData.php erledigt.
-$folderName = fileNameTrans($thisCatalogue->heading);
+$folderName = fileNameTrans($thisCatalogue->fileName);
 /* if(is_dir($folderName) == FALSE) {
 	mkdir($folderName, 0700);
 } */
@@ -69,11 +71,11 @@ foreach($structures as $structure) {
 $count = 0;
 foreach($structures as $structure) {
 	$facet = $facets[$count];
-	$navigation = makeNavigation($thisCatalogue->heading, $tocs, $facet);
+	$navigation = makeNavigation($thisCatalogue->fileName, $tocs, $facet);
 	$content = makeHead($thisCatalogue, $navigation, $facet);
 	$content .= makeList($structure, $thisCatalogue);
 	$content .= $foot;
-	$fileName = fileNameTrans($folderName.'/'.$thisCatalogue->heading).'-'.$facet.'.html';
+	$fileName = fileNameTrans($folderName.'/'.$thisCatalogue->fileName).'-'.$facet.'.html';
 	$datei = fopen($fileName,"w");
 	fwrite($datei, $content, 3000000);
 	fclose($datei);
@@ -83,21 +85,21 @@ foreach($structures as $structure) {
 unset($structures);
 
 // Erzeugen der Seite mit den Word Clouds
-$navigation = makeNavigation($thisCatalogue->heading, $tocs, 'jqcloud');
+$navigation = makeNavigation($thisCatalogue->fileName, $tocs, 'jqcloud');
 $content = makeHead($thisCatalogue, $navigation, 'jqcloud');
-$content .= makeCloudPageContent($data, $facets, $folderName);
+$content .= makeCloudPageContent($data, $cloudFacets, $folderName);
 $content .= $foot;
-$fileName = fileNameTrans($folderName.'/'.$thisCatalogue->heading).'-wordCloud.html';
+$fileName = fileNameTrans($folderName.'/'.$thisCatalogue->fileName).'-wordCloud.html';
 $datei = fopen($fileName,"w");
 fwrite($datei, $content, 3000000);
 fclose($datei);
 
 // Erzeugen der Seite mit den Doughnut Charts
-$navigation = makeNavigation($thisCatalogue->heading, $tocs, 'doughnut');
+$navigation = makeNavigation($thisCatalogue->fileName, $tocs, 'doughnut');
 $content = makeHead($thisCatalogue, $navigation, 'doughnut');
-$content .= makeDoughnutPageContent($data, $facets, $folderName);
+$content .= makeDoughnutPageContent($data, $doughnutFacets, $folderName);
 $content .= $foot;
-$fileName = fileNameTrans($folderName.'/'.$thisCatalogue->heading).'-doughnut.html';
+$fileName = fileNameTrans($folderName.'/'.$thisCatalogue->fileName).'-doughnut.html';
 $datei = fopen($fileName,"w");
 fwrite($datei, $content, 3000000);
 fclose($datei);
