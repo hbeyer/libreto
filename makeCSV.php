@@ -1,13 +1,77 @@
 ﻿<?php
 
+function makeCSV($data, $fileName) {
+	$columns = array(
+		'id',
+		'pageCat',
+		'imageCat',
+		'numberCat',
+		'itemInVolume',
+		'titleCat',
+		'titleBib',
+		'titleNormalized',
+		'author1',
+		'author2',
+		'author3',
+		'author4',
+		'contributor1',
+		'contributor2',
+		'contributor3',
+		'contributor4',
+		'place1',
+		'place2',
+		'publisher',
+		'year',
+		'format',
+		'histSubject',
+		'subject',
+		'genre',
+		'mediaType',
+		'language1',
+		'language2',
+		'language3',
+		'bibliographicalLevel',
+		'systemManifestation',
+		'idManifestation',		
+		'institutionOriginal',
+		'shelfmarkOriginal',
+		'provenanceAttribute',
+		'digitalCopyOriginal',		
+		'targetOPAC',		
+		'searchID',		
+		'titleWork',
+		'systemWork',
+		'idWork',		
+		'bound',
+		'comment',
+		'digitalCopy'
+		);
+		
+	$handle = fopen($fileName.'/'.$fileName.'.csv', "w");
+	fwrite($handle, "sep=,\n", 100);
+	fputcsv($handle, $columns);
+	
+	foreach($data as $item) {
+		$row = makeRowCSV($item);
+		$row = array_map('convertToWindowsCharset', $row);
+		fputcsv($handle, $row);
+	}	
+}
+
 function makeRowCSV($item) {
 	$row = array();
 	foreach($item as $key => $value) {
 		if(is_array($value)) {
 			if($key == 'language') {
 				$count = 0;
+				foreach($value as $language) {
+					if($count < 3) {
+						$row[] = $language;
+						$count++;
+					}
+				}
 				while($count < 3) {
-					$row[] = $value[$count];
+					$row[] = '';
 					$count++;
 				}
 			}
@@ -51,7 +115,7 @@ function insertFourPersons($persons) {
 	$subRow = array();
 	$count = 0;
 	foreach($persons as $person) {
-		while($count < 4) {
+		if($count < 4) {	
 			$gndString = '';
 			if($person->gnd) {
 				$gndString = '#'.$person->gnd;
@@ -71,15 +135,15 @@ function makePlaceRowCSV($placeList) {
 	$row = array();
 	$count = 0;
 	foreach($placeList as $place) {
-		while($count < 2) {
+		if($count < 2) {
 			$placeAuthority = '';
 			if($place->geoNames) {
-				$placeAuthority = '#geoNames_'.$place->geoNames;
+				$placeAuthority = '#geoNames'.$place->geoNames;
 			}
 			elseif($place->getty) {
-				$placeAuthority = '#getty_'.$place->geoNames;
+				$placeAuthority = '#getty'.$place->getty;
 			}
-			$row[] = $placeName.$placeAuthority;
+			$row[] = $place->placeName.$placeAuthority;
 			$count++;
 		}
 	}
