@@ -236,6 +236,13 @@ function preprocessFields($field, $value, $item) {
 			$value = 's. l.';
 		}
 	}
+	elseif($field == 'publisher') {
+		$value = trim($value, '[]');
+		$test = preg_match('~[sSoO]\.? ?[nN]\.?|ohne Angabe|unbekannt|ohne Namen~', $value);
+		if($value == '' or $test == 1) {
+			$value = 's. n.';
+		}
+	}	
 	elseif($field == 'year') {
 		$value = normalizeYear($value);
 		if($value == '') {
@@ -289,6 +296,29 @@ function sortCollect($collect) {
 	}
 	else {
 		ksort($collect['collect'], SORT_STRING | SORT_FLAG_CASE);
+	}
+	$collect['collect'] = postponeVoid($collect['collect']);
+	return($collect);
+}
+
+/* The function puts all "void" categories to the end of the array that contains labels and indices. "ohne Jahr" does not appear, because it is treated by the functions preprocessFields and postprocessFields  */
+function postponeVoid($collect) {
+	$voidTerms = array('ohne Kategorie', 's. n.', 's. l.', 'Unbestimmbare Sprache', 'ohne Werktitel');
+	foreach($collect as $key => $value) {
+		$test1 = in_array($key, $voidTerms);
+		if($test1) {
+			if(isset($voidKey)) {
+				echo 'Fehler: Mehr als ein leeres Feld in dem Index, der mit '.$collect[0].' beginnt.';
+			}
+			else {
+				$voidKey = $key;
+				$voidValue = $value;
+			}
+		}
+	}
+	if(isset($voidKey)) {
+		unset($collect[$voidKey]);
+		$collect[$voidKey] = $voidValue;
 	}
 	return($collect);
 }

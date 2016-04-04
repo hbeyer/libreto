@@ -15,9 +15,9 @@ include('makeDoughnutList.php');
 include('storeBeacon.php');
 include('setConfiguration.php');
 
-//$thisCatalogue = setConfiguration('liddel');
-//$thisCatalogue = setConfiguration('bahn');
 $thisCatalogue = setConfiguration('rehl');
+//$thisCatalogue = setConfiguration('bahn');
+//$thisCatalogue = setConfiguration('liddel');
 $facets = $thisCatalogue->listFacets;
 $cloudFacets = $thisCatalogue->cloudFacets;
 $doughnutFacets = $thisCatalogue->doughnutFacets;

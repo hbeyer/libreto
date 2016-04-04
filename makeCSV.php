@@ -53,7 +53,8 @@ function makeCSV($data, $fileName) {
 	
 	foreach($data as $item) {
 		$row = makeRowCSV($item);
-		$row = array_map('convertToWindowsCharset', $row);
+		$row = array_map('convertUTF8ToWindows', $row);
+		$row = array_map('htmlspecialchars_decode', $row);
 		fputcsv($handle, $row);
 	}	
 }
