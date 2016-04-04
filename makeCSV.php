@@ -100,7 +100,7 @@ function makePersonRowCSV($persList) {
 	$contributors = array();
 	$count = 0;
 	foreach($persList as $person) {
-		if($person->role == 'author' or $person->role == 'creator') {
+		if($person->role == 'author' or $person->role == 'creator' or $person->role == NULL) {
 			$authors[] = $person;
 		}
 		else {

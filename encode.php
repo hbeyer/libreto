@@ -102,6 +102,12 @@ function removeSpecial($name) {
 	return($name);	
 }
 
+function convertWindowsToUTF8($string) {
+  $charset =  mb_detect_encoding($string, "Windows-1252, ISO-8859-1, ISO-8859-15", true);
+  $string =  mb_convert_encoding($string, "UTF-8", $charset);
+  return $string;
+}
+
 function convertUTF8ToWindows($string) {
   $charset =  mb_detect_encoding($string, "UTF-8", true);
   $string =  mb_convert_encoding($string, "Windows-1252", $charset);
