@@ -10,6 +10,7 @@
 		public $printer;
 		public $year;
 		public $copy = array('institution' => '', 'shelfmark' => ''); //The copy used for the reconstruction of the catalogue
+		public $description;
 		public $GeoBrowserStorageID;
 		public $listFacets = array();
 		public $cloudFacets = array();

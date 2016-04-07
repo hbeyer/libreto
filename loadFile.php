@@ -1,8 +1,5 @@
 ﻿<?php
 
-include('classDefinition.php');
-include('encode.php');
-
 $path = 'upload/test.csv';
 $data = loadCSV($path);
 $serialize = serialize($data);
@@ -88,7 +85,7 @@ function makeItemFromCSVRow($row) {
 					$place->getty = substr($parts[1], 5);
 				}	
 			}
-			$item->places = $place;
+			$item->places[] = $place;
 		}
 	}
 	

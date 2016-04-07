@@ -114,15 +114,14 @@ function compareItemInVolume($a, $b) {
 
 // This function converts an array of objects of the class section into a list in HTML format. The variable $thisCatalogue contains an object of the type catalogue and supplies information on the fileName ($thisCatalogue->key) and the URL base of the digitized version ($thisCatalogue->base). The function displays content either as text, for monographic entries, or as unordered list, for miscellanies.
 	
-function makeList($structuredData, $thisCatalogue) {	
-	$folderName = fileNameTrans($thisCatalogue->fileName);
+function makeList($structuredData, $thisCatalogue, $folderName) {	
 	$count = 1;
 	$content = '';
 	foreach($structuredData as $section) {
 		$info = '';
 		$anchor = '';
 		if($section->authority['system'] == 'gnd') {
-			$info = makeCollapseBeacon($section->authority['id'], $folderName, $thisCatalogue->key);
+			$info = makeCollapseBeacon($section->authority['id'], $folderName);
 			$anchor = 'person'.$section->authority['id'];
 		}
 		$content .= makeHeadline($section->level, $section->label, $info, $anchor);

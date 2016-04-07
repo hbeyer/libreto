@@ -1,11 +1,11 @@
 ﻿<?php
 
 $beaconSources = array(
-	'wkp' => array(
+	/* 'wkp' => array(
 		'label' => 'Wikipedia',
 		'location' => 'http://tools.wmflabs.org/persondata/beacon/dewiki.txt',
 		'target' => 'http://tools.wmflabs.org/persondata/redirect/gnd/de/{ID}'
-	),
+	), */
 	'db' => array(
 		'label' => 'Deutsche Biographie',
 		'location' => 'http://www.historische-kommission-muenchen-editionen.de/beacon_db_register.txt',
@@ -50,7 +50,7 @@ $beaconSources = array(
 		'label' => 'Sandrart.net',
 		'location' => 'http://ta.sandrart.net/services/pnd-beacon/',
 		'target' => 'http://ta.sandrart.net/services/pnd-beacon/?pnd={ID}'
-	),		
+	),
 	'dpi' => array(
 		'label' => 'Digitaler Portraitindex',
 		'location' => 'http://www.portraitindex.de/pnd_beacon.txt',
@@ -72,5 +72,10 @@ $beaconSources = array(
 		'target' => 'http://www.mgh.de/index.php?&wa72ci_url=%2Fcgi-bin%2Fmgh%2Fallegro.pl&db=opac&var5=IDN&TYP=&id=438&item5=fabricius_{ID}'
 	)						
 );
+
+$beaconKeys = array();
+foreach($beaconSources as $key => $value) {
+	$beaconKeys[] = $key;
+}
 
 ?>

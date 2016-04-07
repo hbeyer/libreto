@@ -201,23 +201,6 @@ function load_data_liddel($server, $user, $password, $database, $table) {
 	}	
 	return($dataArray);
 }
-	
-function addBeacon($data, $folderName, $keyCat) {
-	$beaconString = file_get_contents($folderName.'/beaconStore-'.$keyCat);
-	$beaconObject = unserialize($beaconString);
-	foreach($data as $item) {
-		foreach($item->persons as $person) {
-			if($person->gnd != '') {
-				foreach($beaconObject->content as $beaconExtract) {
-					if(in_array($person->gnd, $beaconExtract->content)) {
-						$person->beacon[] = $beaconExtract->key;
-					}
-				}
-			}
-		}
-	}
-	return($data);
-}
 function translateTermsDeEn($term) {
 	$translation = array(
 		'Druck' => 'Book', 

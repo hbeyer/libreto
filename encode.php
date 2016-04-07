@@ -69,6 +69,36 @@ function translateFieldNamesButtons($field) {
 	return($result);		
 }
 
+function translateCheckboxNames($field) {
+	$translation = array(
+		'pageCat' => 'Seite im Altkatalog',
+		'imageCat' => 'Seite im Digitalisat',
+		'bibliographicalLevel' => 'Bibliographisches Level',
+		'bound' => 'gebunden',
+		'gnd' => 'GND-Nummer',
+		'titleWork' => 'Werktitel',
+		'institutionOriginal' => 'Besitzende Institution',
+		'provenanceAttribute' => 'Provenienzmerkmal',
+		'catSubjectFormat' => 'Rubrik und Format', 
+		'numberCat' => 'Nummer Altkatalog', 
+		'id' => 'ID', 
+		'shelfmarkOriginal' => 'Signatur', 		
+		'persName' => 'Person',
+		'subject' => 'Inhalt', 
+		'histSubject' => 'Rubrik', 
+		'year' => 'Erscheinungsjahr', 
+		'placeName' => 'Ort', 
+		'language' => 'Sprache', 
+		'publisher' => 'Drucker', 
+		'format' => 'Format', 
+		'mediaType' => 'Materialart', 
+		'systemManifestation' => 'Nachgewiesen in', 
+		'genre' => 'Gattung');
+	$result = strtr($field, $translation);
+	return($result);		
+}
+
+
 function sortingFormat($format) {
 	$pattern = '~^([248])°$~';
 	$replacement = '0$1°';

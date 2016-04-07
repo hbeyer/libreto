@@ -10,7 +10,7 @@ $normalFields = array('id', 'pageCat', 'imageCat', 'numberCat', 'itemInVolume', 
 $personFields = array('persName', 'gnd', 'role');
 $placeFields = array('placeName', 'getty', 'geoNames');
 $arrayFields = array('language');
-$workFields = array('titleWork', 'systemWork');
+$workFields = array('titleWork', 'systemWork', 'idWork');
 $manifestationFields = array('systemManifestation');
 $originalItemFields = array('institutionOriginal', 'shelfmarkOriginal', 'provenanceAttribute', 'targetOPAC', 'searchID');
 // The following values do not correspond to a field, but they can be submitted to the function makeIndex
@@ -24,5 +24,8 @@ $volumeFields = array('numberCat', 'catSubjectFormat');
 // The following fields get additional word clouds or doughnuts if they are selected
 $wordCloudFields = array('bibliographicalLevel', 'publisher', 'year', 'format', 'histSubject', 'subject', 'genre', 'mediaType', 'persName', 'gnd', 'role', 'placeName', 'language', 'systemManifestation', 'institutionOriginal', 'shelfmarkOriginal', 'provenanceAttribute');
 $doughnutFields = array('bibliographicalLevel', 'format', 'histSubject', 'subject', 'genre', 'mediaType', 'language', 'systemManifestation', 'institutionOriginal', 'provenanceAttribute', 'bound');
+
+// Checkbox-Fields
+$checkboxFields = array('numberCat', 'catSubjectFormat', 'shelfmarkOriginal', 'persName', 'year', 'subject', 'histSubject', 'genre', 'language', 'placeName', 'publisher', 'format', 'mediaType', 'bound', 'bibliographicalLevel', 'systemManifestation', 'institutionOriginal', 'provenanceAttribute', 'pageCat', 'titleWork');
 
 ?>

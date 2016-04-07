@@ -34,7 +34,7 @@ class geoDataArchive {
 		}
 	}
 	
-	function saveToFile($fileName = 'geoDataArchive-new') {
+	function saveToFile($fileName = 'geoDataArchive') {
 		$serialize = serialize($this);
 		file_put_contents($fileName, $serialize);
 	}
@@ -44,6 +44,15 @@ class geoDataArchive {
 		$archive = unserialize($archiveString);
 		unset($archiveString);
 		$this->content = $archive->content;
+	}
+	
+	function getByGeoNames($id) {
+		foreach($this->content as $entry) {
+			if($entry->geoNames == $id) {
+				return($entry);
+				break;
+			}
+		}
 	}
 	
 	function getByName($name) {

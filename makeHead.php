@@ -6,7 +6,7 @@ function makeHead($thisCatalogue, $navigation, $field) {
 		$title = 	$thisCatalogue->heading.' ('.$thisCatalogue->year.')';
 	}
 	else {
-		$title = 	$thisCatalogue->heading;
+		$title = $thisCatalogue->heading;
 	}
 	$transcriptionLink = '<br />
 			<span id="switchLink"><a href="javascript:switchToOriginal()">Transkription des Katalogs</a></span><br/>&nbsp;';
@@ -20,6 +20,7 @@ function makeHead($thisCatalogue, $navigation, $field) {
 		$chart = '
 		<script type="text/javascript" src="chart.js"></script>';
 	}
+	
 	$frontMatter = '<!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -36,6 +37,7 @@ function makeHead($thisCatalogue, $navigation, $field) {
 		<div class="container">
 		<div class="container-fluid">
 			<h1>'.$title.'</h1>
+			'.$thisCatalogue->description.'
 			<p>'.$thisCatalogue->title.$transcriptionLink.'</p>
 		</div>
 		<nav class="navbar navbar-default" data-spy="affix" data-offset-top="197">'.$navigation.'
@@ -59,5 +61,13 @@ $foot = '
 		</div>
 	</body>
 </html>';
+
+function makeDescription($catalogue) {
+	$description = '';
+	if($catalogue->description) {
+		$description = '<p>'.$catalogue->description.'</p>';
+	}
+	return($description);
+}
 
 ?>
