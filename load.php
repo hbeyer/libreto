@@ -1,8 +1,4 @@
-﻿<?php
-include('classDefinition.php');
-include('encode.php');
-include('loadFile.php');
-
+<?php
 session_start();
 $_SESSION['upload'] = 0;
 $_SESSION['fileName'] = '';
@@ -15,6 +11,11 @@ $_SESSION['catalogueObject'] = NULL;
 $_SESSION['folder'] = 0;
 $_SESSION['folderName'] = '';
 $_SESSION['fieldSelection'] = 0;
+
+include('classDefinition.php');
+include('encode.php');
+include('loadFile.php');
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -53,7 +54,7 @@ $_SESSION['fieldSelection'] = 0;
 			$_SESSION['fileName'] = $_FILES['userfile']['name'];
 			$_SESSION['ending'] = getEnding($_SESSION['fileName']);
 			$_SESSION['bareName'] = getFileName($_SESSION['fileName']);
-			$acceptedEndings = array('', 'csv');
+			$acceptedEndings = array('csv');
 			$uploadFile = $uploadDirectory.basename($_FILES['userfile']['name']);
 			
 			if(in_array($_SESSION['ending'], $acceptedEndings)) {

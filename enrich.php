@@ -1,10 +1,10 @@
-﻿<?php
+<?php
+session_start();
 include('classDefinition.php');
 include('encode.php');
 include('makeGeoDataArchive.php');
 include('beaconSources.php');
 include('storeBeacon.php');
-session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -116,7 +116,7 @@ session_start();
 				$data = unserialize($dataString);
 				unset($dataString);
 				//Das Laden wurde aus Zeitgründen deaktiviert, die Daten kommen solange aus der Datei baconStore-new
-				//storeBeacon($data, '', 'new', $selectedBeacon);
+				storeBeacon($data, '', 'new', $selectedBeacon);
 				$data = addBeacon($data, '', 'new');
 				$_SESSION['beacon'] = 1;
 				echo '<p>Die Anreicherung mit biographischen Links war erfolgreich.<br>

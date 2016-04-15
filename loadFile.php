@@ -1,10 +1,5 @@
 ﻿<?php
 
-$path = 'upload/test.csv';
-$data = loadCSV($path);
-$serialize = serialize($data);
-file_put_contents('upload/test', $serialize);
-
 function loadCSV($path) {
 	$data = array();
 	$csv = file_get_contents($path);

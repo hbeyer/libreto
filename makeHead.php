@@ -3,13 +3,16 @@
 function makeHead($thisCatalogue, $navigation, $field) {
 	$fileName = fileNameTrans($thisCatalogue->fileName);
 	if($thisCatalogue->year) {
-		$title = 	$thisCatalogue->heading.' ('.$thisCatalogue->year.')';
+		$title = $thisCatalogue->heading.' ('.$thisCatalogue->year.')';
 	}
 	else {
 		$title = $thisCatalogue->heading;
 	}
-	$transcriptionLink = '<br />
-			<span id="switchLink"><a href="javascript:switchToOriginal()">Transkription des Katalogs</a></span><br/>&nbsp;';
+	$transcriptionLink = '';
+	if($thisCatalogue->title) {
+		$transcriptionLink = '<br />
+		<span id="switchLink"><a href="javascript:switchToOriginal()">Transkription des Katalogs</a></span><br/>&nbsp;';
+	}
 	$classLi = 'download';
 	if($field == 'jqcloud' or $field == 'doughnut') {
 		$classLi = 'active';
@@ -20,6 +23,8 @@ function makeHead($thisCatalogue, $navigation, $field) {
 		$chart = '
 		<script type="text/javascript" src="chart.js"></script>';
 	}
+	
+	$description = makeDescription($thisCatalogue);
 	
 	$frontMatter = '<!DOCTYPE html>
 <html lang="en">
@@ -37,7 +42,7 @@ function makeHead($thisCatalogue, $navigation, $field) {
 		<div class="container">
 		<div class="container-fluid">
 			<h1>'.$title.'</h1>
-			'.$thisCatalogue->description.'
+			'.$description.'
 			<p>'.$thisCatalogue->title.$transcriptionLink.'</p>
 		</div>
 		<nav class="navbar navbar-default" data-spy="affix" data-offset-top="197">'.$navigation.'

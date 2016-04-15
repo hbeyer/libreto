@@ -135,11 +135,13 @@ session_start();
 				fclose($datei);
 				$count++;
 				if(file_exists($fileName)) {
-					echo '<p>Die Datei '.$fileName.'.html wurde erstellt.</p>';
+					echo '<p>Die Datei '.$fileName.'.html wurde erstellt.<br>';
 				}
 			}
 
 			unset($structures);
+			
+			echo '<p>';
 			
 			// Erzeugen der Seite mit den Word Clouds
 			$navigation = makeNavigation($_SESSION['catalogueObject']->fileName, $tocs, 'jqcloud');
@@ -150,6 +152,9 @@ session_start();
 			$datei = fopen($fileName,"w");
 			fwrite($datei, $content, 3000000);
 			fclose($datei);
+			if(file_exists($fileName)) {
+				echo 'Die Datei '.$fileName.' wurde erstellt.<br>';
+			}			
 
 			// Erzeugen der Seite mit den Doughnut Charts
 			$navigation = makeNavigation($_SESSION['catalogueObject']->fileName, $tocs, 'doughnut');
@@ -160,6 +165,11 @@ session_start();
 			$datei = fopen($fileName,"w");
 			fwrite($datei, $content, 3000000);
 			fclose($datei);
+			if(file_exists($fileName)) {
+				echo 'Die Datei '.$fileName.' wurde erstellt.
+				';
+			}	
+			echo '</p>';
 						
 			echo '<p><a href="'.$firstFileName.'">Website aufrufen</a></p>';
 		}
