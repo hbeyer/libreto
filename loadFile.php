@@ -48,7 +48,7 @@ function makeItemFromCSVRow($row) {
 	$languageFields = array($row[25], $row[26], $row[27]);
 	foreach($languageFields as $languageCode) {
 		if($languageCode) {
-			$item->language[] = $languageCode;
+			$item->languages[] = $languageCode;
 		}
 	}
 	

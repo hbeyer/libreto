@@ -69,13 +69,13 @@ function load_data_mysql($server, $user, $password, $database, $table) {
 				foreach($languageFields as $field) {
 					if($rowBooks[$field]) {
 						$languageCode = translateGreGrc($rowBooks[$field]);
-						$thisBook->language[] = $languageCode;
+						$thisBook->languages[] = $languageCode;
 					}
 				}
 				
 				preg_match('~[Ww]eitere Sprache: ([a-z]{3})~', $rowBooks['freitext'], $matches);
 				if(isset($matches[1])) {
-					$thisBook->language[] = $matches[1];
+					$thisBook->languages[] = $matches[1];
 				}
 				
 				$placeFields = array('ort', 'ort2');
@@ -97,7 +97,7 @@ function load_data_mysql($server, $user, $password, $database, $table) {
 	}
 	foreach($dataArray as $item) {
 		foreach($item->persons as $person) {
-			$person->perName = replaceArrowBrackets($person->persName);
+			$person->persName = replaceArrowBrackets($person->persName);
 			}
 		}	
 	return($dataArray);
@@ -132,7 +132,7 @@ function load_data_liddel($server, $user, $password, $database, $table) {
 			$thisBook->originalItem['shelfmarkOriginal'] = $rowBooks['shelfmark'];
 			$thisBook->originalItem['targetOPAC'] = 'https://aulib.abdn.ac.uk/F?func=direct&local_base=ABN01&doc_number={ID}';
 			$thisBook->originalItem['searchID'] = $rowBooks['system_no'];
-			$thisBook->language = explode(';', $rowBooks['language']);
+			$thisBook->languages = explode(';', $rowBooks['language']);
 			
 			$placeName = $rowBooks['place_ger'];
 			if($placeName == '') {

@@ -27,12 +27,12 @@ include('setConfiguration.php');
 
 
 
-//$thisCatalogue = setConfiguration('bahn');
+$thisCatalogue = setConfiguration('bahn');
 //$thisCatalogue = setConfiguration('rehl');
-$facets = $thisCatalogue->facets;
+//$facets = $thisCatalogue->facets;
 
 // Erstelle ein Verzeichnis für das Projekt
-$folderName = fileNameTrans($thisCatalogue->heading);
+$folderName = $thisCatalogue->fileName;
 if(is_dir($folderName) == FALSE) {
 	mkdir($folderName, 0700);
 }

@@ -15,9 +15,9 @@ function setConfiguration($key) {
 		$thisCatalogue->nachweis['institution'] = 'HAB Wolfenbüttel';
 		$thisCatalogue->nachweis['shelfmark'] = 'M: Bc Kapsel 19 (7)';
 		$thisCatalogue->GeoBrowserStorageID = '267901';
-		$thisCatalogue->listFacets = array('numberCat', 'persName', 'year', 'placeName', 'language', 'publisher', 'format', 'systemManifestation');
-		$thisCatalogue->cloudFacets = array('persName', 'placeName', 'language', 'publisher');
-		$thisCatalogue->doughnutFacets = array('persName', 'placeName', 'language', 'publisher', 'format', 'systemManifestation');
+		$thisCatalogue->listFacets = array('numberCat', 'persName', 'year', 'placeName', 'languages', 'publisher', 'format', 'systemManifestation');
+		$thisCatalogue->cloudFacets = array('persName', 'placeName', 'languages', 'publisher');
+		$thisCatalogue->doughnutFacets = array('persName', 'placeName', 'languages', 'publisher', 'format', 'systemManifestation');
 		return($thisCatalogue);
 	}
 	elseif($key == 'bahn') {
@@ -30,9 +30,9 @@ function setConfiguration($key) {
 		$thisCatalogue->copy['institution'] = 'HAB Wolfenbüttel';
 		$thisCatalogue->copy['shelfmark'] = 'M: Bc Kapsel 7 (23)';
 		$thisCatalogue->GeoBrowserStorageID = '267851';
-		$thisCatalogue->listFacets = array('catSubjectFormat', 'persName', 'year', 'subject', 'genre', 'placeName', 'language', 'publisher');
-		$thisCatalogue->cloudFacets = array('persName', 'subject', 'histSubject', 'genre', 'placeName', 'language', 'publisher');
-		$thisCatalogue->doughnutFacets = array('persName', 'subject', 'histSubject', 'genre', 'placeName', 'language', 'publisher');
+		$thisCatalogue->listFacets = array('catSubjectFormat', 'persName', 'year', 'subject', 'genre', 'placeName', 'languages', 'publisher');
+		$thisCatalogue->cloudFacets = array('persName', 'subject', 'histSubject', 'genre', 'placeName', 'languages', 'publisher');
+		$thisCatalogue->doughnutFacets = array('persName', 'subject', 'histSubject', 'genre', 'placeName', 'languages', 'publisher');
 		return($thisCatalogue);
 	}
 	if($key == 'liddel') {
@@ -42,15 +42,15 @@ function setConfiguration($key) {
 		$thisCatalogue->title = 'Die Bibliothek des schottischen Mathematikers, Astronomomen und Mediziners Duncan Liddel (1561–1613) wurde von Jane Pierie aus den Beständen der Sir Duncan Rice Library rekonstruiert. Sie enthält ca. 420 Titel in 200 Bänden. Zum großen Teil sammelte Liddel diese zur Zeit seiner Lehrtätigkeit auf dem Kontinent, insbesondere seit 1590 in Helmstedt.';
 		$thisCatalogue->year = '1613';
 		$thisCatalogue->GeoBrowserStorageID = '272301';
-		$thisCatalogue->listFacets = array('shelfmarkOriginal', 'persName', 'subject', 'language', 'placeName', 'publisher', 'year', 'systemManifestation');
-		$thisCatalogue->cloudFacets = array('shelfmarkOriginal', 'persName', 'subject', 'language', 'placeName', 'publisher');
-		$thisCatalogue->doughnutFacets = array('persName', 'subject', 'language', 'placeName', 'publisher', 'systemManifestation');
+		$thisCatalogue->listFacets = array('shelfmarkOriginal', 'persName', 'subject', 'languages', 'placeName', 'publisher', 'year', 'systemManifestation');
+		$thisCatalogue->cloudFacets = array('shelfmarkOriginal', 'persName', 'subject', 'languages', 'placeName', 'publisher');
+		$thisCatalogue->doughnutFacets = array('persName', 'subject', 'languages', 'placeName', 'publisher', 'systemManifestation');
 		return($thisCatalogue);
 	}	
 	
 }
 
 // Maximale Facettierung
-//$thisCatalogue->facets = array('cat', 'persName', 'year', 'subject', 'genre', 'placeName', 'language', 'publisher', 'format', 'manifestation');
+//$thisCatalogue->facets = array('cat', 'persName', 'year', 'subject', 'genre', 'placeName', 'languages', 'publisher', 'format', 'manifestation');
 
 ?>

@@ -272,7 +272,7 @@ function postprocessFields($field, $value) {
 	if($field == ('format' or 'catSubjectFormat')) {
 		$value = reverseSortingFormat($value);
 	}
-	if($field == 'language') {
+	if($field == 'languages') {
 		include('languageCodes.php');
 		$value = $languageCodes[$value];
 	}

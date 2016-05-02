@@ -146,7 +146,7 @@ function makeDoughnutButtons($facets, $firstFacet) {
 
 function assignFirstFacet($facets) {
 	$return = '';
-	$wishList = array('language', 'mediaType', 'genre', 'format', 'subject', 'subjectHist');
+	$wishList = array('languages', 'mediaType', 'genre', 'format', 'subject', 'subjectHist');
 	foreach($wishList as $wish) {
 		if(in_array($wish, $facets)) {
 			$return = $wish;

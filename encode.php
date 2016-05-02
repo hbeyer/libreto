@@ -11,6 +11,12 @@ function replaceSlash($string) {
 	$string = strtr($string, $translate);
 	return($string);
 }
+
+function replaceAmp($string) {
+	$translate = array('&' => '&#38;');
+	$string = strtr($string, $translate);
+	return($string);
+}
 	
 function translateAnchor($anchor) {
 	$translate = array('Ä' => 'ae', 'Ö' => 'oe', 'Ü' => 'ue', 'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'ß' => 'ss', ' ' => '', '&' => 'et');
@@ -35,7 +41,7 @@ function translateFieldNames($field) {
 		'histSubject' => 'Rubriken', 
 		'year' => 'Datierung', 
 		'placeName' => 'Orte', 
-		'language' => 'Sprachen', 
+		'languages' => 'Sprachen', 
 		'publisher' => 'Drucker', 
 		'format' => 'Formate', 
 		'mediaType' => 'Materialarten', 
@@ -53,7 +59,7 @@ function translateFieldNamesButtons($field) {
 		'histSubject' => 'Rubriken',
 		'year' => 'Jahre',
 		'placeName' => 'Orte', 
-		'language' => 'Sprachen', 
+		'languages' => 'Sprachen', 
 		'publisher' => 'Drucker', 
 		'format' => 'Formate', 
 		'mediaType' => 'Materialarten', 
@@ -88,7 +94,7 @@ function translateCheckboxNames($field) {
 		'histSubject' => 'Rubrik', 
 		'year' => 'Erscheinungsjahr', 
 		'placeName' => 'Ort', 
-		'language' => 'Sprache', 
+		'languages' => 'Sprache', 
 		'publisher' => 'Drucker', 
 		'format' => 'Format', 
 		'mediaType' => 'Materialart', 

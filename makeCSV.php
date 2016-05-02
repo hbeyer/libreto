@@ -63,7 +63,7 @@ function makeRowCSV($item) {
 	$row = array();
 	foreach($item as $key => $value) {
 		if(is_array($value)) {
-			if($key == 'language') {
+			if($key == 'languages') {
 				$count = 0;
 				foreach($value as $language) {
 					if($count < 3) {
