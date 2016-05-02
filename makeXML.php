@@ -1,42 +1,17 @@
 ﻿<?php
 
-include('classDefinition.php');
-include('makeEntry.php');
-include('ingest.php');
-include('encode.php');
-include('parseDOM.php');
-include('makeIndex.php');
-include('makeSection.php');
-include('makeNavigation.php');
-include('makeHead.php');
-include('makeGeoDataSheet.php');
-include('makeCloudList.php');
-include('makeDoughnutList.php');
-include('storeBeacon.php');
-include('setConfiguration.php');
-
-//$thisCatalogue = setConfiguration('rehl');
-$thisCatalogue = setConfiguration('bahn');
-//$thisCatalogue = setConfiguration('liddel');
-$facets = $thisCatalogue->listFacets;
-$cloudFacets = $thisCatalogue->cloudFacets;
-$doughnutFacets = $thisCatalogue->doughnutFacets;
-
-//Erstelle ein Verzeichnis für das Projekt (wird momentan vom Skript storeData.php erledigt.
-$folderName = fileNameTrans($thisCatalogue->fileName);
-/* if(is_dir($folderName) == FALSE) {
-	mkdir($folderName, 0700);
-} */
-
-// Hole die vom Skript storeData.php zwischengespeicherten Daten aus dem Projektverzeichnis
-$dataString = file_get_contents($folderName.'/data-'.$thisCatalogue->key);
-$data = unserialize($dataString);
-unset($dataString);
-
 function saveXML($data, $catalogue, $folderName) {
 	$dom = new DOMDocument('1.0', 'UTF-8');
 	$dom->formatOutput = true;
 	$rootElement = $dom->createElement('collection');
+	$metadata = $dom->createElement('metadata');
+	$heading = $dom->createElement('heading', $catalogue->heading);
+	$year = $dom->createElement('year', $catalogue->year);
+	$fileName = $dom->createElement('fileName', $catalogue->fileName);
+	$metadata->appendChild($heading);
+	$metadata->appendChild($year);
+	$metadata->appendChild($fileName);
+	$rootElement->appendChild($metadata);
 	foreach($data as $item) {
 		$itemElement = $dom->createElement('item');
 		$itemElement = fillDOMItem($itemElement, $item, $dom);
@@ -48,21 +23,26 @@ function saveXML($data, $catalogue, $folderName) {
 	fwrite($handle, $result, 3000000);
 }
 
+/* 
+Diese Funktion ist schrecklich kompliziert. Man müsste sie in mehrere aufteilen oder 
+generelle Anweisungen für die Verarbeitung der PHP-Objekte hinterlegen.
+ */
+ 
 function fillDOMItem($itemElement, $item, $dom) {
 	foreach($item as $key => $value) {
 		// Fall 1: Variable ist ein einfacher Wert
 		if(is_array($value) == FALSE) {
 			$value = replaceAmp($value);
 			$itemProperty = $dom->createElement($key, $value);
-			$itemElement->appendChild($itemProperty);
+			$itemElement = appendNodeUnlessVoid($itemElement, $itemProperty);
 		}
-		//Fall 2: Variable ist ein Array
+		//Fall 2: Variable ist ein nummeriertes Array
 		elseif(isset($value[0])) {
 			//Fall 2.1: Variable ist ein Array aus einfachen Werten
 			if(is_string($value[0]) or is_integer($value[0])) {
 				$separatedString = implode(';', $value);
 				$itemArrayProperty = $dom->createElement($key, $separatedString);
-				$itemElement->appendChild($itemArrayProperty);
+				$itemElement = appendNodeUnlessVoid($itemElement, $itemArrayProperty);
 			}
 			//Fall 2.2: Variable ist ein Array aus Objekten
 			elseif(is_object($value[0])) {
@@ -79,7 +59,7 @@ function fillDOMItem($itemElement, $item, $dom) {
 								//Fall 2.2.1.1: Variable im Objekt ist ein assoziatives Array
 								if(is_string($arrayKey)) {
 									$objectArrayElement = $dom->createElement($arrayKey, $arrayValue);
-									$objectVariable->appendChild($objectArrayElement);
+									$objectVariable = appendNodeUnlessVoid($objectVariable, $objectArrayElement);
 								}
 								//Fall 2.2.1.2: Variable im Objekt ist ein numerisches Array
 								elseif(is_int($arrayKey)) {
@@ -90,24 +70,38 @@ function fillDOMItem($itemElement, $item, $dom) {
 								$separatedList = implode(';', $collectNonAssociative);
 								$objectVariable = $dom->createElement($objectKey, $separatedList);
 							}
-							$objectElement->appendChild($objectVariable);
+							$objectElement = appendNodeUnlessVoid($objectElement, $objectVariable);
 						}
 						//Fall 2.2.2: Variable im Objekt ist ein Integer oder String
 						elseif(is_int($objectValue) or is_string($objectValue)) {
 							$objectVariable = $dom->createElement($objectKey, $objectValue);
-							$objectElement->appendChild($objectVariable);
+							$objectElement = appendNodeUnlessVoid($objectElement, $objectVariable);
 						}
 					}
 					$itemObjectProperty->appendChild($objectElement);
 				}
-				$itemElement->appendChild($itemObjectProperty);
+				$itemElement = appendNodeUnlessVoid($itemElement, $itemObjectProperty);
 			}
+		}
+		//Fall 3: Variable ist ein assoziatives Array
+		else {
+			$itemArrayProperty = $dom->createElement($key);
+			foreach($value as $keyAssoc => $valueAssoc) {
+				$valueAssoc = replaceAmp($valueAssoc);
+				$itemArrayContent = $dom->createElement($keyAssoc, $valueAssoc);
+				$itemArrayProperty = appendNodeUnlessVoid($itemArrayProperty, $itemArrayContent);
+			}
+			$itemElement = appendNodeUnlessVoid($itemElement, $itemArrayProperty);
 		}
 	}
 	return($itemElement);
 }
 
-//var_dump($data);
-saveXML($data, $thisCatalogue, $folderName);
+function appendNodeUnlessVoid($parent, $child) {
+	if($child->nodeValue != '') {
+		$parent->appendChild($child);
+	}
+	return($parent);
+}
 
 ?>
