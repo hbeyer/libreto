@@ -1,11 +1,11 @@
 ﻿<?php
 
 $beaconSources = array(
-	/* 'wkp' => array(
+	'wkp' => array(
 		'label' => 'Wikipedia',
 		'location' => 'http://tools.wmflabs.org/persondata/beacon/dewiki.txt',
 		'target' => 'http://tools.wmflabs.org/persondata/redirect/gnd/de/{ID}'
-	), */
+	),
 	'db' => array(
 		'label' => 'Deutsche Biographie',
 		'location' => 'http://www.historische-kommission-muenchen-editionen.de/beacon_db_register.txt',

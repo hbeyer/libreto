@@ -1,5 +1,11 @@
 ﻿<?php
 
+/* 
+Ungelöstes Problem in diesem Skript: &-Zeichen in URLs lösen Fehlermeldungen aus. Codiert man sie als &amp;, 
+kann der Link nicht mehr aufgerufen werden. Der Versuch, sie stattdessen als &#38; zu codieren (Funktion replaceAmp)
+führt seltsamerweise zur Ausgabe &amp; 
+*/
+
 function saveXML($data, $catalogue, $folderName) {
 	$dom = new DOMDocument('1.0', 'UTF-8');
 	$dom->formatOutput = true;
@@ -23,11 +29,6 @@ function saveXML($data, $catalogue, $folderName) {
 	fwrite($handle, $result, 3000000);
 }
 
-/* 
-Diese Funktion ist schrecklich kompliziert. Man müsste sie in mehrere aufteilen oder 
-generelle Anweisungen für die Verarbeitung der PHP-Objekte hinterlegen.
- */
- 
 function fillDOMItem($itemElement, $item, $dom) {
 	foreach($item as $key => $value) {
 		// Fall 1: Variable ist ein einfacher Wert
@@ -36,12 +37,20 @@ function fillDOMItem($itemElement, $item, $dom) {
 			$itemProperty = $dom->createElement($key, $value);
 			$itemElement = appendNodeUnlessVoid($itemElement, $itemProperty);
 		}
-		//Fall 2: Variable ist ein nummeriertes Array
-		elseif(isset($value[0])) {
+		else {
+			$test1 = testIfAssociative($value);
+			//Fall 2.0: Variable ist ein assoziatives Array
+			if($test1 == 1) {
+				$itemArrayProperty = $dom->createElement($key);
+				$itemArrayProperty = appendAssocArrayToDOM($itemArrayProperty, $value, $dom);
+				$itemElement = appendNodeUnlessVoid($itemElement, $itemArrayProperty);
+			}
+			elseif($test1 == 0 and isset($value[0])) {
 			//Fall 2.1: Variable ist ein Array aus einfachen Werten
 			if(is_string($value[0]) or is_integer($value[0])) {
-				$separatedString = implode(';', $value);
-				$itemArrayProperty = $dom->createElement($key, $separatedString);
+				$itemArrayProperty = $dom->createElement($key);
+				$fieldName = makeSubfieldName($key);
+				$itemArrayProperty = appendNumericArrayToDOM($itemArrayProperty, $value, $dom, $fieldName);
 				$itemElement = appendNodeUnlessVoid($itemElement, $itemArrayProperty);
 			}
 			//Fall 2.2: Variable ist ein Array aus Objekten
@@ -54,21 +63,16 @@ function fillDOMItem($itemElement, $item, $dom) {
 						//Fall 2.2.1: Variable im Objekt ist ein Array
 						if(is_array($objectValue)) {
 							$objectVariable = $dom->createElement($objectKey);
-							$collectNonAssociative = array();
-							foreach($objectValue as $arrayKey => $arrayValue) {
-								//Fall 2.2.1.1: Variable im Objekt ist ein assoziatives Array
-								if(is_string($arrayKey)) {
-									$objectArrayElement = $dom->createElement($arrayKey, $arrayValue);
-									$objectVariable = appendNodeUnlessVoid($objectVariable, $objectArrayElement);
-								}
-								//Fall 2.2.1.2: Variable im Objekt ist ein numerisches Array
-								elseif(is_int($arrayKey)) {
-									$collectNonAssociative[] = $arrayValue;
-								}
+							$test = testIfAssociative($objectValue);
+							if($test == 1) {
+								$objectVariable = appendAssocArrayToDOM($objectVariable, $objectValue, $dom);
 							}
-							if(isset($collectNonAssociative[0])) {
-								$separatedList = implode(';', $collectNonAssociative);
-								$objectVariable = $dom->createElement($objectKey, $separatedList);
+							elseif($test == 0) {
+								$fieldName = makeSubfieldName($objectKey);
+								$objectVariable = appendNumericArrayToDOM($objectVariable, $objectValue, $dom, $fieldName);
+							}
+							elseif($test == 'uncertain') {
+								echo 'Fehlerhaftes Array gefunden:<br />'.var_dump($objectValue);
 							}
 							$objectElement = appendNodeUnlessVoid($objectElement, $objectVariable);
 						}
@@ -83,16 +87,10 @@ function fillDOMItem($itemElement, $item, $dom) {
 				$itemElement = appendNodeUnlessVoid($itemElement, $itemObjectProperty);
 			}
 		}
-		//Fall 3: Variable ist ein assoziatives Array
-		else {
-			$itemArrayProperty = $dom->createElement($key);
-			foreach($value as $keyAssoc => $valueAssoc) {
-				$valueAssoc = replaceAmp($valueAssoc);
-				$itemArrayContent = $dom->createElement($keyAssoc, $valueAssoc);
-				$itemArrayProperty = appendNodeUnlessVoid($itemArrayProperty, $itemArrayContent);
-			}
-			$itemElement = appendNodeUnlessVoid($itemElement, $itemArrayProperty);
+			
 		}
+		
+		
 	}
 	return($itemElement);
 }
@@ -102,6 +100,63 @@ function appendNodeUnlessVoid($parent, $child) {
 		$parent->appendChild($child);
 	}
 	return($parent);
+}
+
+function testIfAssociative($array) {
+	$result = 'uncertain';
+	foreach($array as $key => $value) {
+		if(is_string($key)) {
+			$result = 1;
+		}
+		elseif(is_int($key)) {
+			$result = 0;
+		}
+		break;
+	}
+	return($result);
+}
+
+function appendAssocArrayToDOM($parent, $array, $dom) {
+	foreach($array as $key => $value) {
+		$value = replaceAmp($value);
+		$node = $dom->createElement($key, $value);
+		$parent = appendNodeUnlessVoid($parent, $node);
+	}
+	return($parent);
+}
+
+function appendNumericArrayToDOM($parent, $array, $dom, $fieldName = 'subfield') {
+	foreach($array as $value) {
+		$value = replaceAmp($value);
+		$node = $dom->createElement($fieldName, $value);
+		$parent = appendNodeUnlessVoid($parent, $node);
+	}
+	return($parent);
+}
+
+function makeSubfieldName($fieldName) {
+	$result = preg_replace('~s$~', '', $fieldName);
+	if($result == '') {
+		$result = 'subfield';
+	}
+	return($result);
+}
+
+function expandBeaconKeys($data) {
+	require_once('beaconSources.php');
+	foreach($data as $item) {
+		foreach($item->persons as $person) {
+			$collectLinks = array();
+			foreach($person->beacon as $key) {
+				$target = $beaconSources[$key]['target'];
+				if($target) {
+					$collectLinks[] = makeBeaconLink($person->gnd, $target);
+				}
+			}
+			$person->beacon = $collectLinks;
+		}
+	}
+	return($data);
 }
 
 ?>

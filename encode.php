@@ -156,4 +156,11 @@ function convertToWindowsCharset($string) {
   return $string;
 }
 
+function makeBeaconLink($gnd, $target) {
+	$translate = array('{ID}' => $gnd);
+	$link = strtr($target, $translate);
+	$linkl = urlencode($link);
+	return($link);
+}
+
 ?>

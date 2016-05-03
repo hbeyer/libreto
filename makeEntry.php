@@ -200,10 +200,4 @@ function makeCollapseBeacon($gnd, $folderName) {
 	return($collapse);
 }
 	
-function makeBeaconLink($gnd, $target) {
-	$translate = array('{ID}' => $gnd);
-	$link = strtr($target, $translate);
-	return($link);
-}
-	
 ?>	
