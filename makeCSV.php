@@ -27,10 +27,7 @@ function makeCSV($data, $fileName) {
 		'subject',
 		'genre',
 		'mediaType',
-		'language1',
-		'language2',
-		'language3',
-		'bibliographicalLevel',
+		'languages',
 		'systemManifestation',
 		'idManifestation',		
 		'institutionOriginal',
@@ -64,7 +61,9 @@ function makeRowCSV($item) {
 	foreach($item as $key => $value) {
 		if(is_array($value)) {
 			if($key == 'languages') {
-				$count = 0;
+				$languages = implode(';', $value);
+				$row[] = $languages;
+				/* $count = 0;
 				foreach($value as $language) {
 					if($count < 3) {
 						$row[] = $language;
@@ -74,7 +73,7 @@ function makeRowCSV($item) {
 				while($count < 3) {
 					$row[] = '';
 					$count++;
-				}
+				} */
 			}
 			elseif($key == 'persons') {
 				$row = array_merge($row, makePersonRowCSV($value));

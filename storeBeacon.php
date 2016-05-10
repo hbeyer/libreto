@@ -12,12 +12,11 @@ function arrayGND($data) {
 	return($gndArray);
 }
 
-function storeBeacon($data, $folderName, $keyCat, $selectedBeacon = 'all') {
+function storeBeacon($data, $folderName, $selectedBeacon = 'all') {
 	include('beaconSources.php');
 	if($selectedBeacon == 'all') {
 		$selectedBeacon = $beaconKeys;
 	}
-	
 	$gndArray = arrayGND($data);
 	unset($data);
 	
@@ -53,20 +52,15 @@ function storeBeacon($data, $folderName, $keyCat, $selectedBeacon = 'all') {
 	}
 	$serialize = serialize($beaconData);
 	if($folderName == '') {
-		file_put_contents('beaconStore-'.$keyCat, $serialize);
+		file_put_contents('user/beaconStore', $serialize);
 	}
 	else {
-		file_put_contents($folderName.'/beaconStore-'.$keyCat, $serialize);
+		file_put_contents($folderName.'/beaconStore', $serialize);
 	}
 }
 
-function addBeacon($data, $folderName, $keyCat) {
-	if($folderName == '') {
-		$beaconString = file_get_contents('beaconStore-'.$keyCat);
-	}
-	else {
-		$beaconString = file_get_contents($folderName.'/beaconStore-'.$keyCat);
-	}
+function addBeacon($data, $folderName) {
+	$beaconString = file_get_contents($folderName.'/beaconStore');
 	$beaconObject = unserialize($beaconString);
 	foreach($data as $item) {
 		foreach($item->persons as $person) {

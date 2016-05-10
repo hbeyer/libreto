@@ -109,7 +109,6 @@ function makeProof($thisBook) {
 	include('targetData.php');
 	$system = $thisBook->manifestation['systemManifestation'];
 	$id = $thisBook->manifestation['idManifestation'];
-	$level = $thisBook->bibliographicalLevel;
 	$result = '';
 	$systemClean = translateAnchor($system);
 	$systemClean = strtolower(str_replace(' ', '', $systemClean));
@@ -117,7 +116,7 @@ function makeProof($thisBook) {
 	if(strrpos($hay, 'bestimm') != 0 or ($system == '' and $id == '')) {
 		$result = 'Ausgabe nicht bestimmbar<br/>';
 	}
-	elseif(strrpos($hay, 'nach') != 0 or $level == 'noEvidence') {
+	elseif(strrpos($hay, 'nach') != 0) {
 		$result = 'Ausgabe nicht nachgewiesen<br/>';
 		}
 	elseif(array_key_exists($systemClean, $bases)) {

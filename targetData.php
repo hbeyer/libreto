@@ -15,14 +15,19 @@ $bases = array(
 	'ppn' => 'http://gso.gbv.de/DB=2.1/PPNSET?PPN={ID}',
 	'swb' => 'http://swb.bsz-bw.de/DB=2.1/PPNSET?PPN={ID}',
 	'parisbnf' => 'http://catalogue.bnf.fr/ark:/12148/cb{ID}/PUBLIC',
+	'loc' => 'https://lccn.loc.gov/{ID}',
+	'oenb' => 'http://data.onb.ac.at/rec/{ID}',
 	'inka' => 'http://www.inka.uni-tuebingen.de/?inka={ID}',
 	'bvb' => 'http://gateway-bayern.de/{ID}',
 	'hbz' => 'http://lobid.org/resource/{ID}',
+	'hebis' => 'http://orsprod.rz.uni-frankfurt.de/DB=2.1/PPNSET?PPN={ID}',
 	'londonbl' => 'http://explore.bl.uk/primo_library/libweb/action/display.do?doc={ID}',
 	'denhaagkb' => 'http://opc4.kb.nl/DB=1/PPNSET?PPN={ID}',
+	'kopenhagenkb' => 'http://rex.kb.dk/KGL:KGL:{ID}',
 	'copac' => 'http://copac.jisc.ac.uk/id/{ID}?style=html',
 	'sudoc' => 'http://www.sudoc.fr/{ID}',
 	'unicat' => 'http://www.unicat.be/uniCat?func=search&query=sysid:{ID}',
+	'sbn' => 'http://id.sbn.it/bid/{ID}',
 	'sbb' => 'http://stabikat.de/DB=1/PPNSET?PPN={ID}',
 	'lbvoe' => 'http://lb1.dabis.org/PSI/redirect.psi&sessid=---&strsearch=IDU={ID}',
 	'uantwerpen' => 'http://anet.be/record/opacuantwerpen/{ID}',
@@ -30,7 +35,8 @@ $bases = array(
 	'solo' => 'http://solo.bodleian.ox.ac.uk/OXVU1:oxfaleph{ID}',
 	'uul' => 'http://aleph.library.uu.nl/F?func=direct&doc_number={ID}',
 	'nebis' => 'http://opac.nebis.ch/F?func=direct&local_base=NEBIS&doc_number={ID}',
-	'buva' => 'http://permalink.opc.uva.nl/item/{ID}'
+	'buva' => 'http://permalink.opc.uva.nl/item/{ID}',
+	'manumed' => 'http://www.manuscripta-mediaevalia.de/dokumente/html/{ID}'
 	);
 	
 $patternSystems = array(
@@ -47,14 +53,19 @@ $patternSystems = array(
 	'ppn' => '~PPN ([0-9]{9})|GBV ([0-9]{9})~',
 	'swb' => '~SWB ([0-9]{9})~',
 	'parisbnf' => '~FRBNF ?([a-z]{1,2}[0-9]{7,10})~',
+	'loc' => '~LoC ([0-9]{6,10})~',
+	'oenb' => '~ÖNB ?([A-Za-z]{2,3}[0-9]{5,10})~',
 	'inka' => '~INKA ?([0-9]{8})~',
 	'bvb' => '~BVB (BV[0-9]{9})~',
 	'hbz' => '~HBZ ([HT]T[0-9]{9})~',
+	'hebis' => '~HeBIS ([0-9]{7,10})~',
 	'londonbl' => '~BL (BLL[0-9]{11})~',
 	'denhaagkb' => '~Haag KB ([0-9]{9})~',
+	'kopenhagenkb' => '~Kopenhagen KB ([A-Z]{2,5}[0-9]{7,12})~',
 	'copac' => '~COPAC ([0-9]{1,8})~',
 	'sudoc' => '~SUDOC ([0-9]{8,10})~',
 	'unicat' => '~UNICAT ([0-9]{7,9})~',
+	'sbn' => '~SBN ([A-Z0-9]{8,12})~',
 	'sbb' => '~SBB ([0-9]{9})|GBV ([0-9]{9})~',
 	'lbvoe' => '~LBVÖ ([A-Z0-9-]+)~',
 	'uantwerpen' => '~Antwerpen ([a-z]:[a-z]{3}:[0-9]{7-9})~',
@@ -62,7 +73,8 @@ $patternSystems = array(
 	'solo' => '~SOLO ([0-9]{8,10})~',
 	'uul' => '~UUL ([0-9]{8,10})~',
 	'nebis' => '~NEBIS ([0-9]{7,9})~',
-	'buva' => '~BUvA ([0-9]+)~'
+	'buva' => '~BUvA ([0-9]+)~',
+	'manumed' => '~ManuMed obj[0-9]{6,10},?T?~'
 	);
 	
 ?>

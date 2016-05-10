@@ -4,7 +4,6 @@ include('classDefinition.php');
 include('makeEntry.php');
 include('ingest.php');
 include('encode.php');
-include('parseDOM.php');
 include('makeIndex.php');
 include('makeSection.php');
 include('makeNavigation.php');
@@ -14,10 +13,12 @@ include('makeCloudList.php');
 include('makeDoughnutList.php');
 include('storeBeacon.php');
 include('setConfiguration.php');
+include('makeCSV.php');
+include('makeXML.php');
 
-$thisCatalogue = setConfiguration('rehl');
+//$thisCatalogue = setConfiguration('rehl');
 //$thisCatalogue = setConfiguration('bahn');
-//$thisCatalogue = setConfiguration('liddel');
+$thisCatalogue = setConfiguration('liddel');
 $facets = $thisCatalogue->listFacets;
 $cloudFacets = $thisCatalogue->cloudFacets;
 $doughnutFacets = $thisCatalogue->doughnutFacets;
@@ -34,13 +35,17 @@ copy ('proprietary.js', $folderName.'/proprietary.js');
 copy ('chart.js', $folderName.'/chart.js');
 
 // Hole die vom Skript storeData.php zwischengespeicherten Daten aus dem Projektverzeichnis
-$dataString = file_get_contents($folderName.'/data-'.$thisCatalogue->key);
+$dataString = file_get_contents($folderName.'/dataPHP');
 $data = unserialize($dataString);
 unset($dataString);
 
 // Füge die Datasheets für den GeoBrowser dem Projektverzeichnis hinzu (zeitweise aufgehoben)
 makeGeoDataSheet($data, $folderName, 'KML');
 makeGeoDataSheet($data, $folderName, 'CSV');
+
+// Export als CSV- und XML-Datei
+makeCSV($data, $folderName);
+saveXML($data, $thisCatalogue, $folderName);
 
 /* Hier werden die Strukturen (jeweils ein Array aus section-Objekten) gebildet 
 und im Array $structures zwischengespeichert.
@@ -73,7 +78,7 @@ foreach($structures as $structure) {
 	$facet = $facets[$count];
 	$navigation = makeNavigation($thisCatalogue->fileName, $tocs, $facet);
 	$content = makeHead($thisCatalogue, $navigation, $facet);
-	$content .= makeList($structure, $thisCatalogue);
+	$content .= makeList($structure, $thisCatalogue, $folderName);
 	$content .= $foot;
 	$fileName = fileNameTrans($folderName.'/'.$thisCatalogue->fileName).'-'.$facet.'.html';
 	$datei = fopen($fileName,"w");

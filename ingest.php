@@ -17,7 +17,6 @@ function load_data_mysql($server, $user, $password, $database, $table) {
 				$thisBook->pageCat = $rowBooks['seite'];
 				$thisBook->numberCat = getNumberCat($rowBooks['nr']);
 				$thisBook->itemInVolume = getItemInVolume($rowBooks['nr']);
-				$thisBook->bibliographicalLevel = translateLevelEn($rowBooks['qualitaet']);
 				$thisBook->titleCat = htmlspecialchars($rowBooks['titel_vorlage']);
 				$thisBook->titleBib = htmlspecialchars($rowBooks['titel_bibliographiert']);
 				$thisBook->publisher = htmlspecialchars($rowBooks['drucker_verleger']);
@@ -34,10 +33,6 @@ function load_data_mysql($server, $user, $password, $database, $table) {
 				}
 				$thisBook->comment = $rowBooks['freitext'];
 				$thisBook->digitalCopy = $rowBooks['digital'];
-				
-				if($thisBook->bibliographicalLevel == 'work' and $thisBook->work['titleWork'] == '') {
-					$thisBook->work['titleWork'] = $thisBook->titleBib;
-				}
 				
 				$authorFields = array('autor', 'autor2', 'autor3', 'autor4');
 				foreach($authorFields as $field) {
@@ -122,7 +117,6 @@ function load_data_liddel($server, $user, $password, $database, $table) {
 			$thisBook = new item();
 			$thisBook->id = $rowBooks['system_no'];
 			//$thisBook->itemInVolume = getItemInVolume($rowBooks['nr']);
-			$thisBook->bibliographicalLevel = 'copy';
 			$thisBook->titleBib = htmlspecialchars($rowBooks['title']);
 			$thisBook->publisher = htmlspecialchars($rowBooks['printer']);
 			$thisBook->year = $rowBooks['date'];

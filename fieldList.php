@@ -6,7 +6,7 @@ given as $field to the function makeIndex and inserted in setConfiguration.php u
 to generate a separata page.
  */
 
-$normalFields = array('id', 'pageCat', 'imageCat', 'numberCat', 'itemInVolume', 'bibliographicalLevel', 'titleCat', 'titleBib', 'titleNormalized', 'publisher', 'year', 'format', 'histSubject', 'subject', 'genre', 'mediaType', 'bound', 'comment', 'digitalCopy');
+$normalFields = array('id', 'pageCat', 'imageCat', 'numberCat', 'itemInVolume', 'titleCat', 'titleBib', 'titleNormalized', 'publisher', 'year', 'format', 'histSubject', 'subject', 'genre', 'mediaType', 'bound', 'comment', 'digitalCopy');
 $personFields = array('persName', 'gnd', 'role');
 $placeFields = array('placeName', 'getty', 'geoNames');
 $arrayFields = array('languages');
@@ -22,10 +22,10 @@ $indexFields = array_merge($normalFields, $personFields, $placeFields, $arrayFie
 $volumeFields = array('numberCat', 'catSubjectFormat');
 
 // The following fields get additional word clouds or doughnuts if they are selected
-$wordCloudFields = array('bibliographicalLevel', 'publisher', 'year', 'format', 'histSubject', 'subject', 'genre', 'mediaType', 'persName', 'gnd', 'role', 'placeName', 'languages', 'systemManifestation', 'institutionOriginal', 'shelfmarkOriginal', 'provenanceAttribute');
-$doughnutFields = array('bibliographicalLevel', 'format', 'histSubject', 'subject', 'genre', 'mediaType', 'languages', 'systemManifestation', 'institutionOriginal', 'provenanceAttribute', 'bound');
+$wordCloudFields = array('publisher', 'year', 'format', 'histSubject', 'subject', 'genre', 'mediaType', 'persName', 'gnd', 'role', 'placeName', 'languages', 'systemManifestation', 'institutionOriginal', 'shelfmarkOriginal', 'provenanceAttribute');
+$doughnutFields = array('format', 'histSubject', 'subject', 'genre', 'mediaType', 'languages', 'systemManifestation', 'institutionOriginal', 'provenanceAttribute', 'bound');
 
 // Checkbox-Fields
-$checkboxFields = array('numberCat', 'catSubjectFormat', 'shelfmarkOriginal', 'persName', 'year', 'subject', 'histSubject', 'genre', 'languages', 'placeName', 'publisher', 'format', 'mediaType', 'bound', 'bibliographicalLevel', 'systemManifestation', 'institutionOriginal', 'provenanceAttribute', 'pageCat', 'titleWork');
+$checkboxFields = array('numberCat', 'catSubjectFormat', 'shelfmarkOriginal', 'persName', 'year', 'subject', 'histSubject', 'genre', 'languages', 'placeName', 'publisher', 'format', 'mediaType', 'bound', 'systemManifestation', 'institutionOriginal', 'provenanceAttribute', 'pageCat', 'titleWork');
 
 ?>

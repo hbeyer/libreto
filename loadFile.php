@@ -37,20 +37,20 @@ function makeItemFromCSVRow($row) {
 	$item->subject = $row[22];
 	$item->genre = $row[23];
 	$item->mediaType = $row[24];
-	$item->bibliographicalLevel = $row[28];		
-	$item->manifestation = array('systemManifestation' => $row[29], 'idManifestation' => $row[30]);
-	$item->originalItem =  array('institutionOriginal' => $row[31], 'shelfmarkOriginal' => $row[32], 'provenanceAttribute' => $row[33], 'digitalCopyOriginal' => $row[34], 'targetOPAC' => $row[35], 'searchID' => $row[36]);
-	$item->work = array('titleWork' => $row[37], 'systemWork' => $row[38], 'idWork' => $row[39]);		
-	$item->bound = $row[40];
-	$item->comment = $row[41];
-	$item->digitalCopy = $row[42];
+	$item->manifestation = array('systemManifestation' => $row[26], 'idManifestation' => $row[27]);
+	$item->originalItem =  array('institutionOriginal' => $row[28], 'shelfmarkOriginal' => $row[29], 'provenanceAttribute' => $row[30], 'digitalCopyOriginal' => $row[31], 'targetOPAC' => $row[32], 'searchID' => $row[33]);
+	$item->work = array('titleWork' => $row[34], 'systemWork' => $row[35], 'idWork' => $row[36]);		
+	$item->bound = $row[37];
+	$item->comment = $row[38];
+	$item->digitalCopy = $row[39];
 	
-	$languageFields = array($row[25], $row[26], $row[27]);
+	$item->languages = explode(';', $row[25]);
+	/* $languageFields = array($row[25], $row[26], $row[27]);
 	foreach($languageFields as $languageCode) {
 		if($languageCode) {
 			$item->languages[] = $languageCode;
 		}
-	}
+	} */
 	
 	$authorFields = array($row[8], $row[9], $row[10], $row[11]);
 	foreach($authorFields as $authorString) {

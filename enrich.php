@@ -115,9 +115,9 @@ include('storeBeacon.php');
 				$dataString = file_get_contents('uploadedData');
 				$data = unserialize($dataString);
 				unset($dataString);
-				//Das Laden wurde aus Zeitgründen deaktiviert, die Daten kommen solange aus der Datei baconStore-new
-				storeBeacon($data, '', 'new', $selectedBeacon);
-				$data = addBeacon($data, '', 'new');
+
+				storeBeacon($data, '', $selectedBeacon);
+				$data = addBeacon($data, 'user');
 				$_SESSION['beacon'] = 1;
 				echo '<p>Die Anreicherung mit biographischen Links war erfolgreich.<br>
 				Weiter zur <a href="annotate.php">Metadatenaufnahme</a>.</p>';

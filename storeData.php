@@ -25,8 +25,6 @@ include('makeGeoDataSheet.php');
 include('storeBeacon.php');
 include('setConfiguration.php');
 
-
-
 $thisCatalogue = setConfiguration('bahn');
 //$thisCatalogue = setConfiguration('rehl');
 //$facets = $thisCatalogue->facets;
@@ -41,12 +39,12 @@ if(is_dir($folderName) == FALSE) {
 $data = load_data_mysql('localhost', 'root', '', $thisCatalogue->database, 'zusammenfassung');
 
 // Suche in BEACON-Dateien nach Einträgen zu den erwähnten Personen und füge diese den Daten hinzu
-//storeBeacon($data, $folderName, $thisCatalogue->key);
-$data = addBeacon($data, $folderName, $thisCatalogue->key);
+//storeBeacon($data, $folderName);
+$data = addBeacon($data, $folderName);
 
 // Speichere die Daten im Projektverzeichnis
 $serialize = serialize($data);
-file_put_contents($folderName.'/data-'.$thisCatalogue->key, $serialize);
+file_put_contents($folderName.'/dataPHP', $serialize);
 
 var_dump($data);
 

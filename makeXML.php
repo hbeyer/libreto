@@ -46,51 +46,49 @@ function fillDOMItem($itemElement, $item, $dom) {
 				$itemElement = appendNodeUnlessVoid($itemElement, $itemArrayProperty);
 			}
 			elseif($test1 == 0 and isset($value[0])) {
-			//Fall 2.1: Variable ist ein Array aus einfachen Werten
-			if(is_string($value[0]) or is_integer($value[0])) {
-				$itemArrayProperty = $dom->createElement($key);
-				$fieldName = makeSubfieldName($key);
-				$itemArrayProperty = appendNumericArrayToDOM($itemArrayProperty, $value, $dom, $fieldName);
-				$itemElement = appendNodeUnlessVoid($itemElement, $itemArrayProperty);
-			}
-			//Fall 2.2: Variable ist ein Array aus Objekten
-			elseif(is_object($value[0])) {
-				$itemObjectProperty = $dom->createElement($key);
-				foreach($value as $object) {
-					$nameObject = get_class($object);
-					$objectElement = $dom->createElement($nameObject);
-					foreach($object as $objectKey => $objectValue) {
-						//Fall 2.2.1: Variable im Objekt ist ein Array
-						if(is_array($objectValue)) {
-							$objectVariable = $dom->createElement($objectKey);
-							$test = testIfAssociative($objectValue);
-							if($test == 1) {
-								$objectVariable = appendAssocArrayToDOM($objectVariable, $objectValue, $dom);
-							}
-							elseif($test == 0) {
-								$fieldName = makeSubfieldName($objectKey);
-								$objectVariable = appendNumericArrayToDOM($objectVariable, $objectValue, $dom, $fieldName);
-							}
-							elseif($test == 'uncertain') {
-								echo 'Fehlerhaftes Array gefunden:<br />'.var_dump($objectValue);
-							}
-							$objectElement = appendNodeUnlessVoid($objectElement, $objectVariable);
-						}
-						//Fall 2.2.2: Variable im Objekt ist ein Integer oder String
-						elseif(is_int($objectValue) or is_string($objectValue)) {
-							$objectVariable = $dom->createElement($objectKey, $objectValue);
-							$objectElement = appendNodeUnlessVoid($objectElement, $objectVariable);
-						}
-					}
-					$itemObjectProperty->appendChild($objectElement);
+				//Fall 2.1: Variable ist numerisches Array aus einfachen Werten
+				if(is_string($value[0]) or is_integer($value[0])) {
+					$itemArrayProperty = $dom->createElement($key);
+					$fieldName = makeSubfieldName($key);
+					$itemArrayProperty = appendNumericArrayToDOM($itemArrayProperty, $value, $dom, $fieldName);
+					$itemElement = appendNodeUnlessVoid($itemElement, $itemArrayProperty);
 				}
-				$itemElement = appendNodeUnlessVoid($itemElement, $itemObjectProperty);
+				//Fall 2.2: Variable ist ein numerisches Array aus Objekten
+				elseif(is_object($value[0])) {
+					$itemObjectProperty = $dom->createElement($key);
+					//Iteration über die Variablen des gefundenen Objekts
+					foreach($value as $object) {
+						$nameObject = get_class($object);
+						$objectElement = $dom->createElement($nameObject);
+						foreach($object as $objectKey => $objectValue) {
+							//Fall 2.2.1: Variable im Objekt ist ein Array
+							if(is_array($objectValue)) {
+								$objectVariable = $dom->createElement($objectKey);
+								$test = testIfAssociative($objectValue);
+								//Fall 2.2.1.1: Variable im Objekt ist ein assoziatives Array
+								if($test == 1) {
+									$objectVariable = appendAssocArrayToDOM($objectVariable, $objectValue, $dom);
+								}
+								//Fall 2.2.1.2: Variable im Objekt ist ein numerisches Array
+								elseif($test == 0) {
+									//Generieren eines Namens für das Subfeld, weil Integer in XML nicht akzeptiert werden
+									$fieldName = makeSubfieldName($objectKey);
+									$objectVariable = appendNumericArrayToDOM($objectVariable, $objectValue, $dom, $fieldName);
+								}
+								$objectElement = appendNodeUnlessVoid($objectElement, $objectVariable);
+							}
+							//Fall 2.2.2: Variable im Objekt ist ein Integer oder String
+							elseif(is_int($objectValue) or is_string($objectValue)) {
+								$objectVariable = $dom->createElement($objectKey, $objectValue);
+								$objectElement = appendNodeUnlessVoid($objectElement, $objectVariable);
+							}
+						}
+						$itemObjectProperty->appendChild($objectElement);
+					}
+					$itemElement = appendNodeUnlessVoid($itemElement, $itemObjectProperty);
+				}
 			}
 		}
-			
-		}
-		
-		
 	}
 	return($itemElement);
 }
@@ -101,6 +99,7 @@ function appendNodeUnlessVoid($parent, $child) {
 	}
 	return($parent);
 }
+
 
 function testIfAssociative($array) {
 	$result = 'uncertain';
