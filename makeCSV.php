@@ -24,8 +24,8 @@ function makeCSV($data, $fileName) {
 		'year',
 		'format',
 		'histSubject',
-		'subject',
-		'genre',
+		'subjects',
+		'genres',
 		'mediaType',
 		'languages',
 		'systemManifestation',
@@ -57,23 +57,12 @@ function makeCSV($data, $fileName) {
 }
 
 function makeRowCSV($item) {
+	include('fieldList.php');
 	$row = array();
 	foreach($item as $key => $value) {
 		if(is_array($value)) {
-			if($key == 'languages') {
-				$languages = implode(';', $value);
-				$row[] = $languages;
-				/* $count = 0;
-				foreach($value as $language) {
-					if($count < 3) {
-						$row[] = $language;
-						$count++;
-					}
-				}
-				while($count < 3) {
-					$row[] = '';
-					$count++;
-				} */
+			if(in_array($key, $arrayFields)) {
+				$row[] = implode(';', $value);
 			}
 			elseif($key == 'persons') {
 				$row = array_merge($row, makePersonRowCSV($value));

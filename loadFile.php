@@ -34,8 +34,8 @@ function makeItemFromCSVRow($row) {
 	$item->year = $row[19];
 	$item->format = $row[20];
 	$item->histSubject = $row[21];
-	$item->subject = $row[22];
-	$item->genre = $row[23];
+	$item->subjects = explode(';', $row[22]);
+	$item->genres = explode(';', $row[23]);
 	$item->mediaType = $row[24];
 	$item->manifestation = array('systemManifestation' => $row[26], 'idManifestation' => $row[27]);
 	$item->originalItem =  array('institutionOriginal' => $row[28], 'shelfmarkOriginal' => $row[29], 'provenanceAttribute' => $row[30], 'digitalCopyOriginal' => $row[31], 'targetOPAC' => $row[32], 'searchID' => $row[33]);

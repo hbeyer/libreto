@@ -37,7 +37,7 @@ function translateFieldNames($field) {
 		'id' => 'Katalog', 
 		'shelfmarkOriginal' => 'Signaturen', 		
 		'persName' => 'Personen',
-		'subject' => 'Inhalte', 
+		'subjects' => 'Inhalte', 
 		'histSubject' => 'Rubriken', 
 		'year' => 'Datierung', 
 		'placeName' => 'Orte', 
@@ -46,7 +46,7 @@ function translateFieldNames($field) {
 		'format' => 'Formate', 
 		'mediaType' => 'Materialarten', 
 		'systemManifestation' => 'Nachweise', 
-		'genre' => 'Gattungen');
+		'genres' => 'Gattungen');
 	$result = strtr($field, $translation);
 	return($result);		
 }
@@ -55,7 +55,7 @@ function translateFieldNamesButtons($field) {
 	$translation = array(
 		'shelfmarkOriginal' => 'Signaturen',
 		'persName' => 'Personen',
-		'subject' => 'Inhalte', 
+		'subjects' => 'Inhalte', 
 		'histSubject' => 'Rubriken',
 		'year' => 'Jahre',
 		'placeName' => 'Orte', 
@@ -68,7 +68,7 @@ function translateFieldNamesButtons($field) {
 		'role' => 'Rollen',
 		'institutionOriginal' => 'Institutionen',
 		'provenanceAttribute' => 'Provenienzmerkmale',
-		'genre' => 'Gattungen',
+		'genres' => 'Gattungen',
 		'bibliographicalLevel' => 'Bibliographische Gattungen'
 		);
 	$result = strtr($field, $translation);
@@ -90,7 +90,7 @@ function translateCheckboxNames($field) {
 		'id' => 'ID', 
 		'shelfmarkOriginal' => 'Signatur', 		
 		'persName' => 'Person',
-		'subject' => 'Inhalt', 
+		'subjects' => 'Inhalt', 
 		'histSubject' => 'Rubrik', 
 		'year' => 'Erscheinungsjahr', 
 		'placeName' => 'Ort', 
@@ -99,7 +99,7 @@ function translateCheckboxNames($field) {
 		'format' => 'Format', 
 		'mediaType' => 'Materialart', 
 		'systemManifestation' => 'Nachgewiesen in', 
-		'genre' => 'Gattung');
+		'genres' => 'Gattung');
 	$result = strtr($field, $translation);
 	return($result);		
 }

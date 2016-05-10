@@ -32,8 +32,8 @@
 			public $year;
 			public $format;
 			public $histSubject;
-			public $subject;
-			public $genre;
+			public $subjects = array(); // Contains one ore more indications of subject as string
+			public $genres = array(); // Contains one ore more indications of genre as string
 			public $mediaType; //Book, Manuscript, Physical Object, etc.
 			public $languages = array(); //One or more language codes according to ISO 639.2
 			public $manifestation = array('systemManifestation' => '', 'idManifestation' => ''); //Entry in a bibliographic database or library catalogue			

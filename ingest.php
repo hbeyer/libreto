@@ -23,8 +23,8 @@ function load_data_mysql($server, $user, $password, $database, $table) {
 				$thisBook->year = $rowBooks['jahr'];
 				$thisBook->format = $rowBooks['format'];
 				$thisBook->histSubject = $rowBooks['sachgruppe_historisch'];
-				$thisBook->subject = $rowBooks['sachbegriff'];
-				$thisBook->genre = $rowBooks['gattungsbegriff'];
+				$thisBook->subjects[] = $rowBooks['sachbegriff'];
+				$thisBook->genres[] = $rowBooks['gattungsbegriff'];
 				$thisBook->mediaType = translateTermsDeEn($rowBooks['medium']);
 				$thisBook->manifestation['systemManifestation'] = $rowBooks['nachweis'];				
 				$thisBook->manifestation['idManifestation'] = $rowBooks['datensatz'];
@@ -120,7 +120,7 @@ function load_data_liddel($server, $user, $password, $database, $table) {
 			$thisBook->titleBib = htmlspecialchars($rowBooks['title']);
 			$thisBook->publisher = htmlspecialchars($rowBooks['printer']);
 			$thisBook->year = $rowBooks['date'];
-			$thisBook->subject = $rowBooks['subject'];
+			$thisBook->subjects[] = $rowBooks['subject'];
 			$thisBook->mediaType = 'Book';
 			$thisBook->originalItem['institutionOriginal'] = 'Aberdeen, Sir Duncan Rice Library';				
 			$thisBook->originalItem['shelfmarkOriginal'] = $rowBooks['shelfmark'];
