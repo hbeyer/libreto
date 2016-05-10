@@ -1,15 +1,26 @@
 ﻿<?php
 
-function arrayGND($data) {
-	$gndArray = array();
-	foreach($data as $item) {
-		foreach($item->persons as $person) {
-			if((in_array($person->gnd, $gndArray) == FALSE) and ($person->gnd != '')) {
-				$gndArray[] = $person->gnd;
-			}
+function cacheBeacon($sources, $seconds) {
+	$test = 0;
+	// Calculate how much time has passed since the last update of the files
+	$age = date('U') - filemtime('beaconFiles');
+	if($age > $seconds) {
+		$test = 1;
+	}
+	// Test whether all Beacon files are present in the folder beaconFiles
+	foreach($sources as $key => $source) {
+		if(file_exists('beaconFiles/'.$key) == FALSE) {
+			$test = 1;
 		}
 	}
-	return($gndArray);
+	// Download new files if necessary
+	if($test == 1) {
+		ini_set('user_agent','Herzog August Bibliothek, Dr. Hartmut Beyer');
+		foreach($sources as $key => $source) {
+			$beaconFile = file_get_contents($source['location']);
+			file_put_contents('beaconFiles/'.$key, $beaconFile);
+		}
+	}
 }
 
 function storeBeacon($data, $folderName, $selectedBeacon = 'all') {
@@ -24,16 +35,16 @@ function storeBeacon($data, $folderName, $selectedBeacon = 'all') {
 	ini_set('user_agent','Herzog August Bibliothek, Dr. Hartmut Beyer');
 	foreach($beaconSources as $key => $source) {
 		if(in_array($key, $selectedBeacon)) {
-			$beaconFile = file_get_contents($source['location']);
+			$beaconFile = file_get_contents('beaconFiles/'.$key);
 			$interimResult = array();
 			foreach($gndArray as $gnd) {
 				preg_match('%'.$gnd.'%', $beaconFile, $treffer);
 				if(isset($treffer[0])) {
 					$interimResult[] = $gnd;
 				}
-					unset($treffer);
+				unset($treffer);
 			}
-				unset($beaconFile);
+			unset($beaconFile);
 			$result[$key] = $interimResult;
 		}
 	}
@@ -74,6 +85,18 @@ function addBeacon($data, $folderName) {
 		}
 	}
 	return($data);
+}
+
+function arrayGND($data) {
+	$gndArray = array();
+	foreach($data as $item) {
+		foreach($item->persons as $person) {
+			if((in_array($person->gnd, $gndArray) == FALSE) and ($person->gnd != '')) {
+				$gndArray[] = $person->gnd;
+			}
+		}
+	}
+	return($gndArray);
 }
 
 ?>

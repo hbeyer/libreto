@@ -56,11 +56,11 @@ $beaconSources = array(
 		'location' => 'http://www.portraitindex.de/pnd_beacon.txt',
 		'target' => 'http://www.portraitindex.de/dokumente/pnd/{ID}'
 	),
-/* 	'vkk' => array(
+ 	'vkk' => array(
 		'label' => 'Virtuelles Kupferstichkabinett',
 		'location' => 'http://www.virtuelles-kupferstichkabinett.de/beacon.php',
 		'target' => 'http://www.virtuelles-kupferstichkabinett.de/index.php?reset=1&subPage=search&selTab=2&habFilter=1&haumFilter=1&selFilter=0&sKey1=pzusatz&sWord1={ID}'
-	),	 */	
+	),
 	'trithemius' => array(
 		'label' => 'Trithemius, De scriptoribus ecclesiasticis',
 		'location' => 'http://www.mgh-bibliothek.de/beacon/trithemius',
@@ -70,7 +70,7 @@ $beaconSources = array(
 		'label' => 'Fabricius, Bibliotheca latina',
 		'location' => 'http://www.mgh-bibliothek.de/beacon/fabricius',
 		'target' => 'http://www.mgh.de/index.php?&wa72ci_url=%2Fcgi-bin%2Fmgh%2Fallegro.pl&db=opac&var5=IDN&TYP=&id=438&item5=fabricius_{ID}'
-	)						
+	)			
 );
 
 $beaconKeys = array();

@@ -115,7 +115,9 @@ include('storeBeacon.php');
 				$dataString = file_get_contents('uploadedData');
 				$data = unserialize($dataString);
 				unset($dataString);
-
+				
+				//Update of the stored Beacon files if they are older than one week, i. e. 604800 Seconds
+				cacheBeacon($beaconSources, 604800);
 				storeBeacon($data, '', $selectedBeacon);
 				$data = addBeacon($data, 'user');
 				$_SESSION['beacon'] = 1;
