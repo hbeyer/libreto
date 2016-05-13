@@ -75,6 +75,9 @@ include('storeBeacon.php');
 				}
 			}
 			$archive->saveToFile();
+			$serialize = serialize($data);
+			file_put_contents('uploadedData', $serialize);
+			unset($data);
 			$unidentifiedPlaces = array_unique($unidentifiedPlaces);
 			$unidentifiedList = implode(', ', $unidentifiedPlaces);
 			$_SESSION['geoData'] = 1;

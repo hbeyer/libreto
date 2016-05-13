@@ -46,6 +46,17 @@ function setConfiguration($key) {
 		$thisCatalogue->cloudFacets = array('shelfmarkOriginal', 'persName', 'subjects', 'languages', 'placeName', 'publisher');
 		$thisCatalogue->doughnutFacets = array('persName', 'subjects', 'languages', 'placeName', 'publisher', 'systemManifestation');
 		return($thisCatalogue);
+	}
+	if($key == 'hardt') {
+		$thisCatalogue->heading = 'Luthersammlung Hermann von der Hardt';
+		$thisCatalogue->fileName = 'luthersammlung';
+		$thisCatalogue->description = 'Die Luthersammlung ist benannt nach dem Theologen und Orientalisten Hermann von der Hardt (1660–1746), der als Helmstedter Universitätsbibliothekar bedeutende Erwerbungen an Lutherschriften machte und zudem ein enger Mitarbeiter bei der Luthersammlung von Herzog Rudolf August von Braunschweig-Wolfenbüttel war. Die Sammlung stammt nicht aus Von der Hardts Nachlass, sondern enthält Lutherdrucke Ludwig Rudolphs, die 1704 in die Universitätsbibliothek Helmstedt kamen.';
+		$thisCatalogue->year = '1830';
+		$thisCatalogue->GeoBrowserStorageID = '324401';
+		$thisCatalogue->listFacets = array('shelfmarkOriginal', 'persName', 'year', 'placeName', 'languages', 'publisher', 'format', 'subject');
+		$thisCatalogue->cloudFacets = array('shelfmarkOriginal', 'persName', 'placeName', 'languages', 'publisher', 'format', 'subject');
+		$thisCatalogue->doughnutFacets = array('persName', 'placeName', 'languages', 'publisher', 'format', 'subject');
+		return($thisCatalogue);
 	}	
 	
 }

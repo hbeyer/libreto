@@ -40,7 +40,7 @@ include('loadFile.php');
 				<form  enctype="multipart/form-data" action="load.php" method="POST">
 					<div class="form-group">
 						<!-- MAX_FILE_SIZE muss vor dem Dateiupload Input Feld stehen -->
-						<input type="hidden" name="MAX_FILE_SIZE" value="300000" />
+						<input type="hidden" name="MAX_FILE_SIZE" value="3000000" />
 						<!-- Der Name des Input Felds bestimmt den Namen im $_FILES Array -->
 						<input name="userfile" type="file" />
 						<input type="submit" value="Laden" />
@@ -75,9 +75,9 @@ include('loadFile.php');
 					}
 					
 				} 
-			else {
-				echo '<p>Fehler: Datei konnte nicht gespeichert werden.</p>';
-			}
+				else {
+					echo '<p>Fehler: Datei konnte nicht gespeichert werden.</p>';
+				}
 			}
 		}
 		

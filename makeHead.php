@@ -11,7 +11,7 @@ function makeHead($thisCatalogue, $navigation, $field) {
 	$transcriptionLink = '';
 	if($thisCatalogue->title) {
 		$transcriptionLink = '<br />
-		<span id="switchLink"><a href="javascript:switchToOriginal()">Transkription des Katalogs</a></span><br/>&nbsp;';
+		<span id="switchLink"><a href="javascript:switchToOriginal()">Anzeige in Vorlageform</a></span><br/>&nbsp;';
 	}
 	$classLi = 'download';
 	if($field == 'jqcloud' or $field == 'doughnut') {

@@ -23,7 +23,7 @@ $volumeFields = array('numberCat', 'catSubjectFormat');
 
 // The following fields get additional word clouds or doughnuts if they are selected
 $wordCloudFields = array('publisher', 'year', 'format', 'histSubject', 'subjects', 'genres', 'mediaType', 'persName', 'gnd', 'role', 'placeName', 'languages', 'systemManifestation', 'institutionOriginal', 'shelfmarkOriginal', 'provenanceAttribute');
-$doughnutFields = array('format', 'histSubject', 'subjects', 'genres', 'mediaType', 'languages', 'systemManifestation', 'institutionOriginal', 'provenanceAttribute', 'bound');
+$doughnutFields = array('persName', 'format', 'histSubject', 'subjects', 'genres', 'mediaType', 'languages', 'systemManifestation', 'institutionOriginal', 'provenanceAttribute', 'bound');
 
 // Checkbox-Fields
 $checkboxFields = array('numberCat', 'catSubjectFormat', 'shelfmarkOriginal', 'persName', 'year', 'subjects', 'histSubject', 'genres', 'languages', 'placeName', 'publisher', 'format', 'mediaType', 'bound', 'systemManifestation', 'institutionOriginal', 'provenanceAttribute', 'pageCat', 'titleWork');

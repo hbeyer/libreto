@@ -18,7 +18,8 @@ include('makeXML.php');
 
 //$thisCatalogue = setConfiguration('rehl');
 //$thisCatalogue = setConfiguration('bahn');
-$thisCatalogue = setConfiguration('liddel');
+//$thisCatalogue = setConfiguration('liddel');
+$thisCatalogue = setConfiguration('hardt');
 $facets = $thisCatalogue->listFacets;
 $cloudFacets = $thisCatalogue->cloudFacets;
 $doughnutFacets = $thisCatalogue->doughnutFacets;
@@ -40,12 +41,12 @@ $data = unserialize($dataString);
 unset($dataString);
 
 // Füge die Datasheets für den GeoBrowser dem Projektverzeichnis hinzu (zeitweise aufgehoben)
-makeGeoDataSheet($data, $folderName, 'KML');
-makeGeoDataSheet($data, $folderName, 'CSV');
+//makeGeoDataSheet($data, $folderName, 'KML');
+//makeGeoDataSheet($data, $folderName, 'CSV');
 
 // Export als CSV- und XML-Datei
-makeCSV($data, $folderName);
-saveXML($data, $thisCatalogue, $folderName);
+//makeCSV($data, $folderName);
+//saveXML($data, $thisCatalogue, $folderName);
 
 /* Hier werden die Strukturen (jeweils ein Array aus section-Objekten) gebildet 
 und im Array $structures zwischengespeichert.

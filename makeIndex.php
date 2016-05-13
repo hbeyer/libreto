@@ -259,7 +259,7 @@ function preprocessFields($field, $value, $item) {
 		if($value == '') {
 			$value = 'ohne Werktitel';
 		}
-	}	
+	}
 	elseif($value == '') {
 		$value = 'ohne Kategorie';
 	}
@@ -273,8 +273,13 @@ function postprocessFields($field, $value) {
 		$value = reverseSortingFormat($value);
 	}
 	if($field == 'languages') {
-		include('languageCodes.php');
-		$value = $languageCodes[$value];
+		if($value == '' or $value == 'ohne Kategorie') {
+			$value = 'ohne Angabe';
+		}
+		else {
+			include('languageCodes.php');
+			$value = $languageCodes[$value];
+		}
 	}
 	if($field == 'year') {
 		if($value == 9999) {
