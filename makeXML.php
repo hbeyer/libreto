@@ -4,6 +4,17 @@
 Ungelöstes Problem in diesem Skript: &-Zeichen in URLs lösen Fehlermeldungen aus. Codiert man sie als &amp;, 
 kann der Link nicht mehr aufgerufen werden. Der Versuch, sie stattdessen als &#38; zu codieren (Funktion replaceAmp)
 führt seltsamerweise zur Ausgabe &amp; 
+
+Die (noch nicht integrierte) Lösung:
+
+Einfügen von Text ins DOM nicht so:
+$node = $dom->createElement($key, $value);
+
+Sondern so:
+$node = $dom->createElement($key);
+$text = $dom->createTextNode($value);
+$node->appendChild($text);
+
 */
 
 function saveXML($data, $catalogue, $folderName) {
@@ -99,7 +110,6 @@ function appendNodeUnlessVoid($parent, $child) {
 	}
 	return($parent);
 }
-
 
 function testIfAssociative($array) {
 	$result = 'uncertain';

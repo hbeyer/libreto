@@ -1,6 +1,31 @@
 ﻿<?php
 
-function makeFlatData($data) {
+function saveSOLRXML($SOLRArray, $fileName) {
+	$folder = '';
+	$dom = new DOMDocument('1.0', 'UTF-8');
+	$dom->formatOutput = true;
+	$rootElement = $dom->createElement('add');
+	foreach($SOLRArray as $item) {
+		$itemElement = $dom->createElement('doc');
+		foreach($item as $key => $value) {
+			$fieldElement = $dom->createElement('field');
+			$fieldContent = $dom->createTextNode($value);
+			$fieldElement->appendChild($fieldContent);
+			$fieldAttribute = $dom->createAttribute('name');
+			$fieldAttribute->value = $key;
+			$fieldElement->appendChild($fieldAttribute);
+			$itemElement->appendChild($fieldElement);
+		}
+		$rootElement->appendChild($itemElement);
+	}
+	$dom->appendChild($rootElement);
+	$result = $dom->saveXML();
+	$handle = fopen($folder.$fileName.'.xml', "w");
+	fwrite($handle, $result, 3000000);
+}
+
+
+function makeSOLRArray($data) {
 	$flatData = array();
 	foreach($data as $item) {
 		$row = flattenItem($item);
@@ -21,7 +46,10 @@ function flattenItem($item) {
 			}
 		}
 		elseif(testArrayType($value) == 'num') {
-			$result[$key] = implode(' ', $value);
+			// Die folgende Bedingung verhindert leere Felder für genres, subjects und languages
+			if($value != array('') and $value != array()) {
+				$result[$key] = implode(' ', $value);
+			}
 		}		
 		elseif(testArrayType($value) == 'assoc') {
 			foreach($value as $key1 => $value1) {
@@ -116,6 +144,7 @@ function resolveBeacon($beaconArray, $gnd) {
 	foreach($beaconArray as $beaconKey) {
 		$beaconString .= $beaconSources[$beaconKey]['label'].'#'.makeBeaconLink($gnd, $beaconSources[$beaconKey]['target']).';';
 	}
+	$beaconString = trim($beaconString, ';');
 	return($beaconString);
 }
 
@@ -164,6 +193,30 @@ function resolveLanguages($row) {
 		}
 	}
 	return($row);
+}
+
+function addMetaDataSOLR($catalogue, $flatData) {
+	$result = array();
+	$metaData = array();
+	if($catalogue->owner) {
+		$metaData['owner'] = $catalogue->owner;
+	}
+	if($catalogue->ownerGND) {
+		$metaData['ownerGND'] = $catalogue->ownerGND;
+	}
+	if($catalogue->year) {
+		$metaData['dateCollection'] = $catalogue->year;
+	}
+	if($catalogue->heading) {
+		$metaData['nameCollection'] = $catalogue->heading;
+	}
+	foreach($flatData as $item) {
+		foreach($metaData as $key => $value) {
+			$item[$key] = $value;
+		}
+		$result[] = $item;
+	}
+	return($result);
 }
 
 ?>

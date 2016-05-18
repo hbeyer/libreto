@@ -7,7 +7,9 @@ function setConfiguration($key) {
 	
 	if($key == 'rehl') {
 		$thisCatalogue->base = 'http://diglib.hab.de/drucke/bc-kapsel-19-7s/start.htm?image=';
-		$thisCatalogue->heading = 'Bibliothek Karl Wolfgang Rehlinger';
+		$thisCatalogue->owner = 'Rehlinger, Carl Wolfgang';
+		$thisCatalogue->ownerGND = '1055708286';
+		$thisCatalogue->heading = 'Bibliothek Carl Wolfgang Rehlinger';
 		$thisCatalogue->fileName = 'rehlinger';
 		$thisCatalogue->database = 'rehlinger';
 		$thisCatalogue->title = 'Index Librorvm: Qvos Nobilis Et Ornatissimvs Vir Carolvs VVolfgangvs Relingervs synceri Euangelij ministrorum, Augustæ, vsui liberali sumptu comparauit, ijsq[ue] in omne æuum d.d. secundum altitudinem exemplarium dispositus';
@@ -22,6 +24,8 @@ function setConfiguration($key) {
 	}
 	elseif($key == 'bahn') {
 		$thisCatalogue->base = 'http://diglib.hab.de/drucke/bc-kapsel-7-23s/start.htm?image=';
+		$thisCatalogue->owner = 'Bahnsen, Benedikt';
+		$thisCatalogue->ownerGND = '128989289';
 		$thisCatalogue->heading = 'Bibliothek Benedikt Bahnsen';
 		$thisCatalogue->fileName = 'bahnsen';
 		$thisCatalogue->database = 'bahnsen';
@@ -36,6 +40,8 @@ function setConfiguration($key) {
 		return($thisCatalogue);
 	}
 	if($key == 'liddel') {
+		$thisCatalogue->owner = 'Liddel, Duncan';
+		$thisCatalogue->ownerGND = '117671622';
 		$thisCatalogue->heading = 'Bibliothek Duncan Liddel';
 		$thisCatalogue->fileName = 'liddel';
 		$thisCatalogue->database = 'helmstedt';
@@ -48,6 +54,8 @@ function setConfiguration($key) {
 		return($thisCatalogue);
 	}
 	if($key == 'hardt') {
+		$thisCatalogue->owner = 'Herzog August Bibliothek Wolfenbüttel';
+		$thisCatalogue->ownerGND = '8989-8';
 		$thisCatalogue->heading = 'Luthersammlung Hermann von der Hardt';
 		$thisCatalogue->fileName = 'luthersammlung';
 		$thisCatalogue->description = 'Die Luthersammlung ist benannt nach dem Theologen und Orientalisten Hermann von der Hardt (1660–1746), der als Helmstedter Universitätsbibliothekar bedeutende Erwerbungen an Lutherschriften machte und zudem ein enger Mitarbeiter bei der Luthersammlung von Herzog Rudolf August von Braunschweig-Wolfenbüttel war. Die Sammlung stammt nicht aus Von der Hardts Nachlass, sondern enthält Lutherdrucke Ludwig Rudolphs, die 1704 in die Universitätsbibliothek Helmstedt kamen.';
