@@ -18,8 +18,8 @@ include('makeXML.php');
 
 //$thisCatalogue = setConfiguration('rehl');
 //$thisCatalogue = setConfiguration('bahn');
-//$thisCatalogue = setConfiguration('liddel');
-$thisCatalogue = setConfiguration('hardt');
+$thisCatalogue = setConfiguration('liddel');
+//$thisCatalogue = setConfiguration('hardt');
 $facets = $thisCatalogue->listFacets;
 $cloudFacets = $thisCatalogue->cloudFacets;
 $doughnutFacets = $thisCatalogue->doughnutFacets;

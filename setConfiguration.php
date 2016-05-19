@@ -69,7 +69,4 @@ function setConfiguration($key) {
 	
 }
 
-// Maximale Facettierung
-//$thisCatalogue->facets = array('cat', 'persName', 'year', 'subject', 'genre', 'placeName', 'languages', 'publisher', 'format', 'manifestation');
-
 ?>

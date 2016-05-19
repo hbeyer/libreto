@@ -1,6 +1,7 @@
 ﻿<?php
 
 function saveSOLRXML($SOLRArray, $fileName) {
+	$SOLRArray = assignUniqueIDs($SOLRArray, $fileName);
 	$folder = '';
 	$dom = new DOMDocument('1.0', 'UTF-8');
 	$dom->formatOutput = true;
@@ -20,21 +21,20 @@ function saveSOLRXML($SOLRArray, $fileName) {
 	}
 	$dom->appendChild($rootElement);
 	$result = $dom->saveXML();
-	$handle = fopen($folder.$fileName.'.xml', "w");
+	$handle = fopen($folder.$fileName.'-SOLR.xml', "w");
 	fwrite($handle, $result, 3000000);
 }
 
-
 function makeSOLRArray($data) {
-	$flatData = array();
+	$SOLRArray = array();
 	foreach($data as $item) {
 		$row = flattenItem($item);
 		$row = resolveManifestation($row);
 		$row = resolveOriginal($row);
 		$row = resolveLanguages($row);
-		$flatData[] = $row;
+		$SOLRArray[] = $row;
 	}
-	return($flatData);
+	return($SOLRArray);
 }
 
 function flattenItem($item) {
@@ -210,11 +210,30 @@ function addMetaDataSOLR($catalogue, $flatData) {
 	if($catalogue->heading) {
 		$metaData['nameCollection'] = $catalogue->heading;
 	}
+	if($catalogue->GeoBrowserStorageID) {
+		$metaData['GeoBrowserLink'] = 'https://geobrowser.de.dariah.eu/?csv1=http://geobrowser.de.dariah.eu./storage/'.$catalogue->GeoBrowserStorageID;
+	}
 	foreach($flatData as $item) {
 		foreach($metaData as $key => $value) {
 			$item[$key] = $value;
 		}
 		$result[] = $item;
+	}
+	return($result);
+}
+
+function assignUniqueIDs($flatData, $fileName) {
+	$count = 0;
+	$result = array();
+	foreach($flatData as $item) {
+		if(isset($item['id'])) {
+			$item['id'] = $fileName.$item['id'];
+		}
+		else {
+			$item['id'] = $fileName.'-position'.$count;
+		}
+		$result[] = $item;
+		$count++;
 	}
 	return($result);
 }

@@ -99,7 +99,7 @@ function switchToBibl() {
 		c[i].style.display='inline';
 	}			
 	z = document.getElementById("switchLink");
-	z.innerHTML = "<a href='javascript:switchToOriginal()'>Transkription des Katalogs</a>";
+	z.innerHTML = "<a href='javascript:switchToOriginal()'>Anzeige in Vorlageform</a>";
 }
 
 /* For generating and updating word clouds by jQCloud */
