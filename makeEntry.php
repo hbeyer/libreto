@@ -78,8 +78,11 @@ function makeOriginalLink($originalItem) {
 		$result = $institutionOriginal.', '.$shelfmarkOriginal;
 		if($targetOPAC and $searchID) {
 			$link = makeBeaconLink($searchID, $targetOPAC);
-			$result = '<a href="'.$link.'" target="_blank">'.$result.'</a>';
 		}
+		elseif($targetOPAC and $shelfmarkOriginal) {
+			$link = makeBeaconLink($shelfmarkOriginal, $targetOPAC);
+		}
+		$result = '<a href="'.$link.'" target="_blank">'.$result.'</a>';		
 		if($provenanceAttribute) {
 			$result .= '; Grund für Zuschreibung: '.$provenanceAttribute;
 		}

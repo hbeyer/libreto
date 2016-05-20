@@ -254,6 +254,9 @@ function preprocessFields($field, $value, $item) {
 	}
 	elseif($field == 'format') {
 		$value = sortingFormat($value);
+		if($value == '') {
+			$value = 'ohne Angabe';
+		}		
 	}
 	elseif($field == 'titleWork') {
 		if($value == '') {

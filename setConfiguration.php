@@ -58,8 +58,8 @@ function setConfiguration($key) {
 		$thisCatalogue->ownerGND = '8989-8';
 		$thisCatalogue->heading = 'Luthersammlung Hermann von der Hardt';
 		$thisCatalogue->fileName = 'luthersammlung';
-		$thisCatalogue->description = 'Die Luthersammlung ist benannt nach dem Theologen und Orientalisten Hermann von der Hardt (1660–1746), der als Helmstedter Universitätsbibliothekar bedeutende Erwerbungen an Lutherschriften machte und zudem ein enger Mitarbeiter bei der Luthersammlung von Herzog Rudolf August von Braunschweig-Wolfenbüttel war. Die Sammlung stammt nicht aus Von der Hardts Nachlass, sondern enthält Lutherdrucke Ludwig Rudolphs, die 1704 in die Universitätsbibliothek Helmstedt kamen.';
-		$thisCatalogue->year = '1830';
+		$thisCatalogue->description = 'Diese Luthersammlung ist benannt nach dem Theologen und Orientalisten Hermann von der Hardt (1660–1746), der ein enger Mitarbeiter von Herzog Rudolf August von Braunschweig-Wolfenbüttel war und ihn bei seiner Sammlung von Reformationsschriften unterstützte. 1703 kam die Sammlung Rudolf Augusts in die Universitätsbibliothek Helmstedt. Im Katalog der Helmstedter Druckschriften aus dem späten 18. Jahrhundert sind sie unter dem Buchstaben F ("Lutheri scripta") aufgeführt. Diese Lutherschriften kamen 1815 (Quartbände) und 1828 (übrige Bände) nach Wolfenbüttel. Dort wurden sie unter dem Bibliothekar Karl Philipp Christian Schönemann (amtierte 1830–1854) teilweise neu gebunden, vermutlich kamen neue Schriften aus aufgelösten Sammelbänden hinzu.';
+		$thisCatalogue->year = '1850';
 		$thisCatalogue->GeoBrowserStorageID = '324401';
 		$thisCatalogue->listFacets = array('shelfmarkOriginal', 'persName', 'year', 'placeName', 'languages', 'publisher', 'format', 'subject');
 		$thisCatalogue->cloudFacets = array('shelfmarkOriginal', 'persName', 'placeName', 'languages', 'publisher', 'format', 'subject');
