@@ -32,6 +32,7 @@ function makeSOLRArray($data) {
 		$row = resolveManifestation($row);
 		$row = resolveOriginal($row);
 		$row = resolveLanguages($row);
+		$row = addNormalizedYear($row);
 		$SOLRArray[] = $row;
 	}
 	return($SOLRArray);
@@ -236,6 +237,22 @@ function assignUniqueIDs($flatData, $fileName) {
 		$count++;
 	}
 	return($result);
+}
+
+function addNormalizedYear($row) {
+	$normalizedYear = '';
+	if(isset($row['year'])) {
+		$normalizedYear = normalizeYear($row['year']);
+		if($normalizedYear == '') {
+			if(isset($row['titleCat'])) {
+				$normalizedYear = getYearFromTitle($row['titleCat']);
+			}
+		}
+		if($normalizedYear != '') {
+			$row['yearNormalized'] = $normalizedYear;
+		}
+	}
+	return($row);
 }
 
 ?>
