@@ -1,6 +1,8 @@
 ﻿<?php
 
 function saveSOLRXML($SOLRArray, $fileName) {
+	//The following elements have to be repeated so that SOLR accepts them as multiValued. Delimiter is ";", as defined in flattenItem and resolveLanguages
+	$multiValued = array('languages', 'languagesFull', 'genres', 'subjects');
 	$SOLRArray = assignUniqueIDs($SOLRArray, $fileName);
 	$folder = '';
 	$dom = new DOMDocument('1.0', 'UTF-8');
@@ -9,13 +11,28 @@ function saveSOLRXML($SOLRArray, $fileName) {
 	foreach($SOLRArray as $item) {
 		$itemElement = $dom->createElement('doc');
 		foreach($item as $key => $value) {
-			$fieldElement = $dom->createElement('field');
-			$fieldContent = $dom->createTextNode($value);
-			$fieldElement->appendChild($fieldContent);
-			$fieldAttribute = $dom->createAttribute('name');
-			$fieldAttribute->value = $key;
-			$fieldElement->appendChild($fieldAttribute);
-			$itemElement->appendChild($fieldElement);
+			//Repetition of the multi-valued fields
+			if(in_array($key, $multiValued)) {
+				$values = explode(';', $value);
+				foreach($values as $string) {
+					$fieldElement = $dom->createElement('field');
+					$fieldContent = $dom->createTextNode($string);
+					$fieldElement->appendChild($fieldContent);
+					$fieldAttribute = $dom->createAttribute('name');
+					$fieldAttribute->value = $key;
+					$fieldElement->appendChild($fieldAttribute);
+					$itemElement->appendChild($fieldElement);
+				}
+			}
+			else {
+				$fieldElement = $dom->createElement('field');
+				$fieldContent = $dom->createTextNode($value);
+				$fieldElement->appendChild($fieldContent);
+				$fieldAttribute = $dom->createAttribute('name');
+				$fieldAttribute->value = $key;
+				$fieldElement->appendChild($fieldAttribute);
+				$itemElement->appendChild($fieldElement);
+			}
 		}
 		$rootElement->appendChild($itemElement);
 	}
@@ -49,7 +66,7 @@ function flattenItem($item) {
 		elseif(testArrayType($value) == 'num') {
 			// Die folgende Bedingung verhindert leere Felder für genres, subjects und languages
 			if($value != array('') and $value != array()) {
-				$result[$key] = implode(' ', $value);
+				$result[$key] = implode(';', $value);
 			}
 		}		
 		elseif(testArrayType($value) == 'assoc') {
@@ -188,7 +205,7 @@ function resolveLanguages($row) {
 				$languagesFull[] = $languageCodes[$code];
 			}
 		}
-		$languageString = implode(' ', $languagesFull);
+		$languageString = implode(';', $languagesFull);
 		if($languageString != '') {
 			$row['languagesFull'] = $languageString;
 		}
