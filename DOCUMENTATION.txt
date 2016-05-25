@@ -60,12 +60,12 @@ Probably several runs of the script will be necessary to optimize the results.
 
 Transforming the surface
 
-The following files are relevant for the appearance of the HTML-pages.
+The following files are relevant for the appearance of the HTML pages.
 
-These files dynamically create HTML-Output and write it to a project folder:
+These files dynamically create HTML output and write it to a project folder:
 	makeHead.php (creates the header and footer of the page)
 	makeNavigation.php (responsible for the content of $navigation in makeHead.php)
-	makeEntry.php (creates the content of the page below the navigation. Various functions contain HTML-templates)
+	makeEntry.php (creates the content of the page below the navigation. Various functions contain HTML templates)
 
 These files are being copied to each single project folder:
 	proprietary.css (all CSS formats not furnished by Bootstrap)
