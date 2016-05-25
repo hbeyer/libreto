@@ -44,6 +44,11 @@ unset($dataString);
 //makeGeoDataSheet($data, $folderName, 'KML');
 //makeGeoDataSheet($data, $folderName, 'CSV');
 
+// Suche in BEACON-Dateien nach Einträgen zu den erwähnten Personen und füge diese den Daten hinzu
+//cacheBeacon($beaconSources, 604800);
+//storeBeacon($data, $folderName);
+//$data = addBeacon($data, $folderName);
+
 // Export als CSV- und XML-Datei
 //makeCSV($data, $folderName);
 //saveXML($data, $thisCatalogue, $folderName);

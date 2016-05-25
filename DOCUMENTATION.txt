@@ -4,7 +4,7 @@ Version: 2016/05/25
 By Hartmut Beyer (beyer@hab.de)
 
 
-Installation of the the software
+Installation of the software
 
 Copy all the files to the same directory on a server.
 Create two folders named "user" and "beaconFiles" in this directory.
@@ -33,20 +33,20 @@ The bare data are saved as serialized PHP objects in "dataPHP".
 To load and serialize data, the following steps are necessary:
 Edit the script "storeData.php" to upload data from a MySQL-Database.
 A template for a MySQL database can be found in dropfile.sql.
-Set the configuration of your project by adding a new dataset in setConfiguration.php.
+Set the configuration of your project by adding a new data set in setConfiguration.php.
 Load the configuration by $thisCatalogue = setConfiguration('<your key>');
 Import data from the MySQL database by
 	$data = load_data_mysql('<server>', '<user>', '<password>', $thisCatalogue->database, 'zusammenfassung');
 
 To transform data already loaded (by user interface or otherwise), skip the above steps and do the following:
 Create a folder for your project, copy the file "dataPHP" created by the upload scripts into the folder.
-Set the configuration of your project by adding a new dataset in setConfiguration.php. The variable $thisCatalogue->fileName must contain the name of the folder.
+Set the configuration of your project by adding a new data set in setConfiguration.php. The variable $thisCatalogue->fileName must contain the name of the folder.
 Edit the file saveProject.php:
 	Load the configuration by $thisCatalogue = setConfiguration('<your key>');
 	To create geoData sheets uncomment one or both of the following rows
 		//makeGeoDataSheet($data, $folderName, 'KML');
 		//makeGeoDataSheet($data, $folderName, 'CSV');
-	The geodata sheets can be uploaded at http://geobrowser.de.dariah.eu/edit/. Add the geoBrowser storage ID to your dataset in setConfiguration.php. You have to repeat the transformation process to have a working link to the geoBrowser.
+	The geodata sheets can be uploaded at http://geobrowser.de.dariah.eu/edit/. Add the geoBrowser storage ID to your data set in setConfiguration.php. You have to repeat the transformation process to have a working link to the geoBrowser.
 	To add or update the BEACON data uncomment the following rows:
 		//cacheBeacon($beaconSources, 604800);
 		//storeBeacon($data, $folderName);
@@ -68,9 +68,9 @@ These files dynamically create HTML-Output and write it to a project folder:
 	makeEntry.php (creates the content of the page below the navigation. Various functions contain HTML-templates)
 
 These files are being copied to each single project folder:
-	proprietary.css (all CSS-Formats not furnished by Bootstrap)
-	proprietary.js (all JS-Functions not furnished by Bootstrap. Contains also JS-code for jQCloud)
-	chart.js (JS-code for doughnut diagrams)
+	proprietary.css (all CSS formats not furnished by Bootstrap)
+	proprietary.js (all JS functions not furnished by Bootstrap. Contains also JS code for jQCloud)
+	chart.js (JS code for doughnut diagrams)
 
 External resources used:
 	Bootstrap CSS framework, version 3.3.5 (http://getbootstrap.com/)
