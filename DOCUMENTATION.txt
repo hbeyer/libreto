@@ -1,0 +1,88 @@
+﻿Documentation for users and developers
+https://github.com/hbeyer/liddel-tool
+Version: 2016/05/25
+By Hartmut Beyer (beyer@hab.de)
+
+
+Installation of the the software
+
+Copy all the files to the same directory on a server.
+Create two folders named "user" and "beaconFiles" in this directory.
+
+
+Creating Data
+
+Use "vorlage.csv" as a template. 
+Fill in the data according to the documentation "Dokumentation_CSV.doc" (German).
+Take care not to change the number or order of columns.
+Save the file as CSV. In the German version of MS Excel select "CSV (Trennzeichen-getrennt)".
+
+
+Uploading data
+
+1) By user interface
+
+Go to <server/directory>/load.php.
+Upload your CSV-file.
+Follow the instructions by the program.
+The result is a project folder in the directory "user" which contains the HTML files as well as various other representations of the data.
+The bare data are saved as serialized PHP objects in "dataPHP".
+
+2) By script (only for advanced users)
+
+To load and serialize data, the following steps are necessary:
+Edit the script "storeData.php" to upload data from a MySQL-Database.
+A template for a MySQL database can be found in dropfile.sql.
+Set the configuration of your project by adding a new dataset in setConfiguration.php.
+Load the configuration by $thisCatalogue = setConfiguration('<your key>');
+Import data from the MySQL database by
+	$data = load_data_mysql('<server>', '<user>', '<password>', $thisCatalogue->database, 'zusammenfassung');
+
+To transform data already loaded (by user interface or otherwise), skip the above steps and do the following:
+Create a folder for your project, copy the file "dataPHP" created by the upload scripts into the folder.
+Set the configuration of your project by adding a new dataset in setConfiguration.php. The variable $thisCatalogue->fileName must contain the name of the folder.
+Edit the file saveProject.php:
+	Load the configuration by $thisCatalogue = setConfiguration('<your key>');
+	To create geoData sheets uncomment one or both of the following rows
+		//makeGeoDataSheet($data, $folderName, 'KML');
+		//makeGeoDataSheet($data, $folderName, 'CSV');
+	The geodata sheets can be uploaded at http://geobrowser.de.dariah.eu/edit/. Add the geoBrowser storage ID to your dataset in setConfiguration.php. You have to repeat the transformation process to have a working link to the geoBrowser.
+	To add or update the BEACON data uncomment the following rows:
+		//cacheBeacon($beaconSources, 604800);
+		//storeBeacon($data, $folderName);
+		//$data = addBeacon($data, $folderName);
+	To export the data as CSV (suited for a new upload) uncomment the following:
+		//makeCSV($data, $folderName);
+Run the script. The result is a project folder containing the HTML files and all other data for the project.
+Every new execution of the script will overwrite your previous files, unless $thisCatalogue->fileName is changed in setConfiguration.php.
+Probably several runs of the script will be necessary to optimize the results.
+
+
+Transforming the surface
+
+The following files are relevant for the appearance of the HTML-pages.
+
+These files dynamically create HTML-Output and write it to a project folder:
+	makeHead.php (creates the header and footer of the page)
+	makeNavigation.php (responsible for the content of $navigation in makeHead.php)
+	makeEntry.php (creates the content of the page below the navigation. Various functions contain HTML-templates)
+
+These files are being copied to each single project folder:
+	proprietary.css (all CSS-Formats not furnished by Bootstrap)
+	proprietary.js (all JS-Functions not furnished by Bootstrap. Contains also JS-code for jQCloud)
+	chart.js (JS-code for doughnut diagrams)
+
+External resources used:
+	Bootstrap CSS framework, version 3.3.5 (http://getbootstrap.com/)
+	Chart.js (http://www.chartjs.org/)
+	jQCLoud (http://mistic100.github.io/jQCloud/demo.html)
+
+
+Adding new BEACON sources
+
+Edit the file beaconSources.php
+For each new source make a new entry in the array $beaconSources, using a unique key.
+Insert the following information:
+	label: Name of the database to be displayed on the web surface
+	location: URL of the BEACON file
+	target: Target to retrieve data (usually indicated in the BEACON file). The part to be replaced must be indicated as {ID}
