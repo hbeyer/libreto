@@ -88,6 +88,30 @@ function flattenItem($item) {
 
 function flattenPersons($persons) {
 	$result = array();
+	$countAuthors = 1;
+	$countContributors = 1;
+	foreach($persons as $person) {
+		if($person->role == 'author') {
+			$fieldName = 'author_'.$countAuthors;
+			$countAuthors++;
+		}
+		else {
+			$fieldName = 'contributor_'.$countContributors;
+			$countContributors++;
+		}
+		$result[$fieldName] = $person->persName;
+		if($person->gnd) {
+			$result['gnd_'.$fieldName] = $person->gnd;
+			if($person->beacon) {
+				$result['beacon_'.$fieldName] = resolveBeacon($person->beacon, $person->gnd);
+			}
+		}
+	}
+	return($result);
+}
+
+function flattenPersonsOld($persons) {
+	$result = array();
 	$count = 1;
 	foreach($persons as $person) {
 		if($person->role == 'author') {
@@ -120,7 +144,9 @@ function flattenPlaces($places) {
 			$result['geoNames_place_'.$count] = $place->geoNames;
 		}
 		if($place->geoData) {
-			$result['coordinates_place_'.$count] = $place->geoData['lat'].' '.$place->geoData['long'];
+			$lat = cleanCoordinate($place->geoData['lat']); //Replaces "," by "."
+			$long = cleanCoordinate($place->geoData['long']);
+			$result['coordinates_place_'.$count] = $lat.','.$long;
 		}
 		$count++;
 	}
