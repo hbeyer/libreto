@@ -2,7 +2,7 @@
 
 function saveSOLRXML($SOLRArray, $fileName) {
 	//The following elements have to be repeated so that SOLR accepts them as multiValued. Delimiter is ";", as defined in flattenItem and resolveLanguages
-	$multiValued = array('languages', 'languagesFull', 'genres', 'subjects');
+	$multiValued = array('languages', 'languagesFull', 'genres', 'subjects', 'author', 'contributor');
 	$SOLRArray = assignUniqueIDs($SOLRArray, $fileName);
 	$folder = '';
 	$dom = new DOMDocument('1.0', 'UTF-8');
@@ -88,6 +88,31 @@ function flattenItem($item) {
 
 function flattenPersons($persons) {
 	$result = array();
+	$collectAuthors = array();
+	$collectContributors = array();
+	foreach($persons as $person) {
+		$gnd = '';
+		if($person->gnd) {
+			$gnd = '#'.$person->gnd;
+		}
+		if($person->role == 'author') {
+			$collectAuthors[] = $person->persName.$gnd;
+		}
+		else {
+			$collectContributors[] = $person->persName.$gnd;
+		}
+	}
+	if(isset($collectAuthors[0])) {
+		$result['author'] = implode(';', $collectAuthors);
+	}
+	if(isset($collectContributors[0])) {
+		$result['contributor'] = implode(';', $collectContributors);
+	}
+	return($result);
+}
+
+/* function flattenPersons($persons) {
+	$result = array();
 	$countAuthors = 1;
 	$countContributors = 1;
 	foreach($persons as $person) {
@@ -108,29 +133,7 @@ function flattenPersons($persons) {
 		}
 	}
 	return($result);
-}
-
-function flattenPersonsOld($persons) {
-	$result = array();
-	$count = 1;
-	foreach($persons as $person) {
-		if($person->role == 'author') {
-		$fieldName = 'author_'.$count;
-		}
-		else {
-			$fieldName = 'contributor_'.$count;
-		}
-		$result[$fieldName] = $person->persName;
-		if($person->gnd) {
-			$result['gnd_'.$fieldName] = $person->gnd;
-			if($person->beacon) {
-				$result['beacon_'.$fieldName] = resolveBeacon($person->beacon, $person->gnd);
-			}
-		}
-		$count++;
-	}
-	return($result);
-}
+} */
 
 function flattenPlaces($places) {
 	$result = array();
@@ -150,7 +153,6 @@ function flattenPlaces($places) {
 		}
 		$count++;
 	}
-	var_dump($result);
 	return($result);
 }
 

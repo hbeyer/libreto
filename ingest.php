@@ -168,6 +168,7 @@ function load_data_liddel($server, $user, $password, $database, $table) {
 			if($rowBooks['author'] != '') {
 				$person = new person();
 				$person->persName = $rowBooks['author'];
+				$person->role = 'author';
 				if($rowBooks['gnd']) {
 					if($resultAuthor = $db->query('SELECT * FROM liddel_authority WHERE gnd_aut LIKE "'.$rowBooks['gnd'].'"')) {
 						$rowPerson = $resultAuthor->fetch_assoc();
