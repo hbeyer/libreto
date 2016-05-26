@@ -16,6 +16,14 @@ include('classDefinition.php');
 include('encode.php');
 include('loadFile.php');
 
+// Create the necessary directories if not already there
+$directories = array('user', 'beaconFiles');
+foreach($directories as $folder) {
+	if(is_dir($folder) == FALSE) {
+		mkdir($folder, 0700);
+	}
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

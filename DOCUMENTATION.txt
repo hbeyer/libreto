@@ -5,9 +5,7 @@ By Hartmut Beyer (beyer@hab.de)
 
 
 Installation of the software
-
-Copy all the files to the same directory on a server.
-Create two folders named "user" and "beaconFiles" in this directory.
+Copy all the files to the same directory on a server
 
 
 Creating Data
@@ -31,7 +29,8 @@ The bare data are saved as serialized PHP objects in "dataPHP".
 2) By script (only for advanced users)
 
 To load and serialize data, the following steps are necessary:
-Edit the script "storeData.php" to upload data from a MySQL-Database.
+Create two folders named "user" and "beaconData", if not present
+Edit the script "storeData.php" to upload data from a MySQL database.
 A template for a MySQL database can be found in dropfile.sql.
 Set the configuration of your project by adding a new data set in setConfiguration.php.
 Load the configuration by $thisCatalogue = setConfiguration('<your key>');
@@ -66,6 +65,8 @@ These files dynamically create HTML output and write it to a project folder:
 	makeHead.php (creates the header and footer of the page)
 	makeNavigation.php (responsible for the content of $navigation in makeHead.php)
 	makeEntry.php (creates the content of the page below the navigation. Various functions contain HTML templates)
+	makeCloudList.php (HTML text of the wordCloud page comes from function makeCloudPageContent)
+	makeDoughnutList.php (HTML text of the doughnut page comes from function makeDoughnutPageContent)
 
 These files are being copied to each single project folder:
 	proprietary.css (all CSS formats not furnished by Bootstrap)

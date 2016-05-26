@@ -143,13 +143,14 @@ function flattenPlaces($places) {
 		if($place->geoNames) {
 			$result['geoNames_place_'.$count] = $place->geoNames;
 		}
-		if($place->geoData) {
+		if($place->geoData['lat'] and $place->geoData['long']) {
 			$lat = cleanCoordinate($place->geoData['lat']); //Replaces "," by "."
 			$long = cleanCoordinate($place->geoData['long']);
 			$result['coordinates_place_'.$count] = $lat.','.$long;
 		}
 		$count++;
 	}
+	var_dump($result);
 	return($result);
 }
 
