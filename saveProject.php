@@ -48,6 +48,9 @@ unset($dataString);
 //cacheBeacon($beaconSources, 604800);
 //storeBeacon($data, $folderName);
 //$data = addBeacon($data, $folderName);
+//$serialize = serialize($data);
+//file_put_contents($folderName.'/dataPHP', $serialize);
+
 
 // Export als CSV- und XML-Datei
 //makeCSV($data, $folderName);

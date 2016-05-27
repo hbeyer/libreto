@@ -1,5 +1,7 @@
 ﻿<?php
 
+date_default_timezone_set('Europe/Amsterdam');
+
 function cacheBeacon($sources, $seconds) {
 	$test = 0;
 	// Calculate how much time has passed since the last update of the files
@@ -78,7 +80,9 @@ function addBeacon($data, $folderName) {
 			if($person->gnd != '') {
 				foreach($beaconObject->content as $beaconExtract) {
 					if(in_array($person->gnd, $beaconExtract->content)) {
-						$person->beacon[] = $beaconExtract->key;
+						if(in_array($beaconExtract->key, $person->beacon) == FALSE) {
+							$person->beacon[] = $beaconExtract->key;
+						}
 					}
 				}
 			}

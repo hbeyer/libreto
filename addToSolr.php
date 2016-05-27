@@ -94,6 +94,11 @@ function flattenPersons($persons) {
 		$gnd = '';
 		if($person->gnd) {
 			$gnd = '#'.$person->gnd;
+			if(isset($person->beacon[0])) {
+				$fieldNameBeacon = 'beacon_'.$person->gnd;
+				$beaconString = resolveBeacon($person->beacon, $person->gnd);
+				$result[$fieldNameBeacon] = $beaconString;
+			}
 		}
 		if($person->role == 'author') {
 			$collectAuthors[] = $person->persName.$gnd;
@@ -110,30 +115,6 @@ function flattenPersons($persons) {
 	}
 	return($result);
 }
-
-/* function flattenPersons($persons) {
-	$result = array();
-	$countAuthors = 1;
-	$countContributors = 1;
-	foreach($persons as $person) {
-		if($person->role == 'author') {
-			$fieldName = 'author_'.$countAuthors;
-			$countAuthors++;
-		}
-		else {
-			$fieldName = 'contributor_'.$countContributors;
-			$countContributors++;
-		}
-		$result[$fieldName] = $person->persName;
-		if($person->gnd) {
-			$result['gnd_'.$fieldName] = $person->gnd;
-			if($person->beacon) {
-				$result['beacon_'.$fieldName] = resolveBeacon($person->beacon, $person->gnd);
-			}
-		}
-	}
-	return($result);
-} */
 
 function flattenPlaces($places) {
 	$result = array();
