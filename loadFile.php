@@ -45,12 +45,6 @@ function makeItemFromCSVRow($row) {
 	$item->digitalCopy = $row[39];
 	
 	$item->languages = explode(';', $row[25]);
-	/* $languageFields = array($row[25], $row[26], $row[27]);
-	foreach($languageFields as $languageCode) {
-		if($languageCode) {
-			$item->languages[] = $languageCode;
-		}
-	} */
 	
 	$authorFields = array($row[8], $row[9], $row[10], $row[11]);
 	foreach($authorFields as $authorString) {

@@ -1,20 +1,25 @@
 <?php
-session_start();
-$_SESSION['upload'] = 0;
-$_SESSION['fileName'] = '';
-$_SESSION['ending'] = '';
-$_SESSION['store'] = 0;
-$_SESSION['geoData'] = 0;
-$_SESSION['beacon'] = 0;
-$_SESSION['annotation'] = 0;
-$_SESSION['catalogueObject'] = NULL;
-$_SESSION['folder'] = 0;
-$_SESSION['folderName'] = '';
-$_SESSION['fieldSelection'] = 0;
-
 include('classDefinition.php');
 include('encode.php');
 include('loadFile.php');
+
+session_start();
+//The following variables control the steps taken by users
+$_SESSION['upload'] = 0;
+$_SESSION['store'] = 0;
+$_SESSION['annotation'] = 0;
+$_SESSION['folder'] = 0;
+$_SESSION['geoData'] = 0;
+$_SESSION['storageID'] = 0;
+$_SESSION['beacon'] = 0;
+$_SESSION['fieldSelection'] = 0;
+
+//The following variables contain crucial metadata
+$_SESSION['fileName'] = '';
+$_SESSION['ending'] = '';
+$_SESSION['unidentifiedPlaces'] = array();
+$_SESSION['catalogueObject'] = NULL;
+$_SESSION['folderName'] = '';
 
 // Create the necessary directories if not already there
 $directories = array('user', 'beaconFiles');
@@ -76,7 +81,7 @@ foreach($directories as $folder) {
 					if(filesize('uploadedData') > 0) {
 						$_SESSION['store'] = 1;
 						echo '<p>Upload und Import der Datei waren erfolgreich.<br>
-						<a href="enrich.php">Weiter zur Datenanreicherung</a></p>';
+						<a href="annotate.php">Weiter zur Metadatenaufnahme</a></p>';
 					}
 					else {
 						echo '<p>Fehler: Gr&ouml;&szlig;e der importierten Datei ist 0.</p>';

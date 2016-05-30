@@ -20,12 +20,12 @@ session_start();
 		<body>
 			<div class="container">
 				<h1>Visualisierung historischer Sammlungen</h1>
-				<h2>4. Aufnahme von Metadaten zur Sammlung</h2>
+				<h2>2. Aufnahme von Metadaten zur Sammlung</h2>
 				
 	<?php
 	
 		$test1 = 0;
-		if($_SESSION['upload'] == 1 and $_SESSION['store'] == 1 and $_SESSION['geoData'] == 1 and $_SESSION['beacon'] == 1) {
+		if($_SESSION['upload'] == 1 and $_SESSION['store'] == 1) {
 			$test1 = 1;
 		}
 		$test2 = 0;
@@ -48,8 +48,20 @@ session_start();
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-3" for="year">Datum der Sammlung (Jahr)</label>
+					<label class="control-label col-sm-3" for="heading">Besitzende Person oder Institution</label>
 						<div class="col-sm-9">
+						<input type="text" class="form-control" name="owner"  maxlength="140" required placeholder="Beispiel: Bang, Thomas">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="year">GND der Person oder Institution</label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control" name="ownerGND" pattern="[0-9X-]{4,9}" placeholder="Beispiel: 116048921">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="year">Datum der Sammlung (Jahr)</label>
+					<div class="col-sm-9">
 						<input type="text" class="form-control" name="year" pattern="[0-9]{4}" required placeholder="Erscheinungsjahr des Katalogs oder Stand der Sammlung">
 					</div>
 				</div>
@@ -102,6 +114,8 @@ session_start();
 		elseif($test1 == 1 and $test2 == 1) {
 			$catalogue = new catalogue();
 			$catalogue->heading = $_POST['heading'];
+			$catalogue->owner = $_POST['owner'];
+			$catalogue->ownerGND = $_POST['ownerGND'];
 			$catalogue->year = $_POST['year'];
 			$catalogue->fileName = $_POST['fileName'];
 			$catalogue->title = $_POST['title'];
@@ -111,7 +125,7 @@ session_start();
 			$catalogue->description = $_POST['description'];
 			
 			$_SESSION['annotation'] = 1;
-			$_SESSION['catalogueObject'] = $catalogue;
+			$_SESSION['catalogueObject'] = serialize($catalogue);
 			
 			$folderName = 'user/'.$catalogue->fileName;
 			$_SESSION['folderName'] = $folderName;
@@ -128,7 +142,7 @@ session_start();
 			if(file_exists($folderName.'/dataPHP')) {
 				$_SESSION['folder'] = 1;
 				echo '<p>Die Metadaten wurden gespeichert.<br>
-				Weiter zur <a href="select.php">Feldauswahl</a>.</p>';
+				Weiter zur <a href="geodata.php">Geodatenanreicherung</a>.</p>';
 			}
 			else {
 				echo '<p>Es ist ein Fehler aufgetreten. Bitte fangen Sie <a href="load.php">von vorne</a> an.</p>';

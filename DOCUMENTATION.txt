@@ -1,7 +1,9 @@
 ﻿Documentation for users and developers
 https://github.com/hbeyer/liddel-tool
-Version: 2016/05/25
+Version: 2016/05/30
 By Hartmut Beyer (beyer@hab.de)
+
+IMPORTANT: The current version is not stable. To have a working version, wait or go back to https://github.com/hbeyer/liddel-tool/tree/f27bc1636081892c610bf95ccfa90d8a8ee59a2d
 
 
 Installation of the software

@@ -105,6 +105,27 @@ class geoDataArchive {
 		return($entry);
 	}
 	
+	function makeEntryFromGetty($id) {
+		/* $target = 'http://api.geonames.org/getJSON?formatted=true&geonameId='.$id.'&username=hbeyer';
+		$responseString = file_get_contents($target);
+		$response = json_decode($responseString);
+
+		$varNames = array();
+		foreach($response->alternateNames as $alternate) {
+			if(isset($alternate->lang) and preg_match('~^de|la|fr|it|en$~', $alternate->lang) == 1) {
+			$varNames[] = $alternate->name;
+			}
+		}
+		$entry = new geoDataArchiveEntry();
+		$entry->label = $response->toponymName;
+		$entry->lat = $response->lat;
+		$entry->long = $response->lng;
+		$entry->geoNames = $id;
+		$entry->altLabels = $varNames;
+		return($entry); */
+	}	
+	
+	
 	function makeEntryFromGND($gnd) {
 		$target = 'http://d-nb.info/gnd/'.$gnd.'/about/lds';
 		$response = file_get_contents($target);
