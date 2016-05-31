@@ -106,23 +106,42 @@ class geoDataArchive {
 	}
 	
 	function makeEntryFromGetty($id) {
-		/* $target = 'http://api.geonames.org/getJSON?formatted=true&geonameId='.$id.'&username=hbeyer';
-		$responseString = file_get_contents($target);
+		shell_exec('wget -O placeGetty.json .A.json "http://vocab.getty.edu/tgn/'.$id.'.json"');
+		$responseString = file_get_contents('placeGetty.json');
 		$response = json_decode($responseString);
-
-		$varNames = array();
-		foreach($response->alternateNames as $alternate) {
-			if(isset($alternate->lang) and preg_match('~^de|la|fr|it|en$~', $alternate->lang) == 1) {
-			$varNames[] = $alternate->name;
+		
+		$lat = '';
+		$long = '';
+		$prefLabel = '';
+		
+		foreach ($response->results->bindings as $binding) {
+			if($binding->Predicate->value == 'http://www.w3.org/2003/01/geo/wgs84_pos#lat') {
+				$lat = $binding->Object->value;
+				break;
 			}
 		}
+		foreach ($response->results->bindings as $binding) {
+			if($binding->Predicate->value == 'http://www.w3.org/2003/01/geo/wgs84_pos#long') {
+				$long = $binding->Object->value;
+				break;
+			}
+		}
+		foreach ($response->results->bindings as $binding) {
+			if($binding->Predicate->value == 'http://www.w3.org/2004/02/skos/core#prefLabel') {
+				$prefLabel = $binding->Object->value;
+				break;
+			}
+		}
+		
 		$entry = new geoDataArchiveEntry();
-		$entry->label = $response->toponymName;
-		$entry->lat = $response->lat;
-		$entry->long = $response->lng;
-		$entry->geoNames = $id;
-		$entry->altLabels = $varNames;
-		return($entry); */
+		$entry->label = $prefLabel;
+		$entry->lat = $lat;
+		$entry->long = $long;
+		$entry->getty = $id;
+		
+		unlink('placeGetty.json');
+
+		return($entry);
 	}	
 	
 	
