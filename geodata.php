@@ -40,8 +40,12 @@ include('storeBeacon.php');
 			echo '<p>Bitte fangen Sie <a href="load.php">von vorne</a> an.</p>';
 		}
 		elseif($test1 == 1) {
-			$archive = new GeoDataArchive();
-			$archive->loadFromFile();
+			$archiveGeoNames = new GeoDataArchive();
+			$archiveGeoNames->loadFromFile('geoNames');
+			$archiveGetty = new GeoDataArchive();
+			$archiveGetty->loadFromFile('getty');
+			$archiveGND = new GeoDataArchive();
+			$archiveGND->loadFromFile('gnd');			
 			
 			$dataString = file_get_contents($_SESSION['folderName'].'/dataPHP');
 			$data = unserialize($dataString);
@@ -54,19 +58,35 @@ include('storeBeacon.php');
 			foreach($data as $item) {
 				foreach($item->places as $place) {
 					if($place->placeName != 's. l.') {
+						
 						if($place->geoNames) {
-							$placeFromArchive = $archive->getByGeoNames($place->geoNames);
+							$placeFromArchive = $archiveGeoNames->getByGeoNames($place->geoNames);
 							if($placeFromArchive == NULL) {
-								$placeFromWeb = $archive->makeEntryFromGeoNames($place->geoNames);
+								$placeFromWeb = $archiveGeoNames
+								->makeEntryFromGeoNames($place->geoNames);
 								if($placeFromWeb) {
-									$archive->insertEntryIfNew($placeFromWeb);
+									$archiveGeoNames->insertEntryIfNew($placeFromWeb);
 									$placeFromArchive = $placeFromWeb;
 									$countWebDownloads++;
 								}
 							}
 						}
+						
+						elseif($place->getty) {
+							$placeFromArchive = $archiveGetty->getByGetty($place->getty);
+							var_dump($placeFromArchive);
+							if($placeFromArchive == NULL) {
+								$placeFromWeb = $archiveGetty->makeEntryFromGetty($place->getty);
+								if($placeFromWeb) {
+									$archiveGetty->insertEntry($placeFromWeb);
+									$placeFromArchive = $placeFromWeb;
+									$countWebDownloads++;
+								}
+							}
+						}
+						
 						else {
-							$placeFromArchive = $archive->getByName($place->placeName);
+							$placeFromArchive = $archiveGeoNames->getByName($place->placeName);
 						}
 						if($placeFromArchive) {
 							$place->geoData['lat'] = $placeFromArchive->lat;
@@ -78,7 +98,9 @@ include('storeBeacon.php');
 					}
 				}
 			}
-			$archive->saveToFile();
+			$archiveGeoNames->saveToFile('geoNames');
+			$archiveGetty->saveToFile('getty');
+			$archiveGND->saveToFile('gnd');
 			$serialize = serialize($data);
 			file_put_contents($_SESSION['folderName'].'/dataPHP', $serialize);
 			unset($data);
@@ -91,8 +113,7 @@ include('storeBeacon.php');
 				echo '<p>Folgende Orte konnten nicht identifiziert werden. Sie k&ouml;nnen hier einen Identifier f&uuml;r jeden Ort nachtragen.<br/>
 				Suchen Sie dazu auf <a href="http://www.geonames.org/" target="_blank">geoNames</a> oder im <a href="http://www.getty.edu/research/tools/vocabularies/tgn/">Getty Thesaurus of Geographic Names</a>.</p>';
 				echo $form;
-				
-			}
+			} 
 			else {
 				$_SESSION['geoData'] = 1;
 				echo '<p>Die Anreicherung mit Geodaten ist abgeschlossen.<br/>Weiter zum <a href="geoBrowser.php">Datenexport in den GeoBrowser</a></p>.';
@@ -136,29 +157,31 @@ function makeGeoDataFormRow($cityID, $city) {
 }
 
 function addPostedDataToArchive() {
-	$archive = new GeoDataArchive();
-	$archive->loadFromFile();
+	$archiveGeoNames = new GeoDataArchive();
+	$archiveGeoNames->loadFromFile('geoNames');
+	$archiveGetty = new GeoDataArchive();
+	$archiveGetty->loadFromFile('getty');
 	$count = 0;
 	foreach($_SESSION['unidentifiedPlaces'] as $city) {
 		$placeFromWeb = NULL;
 		if(isset($_POST['geoNames_'.$count])) {
 			$geoNames = $_POST['geoNames_'.$count];
 			if($geoNames != '') {
-				$placeFromWeb = $archive->makeEntryFromGeoNames($geoNames);
+				$placeFromWeb = $archiveGeoNames->makeEntryFromGeoNames($geoNames);
+				$archiveGeoNames->insertEntry($placeFromWeb);
 			}
 		}
-		/* elseif(isset($_POST['getty_'.$count])) {
+		elseif(isset($_POST['getty_'.$count])) {
 			$getty = $_POST['getty_'.$count];
 			if($getty != '') {
-				$placeFromWeb = $archive->makeEntryFromGetty($getty);
+				$placeFromWeb = $archiveGetty->makeEntryFromGetty($getty);
+				$archiveGetty->insertEntry($placeFromWeb);
 			}
-		} */
-		if($placeFromWeb) {
-				$archive->insertEntryIfNew($placeFromWeb);
-				}
+		}
 		$count++;
 	}
-	$archive->saveToFile();
+	$archiveGeoNames->saveToFile('geoNames');
+	$archiveGetty->saveToFile('getty');
 }
 		
 		

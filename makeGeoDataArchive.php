@@ -4,6 +4,7 @@ class geoDataArchive {
 	
 	public $date;
 	public $content = array();
+	public $folder = 'geoDataArchive';
 	
 	function __construct() {
        $this->date = date("Y-m-d H:i:s");
@@ -29,18 +30,25 @@ class geoDataArchive {
 	
 	function insertGeoNamesArray($array) {
 		foreach($array as $id) {
-			$entry = makeEntryFromGeoNames($id);
+			$entry = $this->makeEntryFromGeoNames($id);
 			$this->insertEntryIfNew($entry);
 		}
 	}
 	
-	function saveToFile($fileName = 'geoDataArchive') {
-		$serialize = serialize($this);
-		file_put_contents($fileName, $serialize);
+	function insertGeoNamesAssocArray($array) {
+		foreach($array as $key => $id) {
+			$entry = $this->makeEntryFromGeoNames($id);
+			$this->insertEntryIfNew($entry);
+		}
 	}
 	
-	function loadFromFile($fileName = 'geoDataArchive') {
-		$archiveString = file_get_contents($fileName);
+	function saveToFile($fileName) {
+		$serialize = serialize($this);
+		file_put_contents($this->folder.'/'.$fileName, $serialize);
+	}
+	
+	function loadFromFile($fileName) {
+		$archiveString = file_get_contents($this->folder.'/'.$fileName);
 		$archive = unserialize($archiveString);
 		unset($archiveString);
 		$this->content = $archive->content;
@@ -49,6 +57,15 @@ class geoDataArchive {
 	function getByGeoNames($id) {
 		foreach($this->content as $entry) {
 			if($entry->geoNames == $id) {
+				return($entry);
+				break;
+			}
+		}
+	}
+	
+	function getByGetty($id) {
+		foreach($this->content as $entry) {
+			if($entry->getty == $id) {
 				return($entry);
 				break;
 			}
@@ -139,7 +156,7 @@ class geoDataArchive {
 		$entry->long = $long;
 		$entry->getty = $id;
 		
-		unlink('placeGetty.json');
+		//unlink('placeGetty.json');
 
 		return($entry);
 	}	
@@ -234,7 +251,7 @@ function load_from_mysql($database) {
 	$sql1 = 'SELECT distinct tgn FROM ort WHERE tgn IS NOT NULL';
 
 	$archive = new geoDataArchive();
-	$archive->loadFromFile();
+	//$archive->loadFromFile('mixed');
 
 	if($result = $dbGeo->query($sql1)) {
 		$count = 1;
@@ -259,8 +276,8 @@ function load_from_mysql($database) {
 			}
 		}
 	}
-	var_dump($archive);
-	$archive->saveToFile();
+	//var_dump($archive);
+	$archive->saveToFile('getty');
 	
 }
 

@@ -49,6 +49,7 @@
 	class person {
 		public $persName;
 		public $gnd;
+		public $gender;
 		public $role; //author, contributor, etc.
 		public $beacon = array(); //Presence in databases is denoted by keys from class beaconData
 	}

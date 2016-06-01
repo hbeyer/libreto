@@ -65,7 +65,21 @@ function setConfiguration($key) {
 		$thisCatalogue->cloudFacets = array('shelfmarkOriginal', 'persName', 'placeName', 'languages', 'publisher', 'format', 'subject');
 		$thisCatalogue->doughnutFacets = array('persName', 'placeName', 'languages', 'publisher', 'format', 'subject');
 		return($thisCatalogue);
-	}	
+	}
+	if($key == 'antoinette') {
+		$thisCatalogue->owner = 'Antoinette Amalie von Braunschweig-Wolfenbüttel';
+		$thisCatalogue->ownerGND = '141678615';
+		$thisCatalogue->heading = 'Bibliothek der Herzogin Antoinette Amalie';
+		$thisCatalogue->fileName = 'antoinette';
+		$thisCatalogue->year = '1762';
+		$thisCatalogue->nachweis['institution'] = 'HAB Wolfenbüttel';
+		$thisCatalogue->nachweis['shelfmark'] = 'BA, I, 631';
+		$thisCatalogue->GeoBrowserStorageID = '';
+		$thisCatalogue->listFacets = array('numberCat', 'persName', 'year', 'placeName', 'languages', 'publisher', 'format', 'systemManifestation');
+		$thisCatalogue->cloudFacets = array('persName', 'placeName', 'languages', 'publisher');
+		$thisCatalogue->doughnutFacets = array('persName', 'placeName', 'languages', 'publisher', 'format', 'systemManifestation');
+		return($thisCatalogue);
+	}
 	
 }
 

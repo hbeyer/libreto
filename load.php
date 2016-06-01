@@ -22,7 +22,7 @@ $_SESSION['catalogueObject'] = NULL;
 $_SESSION['folderName'] = '';
 
 // Create the necessary directories if not already there
-$directories = array('user', 'beaconFiles');
+$directories = array('user', 'beaconFiles', 'geoDataArchive');
 foreach($directories as $folder) {
 	if(is_dir($folder) == FALSE) {
 		mkdir($folder, 0700);

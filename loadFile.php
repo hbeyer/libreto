@@ -43,9 +43,7 @@ function makeItemFromCSVRow($row) {
 	$item->bound = $row[37];
 	$item->comment = $row[38];
 	$item->digitalCopy = $row[39];
-	
 	$item->languages = explode(';', $row[25]);
-	
 	$authorFields = array($row[8], $row[9], $row[10], $row[11]);
 	foreach($authorFields as $authorString) {
 		if($authorString != '') {
@@ -68,10 +66,12 @@ function makeItemFromCSVRow($row) {
 			$place->placeName = $parts[0];
 			if(isset($parts[1])) {
 				if(substr($parts[1], 0, 8) == 'geoNames') {
-					$place->geoNames = substr($parts[1], 8);
+					$geoNames = substr($parts[1], 8);
+					$place->geoNames = testGeoNames($geoNames);
 				}
 				elseif(substr($parts[1], 0, 5) == 'getty') {
-					$place->getty = substr($parts[1], 5);
+					$getty = substr($parts[1], 5);
+					$place->getty = testGetty($getty);
 				}	
 			}
 			$item->places[] = $place;
@@ -87,9 +87,26 @@ function makePersonFromCSV($string, $role) {
 	$person->role = $role;
 	$person->persName = $parts[0];
 	if(isset($parts[1])) {
+		if(substr($parts[1], -1, 1) == 'm' or substr($parts[1], -1, 1) == 'f') {
+			$person->gender = substr($parts[1], -1, 1);
+			$person->gnd = substr($parts[1], 0, -1);
+		}
 		$person->gnd = $parts[1];
 	}
 	return($person);
+}
+
+function testGeoNames($id) {
+	$return = '';
+	if(preg_match('~^[0-9]{5,9}$~', $id) == 1) {
+		return($id);
+	}
+}
+
+function testGetty($id) {
+	if(preg_match('~^[0-9]{5,9}$~', $id) == 1) {
+		return($id);
+	}
 }
 
 ?>
