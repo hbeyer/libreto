@@ -16,7 +16,22 @@ class geoDataArchive {
 		}
 	}
 	
-	function insertEntryIfNew($entry) {
+	function insertEntryIfNew($type, $id, $entry) {
+		$check = 0;
+		foreach($this->content as $oldEntry) {
+			if($oldEntry->$type == $id) {
+				if($oldEntry->long and $oldEntry->lat and $oldEntry->label) {
+					$check = 1;
+					$break;
+				}
+			}
+		}
+		if($check == 0) {
+			$this->insertEntry($entry);
+		}
+	}
+
+	function insertEntryIfTotallyNew($entry) {
 		$check = 0;
 		foreach($this->content as $oldEntry) {
 			if($oldEntry->testIfSame($entry) == 1) {
@@ -79,6 +94,16 @@ class geoDataArchive {
 				break;
 			}
 		}
+	}
+
+	function deleteByID($type, $id) {
+		$resultArray = array();
+		foreach($this->content as $entry) {
+			if($entry->$type != $id) {
+				$resultArray[] = $entry;
+			}
+		}
+		$this->content = $resultArray;	
 	}
 	
 	function loadFromGeoBrowserCSV($fileName) {
