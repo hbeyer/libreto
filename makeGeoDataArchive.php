@@ -16,6 +16,7 @@ class geoDataArchive {
 		}
 	}
 	
+	// Inserts an entry into an archive, unless there is one with the same ID (getty, geoNames or gnd)	
 	function insertEntryIfNew($type, $id, $entry) {
 		$check = 0;
 		foreach($this->content as $oldEntry) {
@@ -31,6 +32,7 @@ class geoDataArchive {
 		}
 	}
 
+	// Inserts an entry into an archive, unless there is one with the same label or the same id or the same coordinates
 	function insertEntryIfTotallyNew($entry) {
 		$check = 0;
 		foreach($this->content as $oldEntry) {
