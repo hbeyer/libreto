@@ -37,6 +37,7 @@ function translateFieldNames($field) {
 		'id' => 'Katalog', 
 		'shelfmarkOriginal' => 'Signaturen', 		
 		'persName' => 'Personen',
+		'gender' => 'Gender',
 		'subjects' => 'Inhalte', 
 		'histSubject' => 'Rubriken', 
 		'year' => 'Datierung', 
@@ -55,6 +56,7 @@ function translateFieldNamesButtons($field) {
 	$translation = array(
 		'shelfmarkOriginal' => 'Signaturen',
 		'persName' => 'Personen',
+		'gender' => 'Gender',
 		'subjects' => 'Inhalte', 
 		'histSubject' => 'Rubriken',
 		'year' => 'Jahre',
@@ -90,6 +92,7 @@ function translateCheckboxNames($field) {
 		'id' => 'ID', 
 		'shelfmarkOriginal' => 'Signatur', 		
 		'persName' => 'Person',
+		'gender' => 'Gender',
 		'subjects' => 'Inhalt', 
 		'histSubject' => 'Rubrik', 
 		'year' => 'Erscheinungsjahr', 
@@ -99,7 +102,18 @@ function translateCheckboxNames($field) {
 		'format' => 'Format', 
 		'mediaType' => 'Materialart', 
 		'systemManifestation' => 'Nachgewiesen in', 
-		'genres' => 'Gattung');
+		'genres' => 'Gattung'
+		);
+	$result = strtr($field, $translation);
+	return($result);		
+}
+
+function translateGenderAbbr($field) {
+	$translation = array(
+		'm' => 'Männlich',
+		'f' => 'Weiblich',
+		'x' => 'Weiteres'
+		);
 	$result = strtr($field, $translation);
 	return($result);		
 }

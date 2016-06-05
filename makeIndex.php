@@ -284,6 +284,12 @@ function postprocessFields($field, $value) {
 			$value = $languageCodes[$value];
 		}
 	}
+	if($field == 'gender') {
+		$value = translateGenderAbbr($value);
+		if($value == '') {
+			$value = 'ohne Angabe';
+		}
+	}
 	if($field == 'year') {
 		if($value == 9999) {
 			$value = 'ohne Jahr';

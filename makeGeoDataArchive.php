@@ -7,11 +7,11 @@ class geoDataArchive {
 	public $folder = 'geoDataArchive';
 	
 	function __construct() {
-       $this->date = date("Y-m-d H:i:s");
+		$this->date = date("Y-m-d H:i:s");
 	}
 	
 	function insertEntry($entry) {
-		if($entry->lat != '' and $entry->long != '') {
+		if($entry->lat != '' and $entry->long != '' and $entry->label != '') {
 			$this->content[] = $entry;
 		}
 	}
@@ -23,7 +23,9 @@ class geoDataArchive {
 			if($oldEntry->$type == $id) {
 				if($oldEntry->long and $oldEntry->lat and $oldEntry->label) {
 					$check = 1;
-					$break;
+				}
+				else {
+					$this->deleteByID($type, $id);	
 				}
 			}
 		}

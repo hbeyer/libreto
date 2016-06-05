@@ -87,7 +87,7 @@ function makePersonFromCSV($string, $role) {
 	$person->role = $role;
 	$person->persName = $parts[0];
 	if(isset($parts[1])) {
-		if(substr($parts[1], -1, 1) == 'm' or substr($parts[1], -1, 1) == 'f') {
+		if(preg_match('~^[0-9X]+[mfx]$~', $parts[1]) == 1) {
 			$person->gender = substr($parts[1], -1, 1);
 			$person->gnd = substr($parts[1], 0, -1);
 		}

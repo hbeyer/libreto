@@ -7,7 +7,7 @@ to generate a separata page.
  */
 
 $normalFields = array('id', 'pageCat', 'imageCat', 'numberCat', 'itemInVolume', 'titleCat', 'titleBib', 'titleNormalized', 'publisher', 'year', 'format', 'histSubject', 'mediaType', 'bound', 'comment', 'digitalCopy');
-$personFields = array('persName', 'gnd', 'role');
+$personFields = array('persName', 'gnd', 'gender', 'role');
 $placeFields = array('placeName', 'getty', 'geoNames');
 $arrayFields = array('languages', 'subjects', 'genres');
 $workFields = array('titleWork', 'systemWork', 'idWork');
@@ -23,9 +23,9 @@ $volumeFields = array('numberCat', 'catSubjectFormat');
 
 // The following fields get additional word clouds or doughnuts if they are selected
 $wordCloudFields = array('publisher', 'year', 'format', 'histSubject', 'subjects', 'genres', 'mediaType', 'persName', 'gnd', 'role', 'placeName', 'languages', 'systemManifestation', 'institutionOriginal', 'shelfmarkOriginal', 'provenanceAttribute');
-$doughnutFields = array('persName', 'format', 'histSubject', 'subjects', 'genres', 'mediaType', 'languages', 'systemManifestation', 'institutionOriginal', 'provenanceAttribute', 'bound');
+$doughnutFields = array('persName', 'gender', 'format', 'histSubject', 'subjects', 'genres', 'mediaType', 'languages', 'systemManifestation', 'institutionOriginal', 'provenanceAttribute', 'bound');
 
 // Checkbox-Fields
-$checkboxFields = array('numberCat', 'catSubjectFormat', 'shelfmarkOriginal', 'persName', 'year', 'subjects', 'histSubject', 'genres', 'languages', 'placeName', 'publisher', 'format', 'mediaType', 'bound', 'systemManifestation', 'institutionOriginal', 'provenanceAttribute', 'pageCat', 'titleWork');
+$checkboxFields = array('numberCat', 'catSubjectFormat', 'shelfmarkOriginal', 'persName', 'gender', 'year', 'subjects', 'histSubject', 'genres', 'languages', 'placeName', 'publisher', 'format', 'mediaType', 'bound', 'systemManifestation', 'institutionOriginal', 'provenanceAttribute', 'pageCat', 'titleWork');
 
 ?>
