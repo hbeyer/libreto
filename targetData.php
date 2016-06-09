@@ -4,7 +4,7 @@
 $bases = array(
 	'vd16' => 'http://gateway-bayern.de/VD16+{ID}', 
 	'vd17' => 'http://gso.gbv.de/DB=1.28/CMD?ACT=SRCHA&IKT=8002&TRM={ID}', 
-	'vd18' => 'http://vd18.de/id/{ID}', 
+	'vd18' => 'https://gso.gbv.de/DB=1.65/CMD?ACT=SRCHA&IKT=8002&TRM=VD18+{ID}', 
 	'edit16' => 'http://edit16.iccu.sbn.it/scripts/iccu_ext.dll?fn=10&i={ID}',
 	'edit' => 'http://edit16.iccu.sbn.it/scripts/iccu_ext.dll?fn=10&i={ID}',
 	'swissbib' => 'https://www.swissbib.ch/Record/{ID}',

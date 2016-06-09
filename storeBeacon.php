@@ -3,9 +3,16 @@
 date_default_timezone_set('Europe/Amsterdam');
 
 function cacheBeacon($sources, $seconds) {
+	//Get the current date
+	$date = date('U');
+	//Get the date saved in file changeDate, create this file if not existent
+	if (file_exists('beaconFiles/changeDate') == FALSE) {
+		file_put_contents('beaconFiles/changeDate', $date);
+	}
+	$changeDate = file_get_contents('beaconFiles/changeDate');
+	$age = $date - $changeDate;
 	$test = 0;
 	// Calculate how much time has passed since the last update of the files
-	$age = date('U') - filemtime('beaconFiles');
 	if($age > $seconds) {
 		$test = 1;
 	}
@@ -22,6 +29,8 @@ function cacheBeacon($sources, $seconds) {
 			$beaconFile = file_get_contents($source['location']);
 			file_put_contents('beaconFiles/'.$key, $beaconFile);
 		}
+		//Set the change date file to the current date
+		file_put_contents('beaconFiles/changeDate', $date);
 	}
 }
 

@@ -47,20 +47,6 @@ class geoDataArchive {
 		}
 	}
 	
-	function insertGeoNamesArray($array) {
-		foreach($array as $id) {
-			$entry = $this->makeEntryFromGeoNames($id);
-			$this->insertEntryIfNew($entry);
-		}
-	}
-	
-	function insertGeoNamesAssocArray($array) {
-		foreach($array as $key => $id) {
-			$entry = $this->makeEntryFromGeoNames($id);
-			$this->insertEntryIfNew($entry);
-		}
-	}
-	
 	function saveToFile($fileName) {
 		$serialize = serialize($this);
 		file_put_contents($this->folder.'/'.$fileName, $serialize);
@@ -91,13 +77,29 @@ class geoDataArchive {
 		}
 	}
 	
+	//Returns an entry by label if the label is unique
 	function getByName($name) {
+		$result = NULL;
+		$name = trim($name);
+		$resultLabel = array();
+		$resultAltLabels = array();
+		$count = 0;
 		foreach($this->content as $entry) {
 			if($entry->label == $name) {
-				return($entry);
-				break;
+				$resultLabel[] = $count;
 			}
+			elseif(in_array($name, $entry->altLabels)) {
+				$resultAltLabels[] = $count;
+			}
+			$count++;
 		}
+		if(isset($resultLabel[0]) == TRUE and isset($resultLabel[1]) == FALSE) {
+			$result = $this->content[$resultLabel[0]];
+		}
+		elseif(isset($resultAltLabels[0]) == TRUE and isset($resultAltLabels[1]) == FALSE) {
+			$result = $this->content[$resultAltLabels[0]];
+		}
+		return($result);
 	}
 
 	function deleteByID($type, $id) {
@@ -110,9 +112,9 @@ class geoDataArchive {
 		$this->content = $resultArray;	
 	}
 	
-	function loadFromGeoBrowserCSV($fileName) {
+	function loadFromGeoBrowserCSV($type, $fileName) {
 		$csv = array_map('str_getcsv', file($fileName));
-		$this->loadFromFile();
+		$this->loadFromFile($type);
 		$lastName = '';
 		foreach($csv as $row) {
 			if($row[0] != $lastName) {
@@ -128,7 +130,7 @@ class geoDataArchive {
 			}
 			$lastName = $entry->label;
 		}
-		$this->saveToFile();
+		$this->saveToFile($type);
 	}
 	
 	function makeEntryFromGeoNames($id) {
@@ -189,7 +191,6 @@ class geoDataArchive {
 
 		return($entry);
 	}	
-	
 	
 	function makeEntryFromGND($gnd) {
 		$target = 'http://d-nb.info/gnd/'.$gnd.'/about/lds';

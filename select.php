@@ -10,6 +10,7 @@ include('makeEntry.php');
 include('makeCloudList.php');
 include('makeDoughnutList.php');
 session_start();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -66,26 +67,38 @@ session_start();
 		elseif($test1 == 1 and $test2 == 1) {
 			
 			$_SESSION['fieldSelection'] = 1;
-			$_SESSION['catalogueObject'] = insertFacetsToCatalogue($_SESSION['catalogueObject'], $_POST);
+			$catalogue = unserialize($_SESSION['catalogueObject']);
+			$catalogue = insertFacetsToCatalogue($catalogue, $_POST);
 			
 			$dataString = file_get_contents($_SESSION['folderName'].'/dataPHP');
 			$data = unserialize($dataString);
 			unset($dataString);
 			
+			echo '<p>';
+			
 			if($data) {
-				echo '<p>Serialisierten Daten geladen.</p>';
+				echo 'Serialisierten Daten geladen.<br/>';
 			}
 					
 			makeGeoDataSheet($data, $_SESSION['folderName'], 'KML');
 			makeGeoDataSheet($data, $_SESSION['folderName'], 'CSV');
 			
 			if(file_exists($_SESSION['folderName'].'/printingPlaces.csv') and file_exists($_SESSION['folderName'].'/printingPlaces.kml')) {
-				echo '<p>Geodaten-Sheets gespeichert.</p>';
+				echo 'Geodaten-Sheets gespeichert.<br/>';
 			}
 			
-			$facets = $_SESSION['catalogueObject']->listFacets;
-			$cloudFacets = $_SESSION['catalogueObject']->cloudFacets;
-			$doughnutFacets = $_SESSION['catalogueObject']->doughnutFacets;
+			$SOLRArray = makeSOLRArray($data);
+			$SOLRArray = addMetaDataSOLR($catalogue, $SOLRArray);
+			saveSOLRXML($SOLRArray, $_SESSION['folderName'].'/'.$catalogue->fileName.'-SOLR.xml');
+			
+			if(file_exists($_SESSION['folderName'].'/'.$catalogue->fileName.'-SOLR.xml')) {
+				echo $catalogue->fileName.'-SOLR.xml gespeichert.<br/>';
+			}
+
+			
+			$facets = $catalogue->listFacets;
+			$cloudFacets = $catalogue->cloudFacets;
+			$doughnutFacets = $catalogue->doughnutFacets;
 			
 			/* Hier werden die Strukturen (jeweils ein Array aus section-Objekten) gebildet 
 			und im Array $structures zwischengespeichert.
@@ -114,7 +127,7 @@ session_start();
 			}
 			
 			if($tocs) {
-				echo '<p>Inhaltsverzeichnisse erstellt.</p>';
+				echo 'Inhaltsverzeichnisse erstellt.<br/>';
 			}
 			
 			// Für jede Struktur wird jetzt eine HTML-Datei berechnet und gespeichert.
@@ -122,11 +135,11 @@ session_start();
 			
 			foreach($structures as $structure) {
 				$facet = $facets[$count];
-				$navigation = makeNavigation($_SESSION['catalogueObject']->fileName, $tocs, $facet);
-				$content = makeHead($_SESSION['catalogueObject'], $navigation, $facet);
-				$content .= makeList($structure, $_SESSION['catalogueObject'], $_SESSION['folderName']);
+				$navigation = makeNavigation($catalogue->fileName, $tocs, $facet);
+				$content = makeHead($catalogue, $navigation, $facet);
+				$content .= makeList($structure, $catalogue, $_SESSION['folderName']);
 				$content .= $foot;
-				$fileName = fileNameTrans($_SESSION['folderName'].'/'.$_SESSION['catalogueObject']->fileName).'-'.$facet.'.html';
+				$fileName = fileNameTrans($_SESSION['folderName'].'/'.$catalogue->fileName).'-'.$facet.'.html';
 				if($count == 0) {
 					$firstFileName = $fileName;
 				}
@@ -135,43 +148,42 @@ session_start();
 				fclose($datei);
 				$count++;
 				if(file_exists($fileName)) {
-					echo '<p>Die Datei '.$fileName.'.html wurde erstellt.<br>';
+					echo 'Datei '.$fileName.'.html wurde erstellt.<br/>';
 				}
 			}
 
 			unset($structures);
-			
-			echo '<p>';
-			
+						
 			// Erzeugen der Seite mit den Word Clouds
-			$navigation = makeNavigation($_SESSION['catalogueObject']->fileName, $tocs, 'jqcloud');
-			$content = makeHead($_SESSION['catalogueObject'], $navigation, 'jqcloud');
-			$content .= makeCloudPageContent($data, $_SESSION['catalogueObject']->cloudFacets, $_SESSION['folderName']);
+			$navigation = makeNavigation($catalogue->fileName, $tocs, 'jqcloud');
+			$content = makeHead($catalogue, $navigation, 'jqcloud');
+			$content .= makeCloudPageContent($data, $catalogue->cloudFacets, $_SESSION['folderName']);
 			$content .= $foot;
-			$fileName = fileNameTrans($_SESSION['folderName'].'/'.$_SESSION['catalogueObject']->fileName).'-wordCloud.html';
+			$fileName = fileNameTrans($_SESSION['folderName'].'/'.$catalogue->fileName).'-wordCloud.html';
 			$datei = fopen($fileName,"w");
 			fwrite($datei, $content, 3000000);
 			fclose($datei);
 			if(file_exists($fileName)) {
-				echo 'Die Datei '.$fileName.' wurde erstellt.<br>';
+				echo 'Datei '.$fileName.' wurde erstellt.<br/>';
 			}			
 
 			// Erzeugen der Seite mit den Doughnut Charts
-			$navigation = makeNavigation($_SESSION['catalogueObject']->fileName, $tocs, 'doughnut');
-			$content = makeHead($_SESSION['catalogueObject'], $navigation, 'doughnut');
-			$content .= makeDoughnutPageContent($data, $_SESSION['catalogueObject']->doughnutFacets, $_SESSION['folderName']);
+			$navigation = makeNavigation($catalogue->fileName, $tocs, 'doughnut');
+			$content = makeHead($catalogue, $navigation, 'doughnut');
+			$content .= makeDoughnutPageContent($data, $catalogue->doughnutFacets, $_SESSION['folderName']);
 			$content .= $foot;
-			$fileName = fileNameTrans($_SESSION['folderName'].'/'.$_SESSION['catalogueObject']->fileName).'-doughnut.html';
+			$fileName = fileNameTrans($_SESSION['folderName'].'/'.$catalogue->fileName).'-doughnut.html';
 			$datei = fopen($fileName,"w");
 			fwrite($datei, $content, 3000000);
 			fclose($datei);
 			if(file_exists($fileName)) {
-				echo 'Die Datei '.$fileName.' wurde erstellt.
+				echo 'Datei '.$fileName.' wurde erstellt.<br/>
 				';
 			}	
 			echo '</p>';
-						
+			$_SESSION['catalogueObject'] = serialize($catalogue);
 			echo '<p><a href="'.$firstFileName.'">Website aufrufen</a></p>';
+			
 		}
 		
 function makeSelectForm() {

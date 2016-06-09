@@ -74,7 +74,6 @@ include('storeBeacon.php');
 						
 						elseif($place->getty) {
 							$placeFromArchive = $archiveGetty->getByGetty($place->getty);
-							var_dump($placeFromArchive);
 							if($placeFromArchive == NULL) {
 								$placeFromWeb = $archiveGetty->makeEntryFromGetty($place->getty);
 								if($placeFromWeb) {

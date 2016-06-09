@@ -71,6 +71,7 @@ function setConfiguration($key) {
 		$thisCatalogue->ownerGND = '141678615';
 		$thisCatalogue->heading = 'Bibliothek der Herzogin Antoinette Amalie';
 		$thisCatalogue->fileName = 'antoinette';
+		$thisCatalogue->description = 'Herzogin Antoinette Amalie zu Braunschweig und Lüneburg (1696–1762) war die jüngste Tochter von Herzog Ludwig Rudolf von Braunschweig-Wolfenbüttel sowie seit 1712 die Gemahlin Herzog  Ferdinand Albrechts II. von Braunschweig-Bevern, den sie um 27 Jahre überlebte. Ihre Bibliothek im Umfang von 1.313 Drucken und 28 Handschriften gelangte wie viele andere fürstliche Privatbibliotheken dank der aktiven Erwerbungspolitik Herzog Carls I. in die Wolfenbütteler Bibliothek, wo sie Teil der Mittleren Aufstellung ist.';
 		$thisCatalogue->year = '1762';
 		$thisCatalogue->nachweis['institution'] = 'HAB Wolfenbüttel';
 		$thisCatalogue->nachweis['shelfmark'] = 'BA, I, 631';

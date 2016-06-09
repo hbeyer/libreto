@@ -91,7 +91,9 @@ function makePersonFromCSV($string, $role) {
 			$person->gender = substr($parts[1], -1, 1);
 			$person->gnd = substr($parts[1], 0, -1);
 		}
-		$person->gnd = $parts[1];
+		else {
+			$person->gnd = $parts[1];
+		}
 	}
 	return($person);
 }
