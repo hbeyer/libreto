@@ -1,5 +1,6 @@
 <?php
 include('classDefinition.php');
+include('settings.php');
 include('encode.php');
 include('loadFile.php');
 

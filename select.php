@@ -1,7 +1,9 @@
 ﻿<?php
 include('classDefinition.php');
-include('encode.php');
+include('settings.php');
 include('makeGeoDataSheet.php');
+include('addToSOLR.php');
+include('encode.php');
 include('makeIndex.php');
 include('makeSection.php');
 include('makeNavigation.php');
@@ -87,12 +89,13 @@ session_start();
 				echo 'Geodaten-Sheets gespeichert.<br/>';
 			}
 			
+			$fileNameSOLR = $_SESSION['folderName'].'/'.$catalogue->fileName;
 			$SOLRArray = makeSOLRArray($data);
 			$SOLRArray = addMetaDataSOLR($catalogue, $SOLRArray);
-			saveSOLRXML($SOLRArray, $_SESSION['folderName'].'/'.$catalogue->fileName.'-SOLR.xml');
+			saveSOLRXML($SOLRArray, $fileNameSOLR);
 			
-			if(file_exists($_SESSION['folderName'].'/'.$catalogue->fileName.'-SOLR.xml')) {
-				echo $catalogue->fileName.'-SOLR.xml gespeichert.<br/>';
+			if(file_exists($fileNameSOLR.'-SOLR.xml')) {
+				echo $fileNameSOLR.'-SOLR.xml gespeichert.<br/>';
 			}
 
 			
@@ -148,7 +151,7 @@ session_start();
 				fclose($datei);
 				$count++;
 				if(file_exists($fileName)) {
-					echo 'Datei '.$fileName.'.html wurde erstellt.<br/>';
+					echo 'Datei '.$fileName.' wurde erstellt.<br/>';
 				}
 			}
 

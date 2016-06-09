@@ -1,6 +1,7 @@
 <?php
 session_start();
 include('classDefinition.php');
+include('settings.php');
 include('encode.php');
 include('makeGeoDataArchive.php');
 include('beaconSources.php');
@@ -63,7 +64,7 @@ include('storeBeacon.php');
 							$placeFromArchive = $archiveGeoNames->getByGeoNames($place->geoNames);
 							if($placeFromArchive == NULL) {
 								$placeFromWeb = $archiveGeoNames
-								->makeEntryFromGeoNames($place->geoNames);
+								->makeEntryFromGeoNames($place->geoNames, $userGeoNames);
 								if($placeFromWeb) {
 									$archiveGeoNames->insertEntryIfNew($placeFromWeb);
 									$placeFromArchive = $placeFromWeb;

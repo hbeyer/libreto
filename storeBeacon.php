@@ -2,7 +2,7 @@
 
 date_default_timezone_set('Europe/Amsterdam');
 
-function cacheBeacon($sources, $seconds) {
+function cacheBeacon($sources, $seconds, $user) {
 	//Get the current date
 	$date = date('U');
 	//Get the date saved in file changeDate, create this file if not existent
@@ -24,7 +24,7 @@ function cacheBeacon($sources, $seconds) {
 	}
 	// Download new files if necessary
 	if($test == 1) {
-		ini_set('user_agent','Herzog August Bibliothek, Dr. Hartmut Beyer');
+		ini_set('user_agent',$user);
 		foreach($sources as $key => $source) {
 			$beaconFile = file_get_contents($source['location']);
 			file_put_contents('beaconFiles/'.$key, $beaconFile);

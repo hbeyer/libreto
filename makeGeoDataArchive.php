@@ -133,8 +133,8 @@ class geoDataArchive {
 		$this->saveToFile($type);
 	}
 	
-	function makeEntryFromGeoNames($id) {
-		$target = 'http://api.geonames.org/getJSON?formatted=true&geonameId='.$id.'&username=hbeyer';
+	function makeEntryFromGeoNames($id, $user) {
+		$target = 'http://api.geonames.org/getJSON?formatted=true&geonameId='.$id.'&username='.$user;
 		$responseString = file_get_contents($target);
 		$response = json_decode($responseString);
 

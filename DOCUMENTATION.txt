@@ -5,8 +5,11 @@ By Hartmut Beyer (beyer@hab.de)
 
 Installation of the software
 Copy all the files to the same directory on a server
+Edit the file settings.php: 
+	Insert you user name for geoNames (an account can be created here: http://www.geonames.org/login)
+	Insert a value for user_agent in the HTTP header (needed for downloading BEACON files)
 
-
+	
 Creating Data
 
 Use "vorlage.csv" as a template. 
@@ -86,3 +89,9 @@ Insert the following information:
 	label: Name of the database to be displayed on the web surface
 	location: URL of the BEACON file
 	target: Target to retrieve data (usually indicated in the BEACON file). The part to be replaced must be indicated as {ID}
+	
+
+SOLR integration
+
+The software produces XML files suited for indexing by Apache Solr (tested for Version 5.0.0). They are being saved in the project folder during the upload process. 
+The file schema.xml contains the configuration of the Solr core.

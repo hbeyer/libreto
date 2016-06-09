@@ -1,6 +1,7 @@
 <?php
 session_start();
 include('classDefinition.php');
+include('settings.php');
 include('encode.php');
 include('makeGeoDataArchive.php');
 include('makeGeoDataSheet.php');
