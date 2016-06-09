@@ -71,6 +71,9 @@ include('storeBeacon.php');
 				storeBeacon($data, '', $selectedBeacon);
 				$data = addBeacon($data, 'user');
 				$_SESSION['beacon'] = 1;
+				$serialize = serialize($data);
+				file_put_contents($_SESSION['folderName'].'/dataPHP', $serialize);
+				
 				echo '<p>Die Anreicherung mit biographischen Links war erfolgreich.<br>
 				Weiter zur <a href="select.php">Feldauswahl</a>.</p>';
 			}

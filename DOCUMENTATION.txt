@@ -6,7 +6,7 @@ By Hartmut Beyer (beyer@hab.de)
 Installation of the software
 Copy all the files to the same directory on a server
 Edit the file settings.php: 
-	Insert you user name for geoNames (an account can be created here: http://www.geonames.org/login)
+	Insert your user name for geoNames (an account can be created here: http://www.geonames.org/login)
 	Insert a value for user_agent in the HTTP header (needed for downloading BEACON files)
 
 	

@@ -3,7 +3,8 @@
 function saveSOLRXML($SOLRArray, $fileName) {
 	//The following elements have to be repeated so that SOLR accepts them as multiValued. Delimiter is ";", as defined in flattenItem and resolveLanguages
 	$multiValued = array('languages', 'languagesFull', 'genres', 'subjects', 'author', 'contributor');
-	$SOLRArray = assignUniqueIDs($SOLRArray, $fileName);
+	$fileNameBare = shortenPath($fileName);
+	$SOLRArray = assignUniqueIDs($SOLRArray, $fileNameBare);
 	$folder = '';
 	$dom = new DOMDocument('1.0', 'UTF-8');
 	$dom->formatOutput = true;

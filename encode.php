@@ -177,4 +177,21 @@ function makeBeaconLink($gnd, $target) {
 	return($link);
 }
 
+function removeSlashes($path) {
+	$translate = array('/' => '');
+	$result = strtr($path, $translate);
+	return($result);
+}
+
+function shortenPath($fileName) {
+	preg_match('~.+/([a-zA-Z0-9]+)$~', $fileName, $hits);
+	if(isset ($hits[1])) {
+		$result = $hits[1];
+	}
+	else {
+		$result = removeSlashes($fileName);
+	}
+	return($result);
+}
+
 ?>
