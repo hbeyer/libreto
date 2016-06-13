@@ -1,8 +1,8 @@
 ﻿<?php
 
 function makeEntry($thisBook, $thisCatalogue, $id) {
-	$buffer = makeAuthors($thisBook->persons).makeTitle($thisBook->titleBib, $thisBook->titleCat).makePublished(makePlaces($thisBook->places), $thisBook->publisher, $thisBook->year).' <a id="linkid'.$id.'" href="javascript:toggle(\'id'.$id.'\')">Mehr</a>
-				<div id="id'.$id.'" style="display:none; padding-top:0px; padding-bottom:15px; padding-left:10px;">'.makeSourceLink($thisBook, $thisCatalogue->base).makeOriginalLink($thisBook->originalItem).makeDigiLink($thisBook->digitalCopy).makeProof($thisBook).makeComment($thisBook->comment).'</div>';
+	$buffer = makeAuthors($thisBook->persons).makeTitle($thisBook->titleBib, $thisBook->titleCat, $thisBook->work).makePublished(makePlaces($thisBook->places), $thisBook->publisher, $thisBook->year).' <a id="linkid'.$id.'" href="javascript:toggle(\'id'.$id.'\')">Mehr</a>
+				<div id="id'.$id.'" style="display:none; padding-top:0px; padding-bottom:15px; padding-left:10px;">'.makeSourceLink($thisBook, $thisCatalogue->base).makeOriginalLink($thisBook->originalItem).makeWorkLink($thisBook->work).makeDigiLink($thisBook->digitalCopy).makeProof($thisBook).makeComment($thisBook->comment).'</div>';
 	return($buffer);
 }
 
@@ -93,6 +93,18 @@ function makeOriginalLink($originalItem) {
 	}
 	return($result);
 }	
+
+function makeWorkLink($work) {
+	if($work['systemWork'] and $work['idWork']) {
+	include('targetData.php');
+	$systemClean = translateAnchor($work['systemWork']);
+	$systemClean = trim($work['systemWork']);
+	$systemClean = strtolower($systemClean);
+	$target = $basesWorks($systemClean);
+	$link = makeBeaconLink($work['idWork'], $target);
+	$result = 'Werk: <a href="'.$link.'" title="Datensatz zum Werk aufrufen" target="_blank">'.$work['systemWork'].' '.$work['idWork'].'</a>';
+	}
+}
 	
 function makeDigiLink($digi) {
 	$result = '';
@@ -167,14 +179,18 @@ function insertLink($text, $pattern, $target) {
 }
 
 
-function makeTitle($titleBib, $titleCat) {
+function makeTitle($titleBib, $titleCat, $work) {
+	$titleWork = $work['titleWork'];
 	$result = '';
-	if($titleBib AND $titleCat) {
+	if($titleBib and $titleCat) {
 		$result = '<span class="titleBib">'.$titleBib.'</span><span class="titleOriginal" style="display:none">'.$titleCat.'</span>';
 	}
 	elseif($titleBib) {
-		$result = '<span class="titleBib">'.$titleBib.'</span><span class="titleOriginal" style="display:none">[Recherchierter Titel:] '.$titleBib.'</span>';		
+		$result = '<span class="titleBib">'.$titleBib.'</span><span class="titleOriginal" style="display:none">[Recherchierter Titel:] '.$titleBib.'</span>';
 	}
+	elseif($titleCat and $titleWork) {
+		$result = '<span class="titleBib">[Titel des Werkes:] '.$titleWork.'</span><span class="titleOriginal" style="display:none">'.$titleCat.'</span>';
+	}	
 	elseif($titleCat) {
 		$result = '<span class="titleBib">[Titel im Altkatalog:] '.$titleCat.'</span><span class="titleOriginal" style="display:none">'.$titleCat.'</span>';
 	}

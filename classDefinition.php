@@ -11,7 +11,9 @@
 		public $place;
 		public $printer;
 		public $year;
-		public $copy = array('institution' => '', 'shelfmark' => ''); //The copy used for the reconstruction of the catalogue
+		//public $copy = array('institution' => '', 'shelfmark' => ''); //The copy used for the reconstruction of the catalogue
+		public $institution; //Institution possessing the copy of the catalogue
+		public $shelfmark; //Shelfmark of the copy of the catalogue
 		public $description;
 		public $GeoBrowserStorageID;
 		public $listFacets = array();

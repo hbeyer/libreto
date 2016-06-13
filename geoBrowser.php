@@ -8,6 +8,7 @@ include('makeGeoDataSheet.php');
 include('makeIndex.php');
 include('beaconSources.php');
 include('storeBeacon.php');
+include('makeHead.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -77,9 +78,10 @@ include('storeBeacon.php');
 		elseif($test1 == 1 and $test2 == 1) {
 			$catalogue = unserialize($_SESSION['catalogueObject']);
 			$catalogue->GeoBrowserStorageID = $_POST['storageID'];
+			$geoBrowserLink = makeGeoBrowserLink($_POST['storageID'], $catalogue->year);
 			$_SESSION['catalogueObject'] = serialize($catalogue);
 			$_SESSION['storageID'] = 1;
-			echo '<p>Der <a href="http://geobrowser.de.dariah.eu/?csv1=http%3A%2F%2Fgeobrowser.de.dariah.eu%2Fstorage%2F'.$_POST['storageID'].'" target="_blank">Link zum DARIAH GeoBrowser</a> ist gespeichert.<br/>
+			echo '<p>Der <a href="'.$geoBrowserLink.'" target="_blank">Link zum DARIAH GeoBrowser</a> ist gespeichert.<br/>
 			Weiter zur Anreicherung mit <a href="beacon.php">biographischen Links</a>.</p>';
 		}
 		

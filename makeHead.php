@@ -9,9 +9,8 @@ function makeHead($thisCatalogue, $navigation, $field) {
 		$title = $thisCatalogue->heading;
 	}
 	$transcriptionLink = '';
-	if($thisCatalogue->title) {
-		$transcriptionLink = '<br />
-		<span id="switchLink"><a href="javascript:switchToOriginal()">Anzeige in Vorlageform</a></span><br/>&nbsp;';
+	if($thisCatalogue->shelfmark) {
+		$transcriptionLink = '<span id="switchLink"><a href="javascript:switchToOriginal()">Anzeige in Vorlageform</a></span><br/>&nbsp;';
 	}
 	$classLi = 'download';
 	if($field == 'jqcloud' or $field == 'doughnut') {
@@ -25,6 +24,10 @@ function makeHead($thisCatalogue, $navigation, $field) {
 	}
 	
 	$description = makeDescription($thisCatalogue);
+	
+	$catalogueDescription = makeCatalogueDescription($thisCatalogue);
+	
+	$geoBrowserLink = makeGeoBrowserLink($thisCatalogue->GeoBrowserStorageID, $thisCatalogue->year);
 	
 	$frontMatter = '<!DOCTYPE html>
 <html lang="en">
@@ -43,7 +46,7 @@ function makeHead($thisCatalogue, $navigation, $field) {
 		<div class="container-fluid">
 			<h1>'.$title.'</h1>
 			'.$description.'
-			<p>'.$thisCatalogue->title.$transcriptionLink.'</p>
+			'.$catalogueDescription.'
 		</div>
 		<nav class="navbar navbar-default" data-spy="affix" data-offset-top="197">'.$navigation.'
 			<ul class="nav navbar-nav navbar-right" style="padding-right:15px">
@@ -52,7 +55,7 @@ function makeHead($thisCatalogue, $navigation, $field) {
 					<ul class="dropdown-menu">
 						<li><a href="'.$fileName.'-wordCloud.html" title="Wortwolken">Word Clouds</a></li>
 						<li><a href="'.$fileName.'-doughnut.html" title="Kreisdiagramme">Kreisdiagramme</a></li>				
-						<li><a href="https://geobrowser.de.dariah.eu/?csv1=http://geobrowser.de.dariah.eu./storage/'.$thisCatalogue->GeoBrowserStorageID.'&currentStatus=mapChanged=Historical+Map+of+1650" target="_blank" title="Druckorte in Kartenansicht">GeoBrowser</a></li>
+						<li><a href="'.$geoBrowserLink.'" target="_blank" title="Druckorte in Kartenansicht">GeoBrowser</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -74,5 +77,38 @@ function makeDescription($catalogue) {
 	}
 	return($description);
 }
+
+function makeCatalogueDescription($catalogue) {
+	$transcriptionLink = '<span id="switchLink"><a href="javascript:switchToOriginal()">Anzeige in Vorlageform</a></span><br/>&nbsp;';
+	$description = '';
+	if($catalogue->institution and $catalogue->shelfmark) {
+			$description = 'Altkatalog: '.$catalogue->institution.', '.$catalogue->shelfmark;
+			$description = $description.'<br />'.$transcriptionLink;
+			$description = '<p>'.$description.'</p>';
+	}
+	return $description;
+}
+
+function makeGeoBrowserLink($storageID, $year) {
+	$mapDate = assignMapDate($year);
+	$link = 'https://geobrowser.de.dariah.eu/?csv1=http://geobrowser.de.dariah.eu./storage/'.$storageID.'&currentStatus=mapChanged=Historical+Map+of+'.$mapDate;
+	return($link);
+}
+
+function assignMapDate($year) {
+	$historicalMaps = array(400, 600, 800, 1000, 1279, 1492, 1530, 1650, 1715, 1783, 1815, 1880, 1914, 1920, 1938, 1949, 1994, 2006);
+	$year = intval($year);
+	$selectedYear = 400;
+	$diversionOld = 10000;
+	foreach($historicalMaps as $mapDate) {
+		$diversion = abs($mapDate - $year);
+		if($diversion < $diversionOld) {
+			$selectedYear = $mapDate;
+		}
+		$diversionOld = $diversion;
+	}
+	return($selectedYear);
+}
+
 
 ?>

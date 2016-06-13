@@ -77,4 +77,9 @@ $patternSystems = array(
 	'manumed' => '~ManuMed obj[0-9]{6,10},?T?~'
 	);
 	
+$basesWorks = array(
+	'dnb' => 'http://d-nb.info/gnd/{ID}',
+	'wikipedia' => 'https://de.wikipedia.org/wiki/{ID}'
+);	
+	
 ?>

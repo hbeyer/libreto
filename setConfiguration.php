@@ -14,8 +14,8 @@ function setConfiguration($key) {
 		$thisCatalogue->database = 'rehlinger';
 		$thisCatalogue->title = 'Index Librorvm: Qvos Nobilis Et Ornatissimvs Vir Carolvs VVolfgangvs Relingervs synceri Euangelij ministrorum, Augustæ, vsui liberali sumptu comparauit, ijsq[ue] in omne æuum d.d. secundum altitudinem exemplarium dispositus';
 		$thisCatalogue->year = '1575';
-		$thisCatalogue->nachweis['institution'] = 'HAB Wolfenbüttel';
-		$thisCatalogue->nachweis['shelfmark'] = 'M: Bc Kapsel 19 (7)';
+		$thisCatalogue->copy['institution'] = 'HAB Wolfenbüttel';
+		$thisCatalogue->copy['shelfmark'] = 'M: Bc Kapsel 19 (7)';
 		$thisCatalogue->GeoBrowserStorageID = '267901';
 		$thisCatalogue->listFacets = array('numberCat', 'persName', 'year', 'placeName', 'languages', 'publisher', 'format', 'systemManifestation');
 		$thisCatalogue->cloudFacets = array('persName', 'placeName', 'languages', 'publisher');

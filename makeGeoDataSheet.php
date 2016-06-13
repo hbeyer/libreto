@@ -26,10 +26,14 @@ function makeGeoDataSheet($data, $folderName, $format) {
 		if($entry->level == 2 and $test == 1) {
 		foreach($entry->content as $occurrence) {
 				$row = new geoDataRow;
+				$year = $entry->label;
+				if(preg_match('~^[12]?[0-9]{3}?~', $year) == FALSE) {
+					$year = '';
+				}
+				$row->timeStamp = $year;
 				$row->label = $placeName;
 				$row->lat = cleanCoordinate($entry->geoData['lat']);
 				$row->long = cleanCoordinate($entry->geoData['long']);
-				$row->timeStamp = $entry->label;
 				$row->lat = $latitude;
 				$row->long = $longitude;
 				if($entry->authority['system'] == 'getty') {
@@ -42,7 +46,7 @@ function makeGeoDataSheet($data, $folderName, $format) {
 			}
 		}
 	}		
-		// Jetzt werden die Objekte der Klasse geoDataRow in Einträge übersetzt, abhängig vom gewählten Format
+		// Jetzt werden die Objekte der Klasse geoDataRow in Einträge übersetzt, abhängig vom gewählten Format 1678
 		if($ending == 'csv') {
 			// Kopfdaten für CSV-Dateien
 			$content = '"Name","Address","Description","Longitude","Latitude","TimeStamp","TimeSpan:begin","TimeSpan:end","GettyID",""
