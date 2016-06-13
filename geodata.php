@@ -66,19 +66,32 @@ include('storeBeacon.php');
 								$placeFromWeb = $archiveGeoNames
 								->makeEntryFromGeoNames($place->geoNames, $userGeoNames);
 								if($placeFromWeb) {
-									$archiveGeoNames->insertEntryIfNew($placeFromWeb);
+									$archiveGeoNames->insertEntryIfNew('geoNames', $place->geoNames, $placeFromWeb);
 									$placeFromArchive = $placeFromWeb;
 									$countWebDownloads++;
 								}
 							}
 						}
 						
+						elseif($place->gnd) {
+							$placeFromArchive = $archiveGND->getByGND($place->gnd);
+							if($placeFromArchive == NULL) {
+								$placeFromWeb = $archiveGND
+								->makeEntryFromGNDTTL($place->gnd);
+								if($placeFromWeb) {
+									$archiveGND->insertEntryIfNew('gnd', $place->gnd, $placeFromWeb);
+									$placeFromArchive = $placeFromWeb;
+									$countWebDownloads++;
+								}
+							}
+						}		
+						
 						elseif($place->getty) {
 							$placeFromArchive = $archiveGetty->getByGetty($place->getty);
 							if($placeFromArchive == NULL) {
 								$placeFromWeb = $archiveGetty->makeEntryFromGetty($place->getty);
 								if($placeFromWeb) {
-									$archiveGetty->insertEntry($placeFromWeb);
+									$archiveGetty->insertEntryIfNew('getty', $place->getty, $placeFromWeb);
 									$placeFromArchive = $placeFromWeb;
 									$countWebDownloads++;
 								}
@@ -111,7 +124,7 @@ include('storeBeacon.php');
 				$_SESSION['unidentifiedPlaces'] = $unidentifiedPlaces;
 				$form = makeGeoDataForm($unidentifiedPlaces);
 				echo '<p>Folgende Orte konnten nicht identifiziert werden. Sie k&ouml;nnen hier einen Identifier f&uuml;r jeden Ort nachtragen.<br/>
-				Suchen Sie dazu auf <a href="http://www.geonames.org/" target="_blank">geoNames</a> oder im <a href="http://www.getty.edu/research/tools/vocabularies/tgn/">Getty Thesaurus of Geographic Names</a>.</p>';
+				Suchen Sie dazu auf <a href="http://www.geonames.org/" target="_blank">geoNames</a> oder in der <a href="http://swb.bsz-bw.de/DB=2.104" target="_blank">Gemeinsamen Normdatei</a> nach &bdquo;Gepgraphikum als Schlagwort&rdquo;. Achten Sie bei der GND darauf, dass der gew&auml;hlte Datensatz Geodaten enthält.</p>';
 				echo $form;
 			} 
 			else {
@@ -135,7 +148,7 @@ function makeGeoDataForm($unidentifiedPlaces) {
 	</form>';
 	return($form);
 }
-		
+
 function makeGeoDataFormRow($cityID, $city) {
 	$row = '
     <div class="form-group">
@@ -144,12 +157,12 @@ function makeGeoDataFormRow($cityID, $city) {
             <div class="form-group row">
                 <label for="geoNames_'.$cityID.'" class="col-md-1 control-label">geoNames</label>
                 <div class="col-md-4">
-                    <input type="text" class="form-control" name="geoNames_'.$cityID.'" placeholder="7-stellige Nummer">
+                    <input type="text" class="form-control" pattern="[0-9]{5,9}"  name="geoNames_'.$cityID.'" placeholder="7-stellige Nummer">
                 </div>
-                <label for="getty_'.$cityID.'" class="col-md-1 control-label">Getty</label>
+                <label for="gnd_'.$cityID.'" class="col-md-1 control-label">GND</label>
                 <div class="col-md-4">
-                    <input type="text" class="form-control" name="getty_'.$cityID.'" placeholder="7-stellige Nummer">
-                </div>
+                    <input type="text" class="form-control" pattern="[0-9X-]{4,10}" name="gnd_'.$cityID.'" placeholder="Beispiel: 7576656-5">
+                </div>				
             </div>
         </div>
     </div>';

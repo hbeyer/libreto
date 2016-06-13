@@ -68,6 +68,15 @@ class geoDataArchive {
 		}
 	}
 	
+	function getByGND($id) {
+		foreach($this->content as $entry) {
+			if($entry->gnd == $id) {
+				return($entry);
+				break;
+			}
+		}
+	}	
+	
 	function getByGetty($id) {
 		foreach($this->content as $entry) {
 			if($entry->getty == $id) {
@@ -191,7 +200,36 @@ class geoDataArchive {
 
 		return($entry);
 	}	
+
+	function makeEntryFromGNDTTL($gnd) {
+		$target = 'http://d-nb.info/gnd/'.$gnd.'/about/lds';
+		$response = file_get_contents($target);
+		preg_match('~gndo:preferredNameForThePlaceOrGeographicName "([^"]+)"~', $response, $hitsPrefLabel);
+		preg_match('~gndo:variantNameForThePlaceOrGeographicName ([^;]+)~', $response, $hitsAltLabels);
+		preg_match('~owl:sameAs <http://sws.geonames.org/([0-9]{6,8})>~', $response, $hitsSameAs);
+		preg_match('~Point \( ([+-][0-9]{1,3}\.[0-9]{1,10}) ([+-][0-9]{1,3}\.[0-9]{1,10}) \)~', $response, $hitsPoint);
+		
+		$entry = new geoDataArchiveEntry();
+		if(isset($hitsPrefLabel[1])) {
+			$entry->label = replaceArrowBrackets($hitsPrefLabel[1]);
+		}
+		if(isset($hitsAltLabels[1])) {
+			preg_match_all('~"([^"]+)"~', $hitsAltLabels[1], $altLabels);
+			$entry->altLabels = $altLabels[1];
+		}
+		if(isset($hitsSameAs[1])) {
+			$entry->geoNames = $hitsSameAs[1];
+		}	
+		if(isset($hitsPoint[1]) and isset($hitsPoint[2])) {
+			$entry->long = $hitsPoint[1];
+			$entry->lat = $hitsPoint[2];
+		}
+		$entry->gnd = $gnd;
+		
+		return($entry);
+	}
 	
+	//Created for entries in RDF/XML-format. Meanwhile, the interface delivers RDF/TTL (see above)
 	function makeEntryFromGND($gnd) {
 		$target = 'http://d-nb.info/gnd/'.$gnd.'/about/lds';
 		$response = file_get_contents($target);

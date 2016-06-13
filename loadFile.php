@@ -69,10 +69,14 @@ function makeItemFromCSVRow($row) {
 					$geoNames = substr($parts[1], 8);
 					$place->geoNames = testGeoNames($geoNames);
 				}
+				elseif(substr($parts[1], 0, 3) == 'gnd') {
+					$gnd = substr($parts[1], 3);
+					$place->gnd = testGND($gnd);
+				}				
 				elseif(substr($parts[1], 0, 5) == 'getty') {
 					$getty = substr($parts[1], 5);
 					$place->getty = testGetty($getty);
-				}	
+				}
 			}
 			$item->places[] = $place;
 		}
@@ -103,6 +107,13 @@ function testGeoNames($id) {
 	if(preg_match('~^[0-9]{5,9}$~', $id) == 1) {
 		return($id);
 	}
+}
+
+function testGND($gnd) {
+	$return = '';
+	if(preg_match('~^[0-9X-]{9,11}$~', $gnd) == 1) {
+		return($gnd);
+	}	
 }
 
 function testGetty($id) {
