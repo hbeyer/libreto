@@ -138,7 +138,6 @@ session_start();
 			copy ('proprietary.js', $folderName.'/proprietary.js');
 			copy ('chart.js', $folderName.'/chart.js');
 			copy ('uploadedData', $folderName.'/dataPHP');
-			copy ('user/beaconStore', $folderName.'/beaconStore');
 			
 			if(file_exists($folderName.'/dataPHP')) {
 				$_SESSION['folder'] = 1;

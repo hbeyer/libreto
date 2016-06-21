@@ -32,7 +32,8 @@ function makeCloudScript($data, $facets, $folder) {
 }
 
 function makeCloudJSON($data, $field, $limit, $folder) {
-	$path = '../'.$folder.'/'.$folder.'-'.$field.'.html#';
+	//$path = $folder.'-'.$field.'.html#';
+	$path = $folder.'-'.$field.'.html#';
 	if($field == 'persName') {
 		$cloudArrays = makeCloudArraysPersons($data);
 	}

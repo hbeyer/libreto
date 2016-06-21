@@ -16,10 +16,12 @@ include('setConfiguration.php');
 include('makeCSV.php');
 include('makeXML.php');
 
-//$thisCatalogue = setConfiguration('rehl');
-//$thisCatalogue = setConfiguration('bahn');
-//$thisCatalogue = setConfiguration('liddel');
-$thisCatalogue = setConfiguration('hardt');
+$thisCatalogue = setConfiguration('antoinette');
+$dataString = file_get_contents($thisCatalogue->fileName.'/dataPHP');
+$data = unserialize($dataString);
+unset($dataString);
+$folderName = fileNameTrans($thisCatalogue->fileName);
+
 $facets = $thisCatalogue->listFacets;
 $cloudFacets = $thisCatalogue->cloudFacets;
 $doughnutFacets = $thisCatalogue->doughnutFacets;
@@ -39,6 +41,11 @@ copy ('chart.js', $folderName.'/chart.js');
 $dataString = file_get_contents($folderName.'/dataPHP');
 $data = unserialize($dataString);
 unset($dataString);
+
+foreach($data as $item) {
+	foreach($item->persons as $person) {}
+	echo '<p>Name: '.$person->persName.'<br />'.implode(', ', $person->beacon).'</p>';
+}
 
 // Füge die Datasheets für den GeoBrowser dem Projektverzeichnis hinzu (zeitweise aufgehoben)
 //makeGeoDataSheet($data, $folderName, 'KML');
@@ -101,7 +108,7 @@ unset($structures);
 // Erzeugen der Seite mit den Word Clouds
 $navigation = makeNavigation($thisCatalogue->fileName, $tocs, 'jqcloud');
 $content = makeHead($thisCatalogue, $navigation, 'jqcloud');
-$content .= makeCloudPageContent($data, $cloudFacets, $folderName);
+$content .= makeCloudPageContent($data, $cloudFacets, $thisCatalogue->fileName);
 $content .= $foot;
 $fileName = fileNameTrans($folderName.'/'.$thisCatalogue->fileName).'-wordCloud.html';
 $datei = fopen($fileName,"w");

@@ -68,8 +68,8 @@ include('storeBeacon.php');
 				
 				//Update of the stored Beacon files if they are older than one week, i. e. 604800 Seconds
 				cacheBeacon($beaconSources, 604800, $userAgentHTTP);
-				storeBeacon($data, '', $selectedBeacon);
-				$data = addBeacon($data, 'user');
+				storeBeacon($data, $_SESSION['folderName'], $selectedBeacon);
+				$data = addBeacon($data, $_SESSION['folderName']);
 				$_SESSION['beacon'] = 1;
 				$serialize = serialize($data);
 				file_put_contents($_SESSION['folderName'].'/dataPHP', $serialize);

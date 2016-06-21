@@ -160,7 +160,7 @@ session_start();
 			// Erzeugen der Seite mit den Word Clouds
 			$navigation = makeNavigation($catalogue->fileName, $tocs, 'jqcloud');
 			$content = makeHead($catalogue, $navigation, 'jqcloud');
-			$content .= makeCloudPageContent($data, $catalogue->cloudFacets, $_SESSION['folderName']);
+			$content .= makeCloudPageContent($data, $catalogue->cloudFacets, $catalogue->fileName);
 			$content .= $foot;
 			$fileName = fileNameTrans($_SESSION['folderName'].'/'.$catalogue->fileName).'-wordCloud.html';
 			$datei = fopen($fileName,"w");

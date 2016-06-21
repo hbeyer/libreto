@@ -197,7 +197,7 @@ function makeTitle($titleBib, $titleCat, $work) {
 	return($result);
 }
 
-// The function produces a link to further information on persons. It is called by the function makeList, if GND data is submitted in $section->authority. To work, it needs serialized BEACON data in a file named beaconStore-{catalogue key}. Therefore you have to run the function storeBeacon previously.
+// The function produces a link to further information on persons. It is called by the function makeList, if GND data is submitted in $section->authority. To work, it needs serialized BEACON data in a file named beaconStore. Therefore you have to run the function storeBeacon previously.
 	
 function makeCollapseBeacon($gnd, $folderName) {
 	$beaconString = file_get_contents($folderName.'/beaconStore');

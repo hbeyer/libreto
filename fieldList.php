@@ -22,7 +22,7 @@ $indexFields = array_merge($normalFields, $personFields, $placeFields, $arrayFie
 $volumeFields = array('numberCat', 'catSubjectFormat');
 
 // The following fields get additional word clouds or doughnuts if they are selected
-$wordCloudFields = array('publisher', 'year', 'format', 'histSubject', 'subjects', 'genres', 'mediaType', 'persName', 'gnd', 'role', 'placeName', 'languages', 'systemManifestation', 'institutionOriginal', 'shelfmarkOriginal', 'provenanceAttribute');
+$wordCloudFields = array('publisher', 'format', 'histSubject', 'subjects', 'genres', 'mediaType', 'persName', 'gnd', 'role', 'placeName', 'languages', 'systemManifestation', 'institutionOriginal', 'shelfmarkOriginal', 'provenanceAttribute');
 $doughnutFields = array('persName', 'gender', 'format', 'histSubject', 'subjects', 'genres', 'mediaType', 'languages', 'systemManifestation', 'institutionOriginal', 'provenanceAttribute', 'bound');
 
 // Checkbox-Fields

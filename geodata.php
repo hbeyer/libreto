@@ -157,7 +157,7 @@ function makeGeoDataFormRow($cityID, $city) {
             <div class="form-group row">
                 <label for="geoNames_'.$cityID.'" class="col-md-1 control-label">geoNames</label>
                 <div class="col-md-4">
-                    <input type="text" class="form-control" pattern="[0-9]{5,9}"  name="geoNames_'.$cityID.'" placeholder="7-stellige Nummer">
+                    <input type="text" class="form-control" pattern="[0-9]{5,9}"  name="geoNames_'.$cityID.'" placeholder="Beispiel: 2956147">
                 </div>
                 <label for="gnd_'.$cityID.'" class="col-md-1 control-label">GND</label>
                 <div class="col-md-4">

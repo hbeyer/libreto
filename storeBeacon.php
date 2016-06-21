@@ -27,7 +27,9 @@ function cacheBeacon($sources, $seconds, $user) {
 		ini_set('user_agent',$user);
 		foreach($sources as $key => $source) {
 			$beaconFile = file_get_contents($source['location']);
-			file_put_contents('beaconFiles/'.$key, $beaconFile);
+			if($beaconFile) {
+				file_put_contents('beaconFiles/'.$key, $beaconFile);
+			}
 		}
 		//Set the change date file to the current date
 		file_put_contents('beaconFiles/changeDate', $date);
@@ -80,6 +82,21 @@ function storeBeacon($data, $folderName, $selectedBeacon = 'all') {
 		file_put_contents($folderName.'/beaconStore', $serialize);
 	}
 }
+
+function testBeacon($sources, $gnd, $user) {
+	$result = array();
+	ini_set('user_agent', $user);
+	foreach($sources as $key => $source) {
+		$beaconFile = file_get_contents('beaconFiles/'.$key);
+			preg_match('~'.$gnd.'~', $beaconFile, $treffer);
+			if(isset($treffer[0])) {
+				$result[] = $key;
+			}
+			unset($treffer);
+			unset($beaconFile);
+		}
+		return($result);
+	}
 
 function addBeacon($data, $folderName) {
 	$beaconString = file_get_contents($folderName.'/beaconStore');

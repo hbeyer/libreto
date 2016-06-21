@@ -91,13 +91,21 @@ function makePersonFromCSV($string, $role) {
 	$person->role = $role;
 	$person->persName = $parts[0];
 	if(isset($parts[1])) {
-		if(preg_match('~^[0-9X]+[mfx]$~', $parts[1]) == 1) {
-			$person->gender = substr($parts[1], -1, 1);
-			$person->gnd = substr($parts[1], 0, -1);
-		}
-		else {
-			$person->gnd = $parts[1];
-		}
+		$person = insertGND($parts[1], $person);
+	}
+	return($person);
+}
+
+function insertGND($gndString, $person) {
+	preg_match('~^([0-9X-]{5,11})?([MmFfWw]?)$~', $gndString, $hits);
+	if(isset($hits[1])) {
+		$person->gnd = $hits[1];
+	}
+	if(isset($hits[2])) {
+		$translation = array('W' => 'f', 'w' => 'f');
+		$gender = strtr($hits[2], $translation);
+		$gender = strtolower($gender);
+		$person->gender = $gender;
 	}
 	return($person);
 }
