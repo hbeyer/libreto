@@ -91,6 +91,11 @@ $beaconSources = array(
 		'location' => 'http://kalliope.staatsbibliothek-berlin.de/beacon/beacon.txt',
 		'target' => 'http://kalliope.staatsbibliothek-berlin.de/de/eac?eac.id={ID}'
 	),	
+	'zdn' => array(
+		'label' => 'Zentrale Datenbank Nachlässe',
+		'location' => 'http://www.historische-kommission-muenchen-editionen.de/beacond/zdn.php?beacon',
+		'target' => 'http://www.historische-kommission-muenchen-editionen.de/beacond/zdn.php?pnd={ID}'
+	), 
 	'sf2' => array(
 		'label' => 'Schatullrechnungen Friedrichs des Großen',
 		'location' => 'http://www.historische-kommission-muenchen-editionen.de/beacond/friedrich_schatullrechnungen.php?beacon',

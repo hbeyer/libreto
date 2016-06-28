@@ -124,12 +124,13 @@ include('storeBeacon.php');
 				$_SESSION['unidentifiedPlaces'] = $unidentifiedPlaces;
 				$form = makeGeoDataForm($unidentifiedPlaces);
 				echo '<p>Folgende Orte konnten nicht identifiziert werden. Sie k&ouml;nnen hier einen Identifier f&uuml;r jeden Ort nachtragen.<br/>
-				Suchen Sie dazu auf <a href="http://www.geonames.org/" target="_blank">geoNames</a> oder in der <a href="http://swb.bsz-bw.de/DB=2.104" target="_blank">Gemeinsamen Normdatei</a> nach &bdquo;Gepgraphikum als Schlagwort&rdquo;. Achten Sie bei der GND darauf, dass der gew&auml;hlte Datensatz Geodaten enthält.</p>';
+				Suchen Sie dazu auf <a href="http://www.geonames.org/" target="_blank">geoNames</a> oder in der <a href="http://swb.bsz-bw.de/DB=2.104" target="_blank">Gemeinsamen Normdatei</a> nach &bdquo;Geographikum als Schlagwort&rdquo;. Achten Sie bei der GND darauf, dass der gew&auml;hlte Datensatz Geodaten enth&auml;lt.</p>';
 				echo $form;
+				echo '<p>Ignorieren und weiter zum <a href="geoBrowser.php">Datenexport in den GeoBrowser</a></p>';
 			} 
 			else {
 				$_SESSION['geoData'] = 1;
-				echo '<p>Die Anreicherung mit Geodaten ist abgeschlossen.<br/>Weiter zum <a href="geoBrowser.php">Datenexport in den GeoBrowser</a></p>.';
+				echo '<p>Die Anreicherung mit Geodaten ist abgeschlossen.<br/>Weiter zum <a href="geoBrowser.php">Datenexport in den GeoBrowser</a></p>';
 			}
 		}
 

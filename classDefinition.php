@@ -1,4 +1,5 @@
-﻿<?php
+<?php
+	
 	class catalogue {
 		public $key; //A file name extension to specify the catalogue represented
 		public $owner; // A person or institution that owned the collection
@@ -109,4 +110,4 @@
 			public $geoNames;
 	}
 	
-?>	
+?>

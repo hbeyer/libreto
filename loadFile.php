@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 function loadCSV($path) {
 	$data = array();
