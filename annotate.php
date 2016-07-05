@@ -137,7 +137,10 @@ session_start();
 			copy ('proprietary.css', $folderName.'/proprietary.css');
 			copy ('proprietary.js', $folderName.'/proprietary.js');
 			copy ('chart.js', $folderName.'/chart.js');
-			copy ('uploadedData', $folderName.'/dataPHP');
+			copy ('upload/files/dataPHP-'.$_SESSION['fileNameInternal'], $folderName.'/dataPHP');
+			
+			unlink('upload/files/dataPHP-'.$_SESSION['fileNameInternal']);
+			unlink('upload/files/'.$_SESSION['fileNameInternal'].'.'.$_SESSION['extension']);
 			
 			if(file_exists($folderName.'/dataPHP')) {
 				$_SESSION['folder'] = 1;

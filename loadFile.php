@@ -130,4 +130,16 @@ function testGetty($id) {
 	}
 }
 
+function validateCSV($path) {
+	$return = 0;
+	$csv = file_get_contents($path);
+	$document = str_getcsv($csv, "\n");
+	if(isset($document[1])) {
+		if(is_string($document[1]) == TRUE) {
+			$return = 1;
+		}
+	}
+	return($return);
+}
+
 ?>

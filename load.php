@@ -17,18 +17,26 @@ $_SESSION['fieldSelection'] = 0;
 
 //The following variables contain crucial metadata
 $_SESSION['fileName'] = '';
-$_SESSION['ending'] = '';
+$_SESSION['fileNameInternal'] = '';
+$_SESSION['extension'] = '';
 $_SESSION['unidentifiedPlaces'] = array();
 $_SESSION['catalogueObject'] = NULL;
 $_SESSION['folderName'] = '';
 
 // Create the necessary directories if not already there
-$directories = array('user', 'beaconFiles', 'geoDataArchive');
+$directories = array('user', 'beaconFiles', 'geoDataArchive', 'upload', 'upload/files');
 foreach($directories as $folder) {
 	if(is_dir($folder) == FALSE) {
 		mkdir($folder, 0700);
 	}
 }
+
+//Protect the upload folder
+$htaccess = "Order Deny,Allow\r\nDeny from All";
+$fileName = 'upload/.htaccess';
+$datei = fopen($fileName,"w");
+fwrite($datei, $htaccess, 30000000);
+fclose($datei);
 
 ?>
 <!DOCTYPE html>
@@ -57,61 +65,65 @@ foreach($directories as $folder) {
 						<input type="hidden" name="MAX_FILE_SIZE" value="3000000" />
 						<!-- Der Name des Input Felds bestimmt den Namen im $_FILES Array -->
 						<input name="userfile" type="file" />
+						<input type="hidden" name="filePosted" />
 						<input type="submit" value="Laden" />
 					</div>
 				</form>
 	
 	<?php
 		
-		if(isset($_FILES['userfile'])) {
-			$uploadDirectory = 'C:\xampp\tmp';
-			$_SESSION['fileName'] = $_FILES['userfile']['name'];
-			$_SESSION['ending'] = getEnding($_SESSION['fileName']);
-			$_SESSION['bareName'] = getFileName($_SESSION['fileName']);
-			$acceptedEndings = array('csv');
-			$uploadFile = $uploadDirectory.basename($_FILES['userfile']['name']);
-			
-			if(in_array($_SESSION['ending'], $acceptedEndings)) {
-				if(move_uploaded_file($_FILES['userfile']['tmp_name'], $_SESSION['fileName'])) {
-					$_SESSION['upload'] = 1;
-					
-					$data = loadCSV($_SESSION['fileName']);
-					$serialize = serialize($data);
-					file_put_contents('uploadedData', $serialize);
-					
-					if(filesize('uploadedData') > 0) {
-						$_SESSION['store'] = 1;
-						echo '<p>Upload und Import der Datei waren erfolgreich.<br>
-						<a href="annotate.php">Weiter zur Metadatenaufnahme</a></p>';
+				if(isset($_POST['filePosted'])) {					
+					$_SESSION['fileName'] = strtolower(pathinfo($_FILES['userfile']['name'], PATHINFO_FILENAME));
+					$_SESSION['extension'] = strtolower(pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION));
+					$allowedExtensions = array('csv');
+					if(in_array($_SESSION['extension'], $allowedExtensions) == FALSE) {
+						die('Ung&uuml;ltige Dateiendung.');
 					}
+					$maxSize = 2000*1024; // Maximum size of the file
+					if($_FILES['userfile']['size'] > $maxSize) {
+						die('Maximale erlaubte Dateigr&ouml;&szlig;e: 2 MB');
+					}
+					elseif($_FILES['userfile']['size'] == 0) {
+						die('Fehler: Dateigr&ouml;&szlig;e 0 MB');
+					}	
 					else {
-						echo '<p>Fehler: Gr&ouml;&szlig;e der importierten Datei ist 0.</p>';
+						$_SESSION['fileNameInternal'] = makeUploadName($_SESSION['fileName']);
+						while(file_exists('upload/files/'.$_SESSION['fileNameInternal'])) {
+							$_SESSION['fileNameInternal'] = makeUploadName($_SESSION['fileName']);
+						}
+						
+						move_uploaded_file($_FILES['userfile']['tmp_name'], 'upload/files/'.$_SESSION['fileNameInternal'].'.'.$_SESSION['extension']);
+						$_SESSION['upload'] = 1;
+						echo 'Upload war erfolgreich.<br/>';
+						
+						if($_SESSION['extension'] == 'csv') {
+							$valid = validateCSV('upload/files/'.$_SESSION['fileNameInternal'].'.'.'csv');
+							if($valid == TRUE) {
+								$data = loadCSV('upload/files/'.$_SESSION['fileNameInternal'].'.'.$_SESSION['extension']);
+								$serialize = serialize($data);
+								file_put_contents('upload/files/dataPHP-'.$_SESSION['fileNameInternal'], $serialize);
+								$_SESSION['store'] = 1;
+								echo 'Import war erfolgreich.<br /><a href="annotate.php">Weiter zur Metadatenaufnahme</a>';
+							}
+							else {
+								die('Die CSV-Datei hat die Validit&auml;tspr&uuml;fung nicht bestanden.');
+							}
+						}
+						
+						
 					}
-					
-				} 
-				else {
-					echo '<p>Fehler: Datei konnte nicht gespeichert werden.</p>';
 				}
-			}
-		}
-		
-		function getEnding($fileName) {
-			$parts = explode('.', $fileName);
-			if(isset($parts[1])) {
-				return(strtolower($parts[1]));
-			}
-		}
-		
-		function getFileName($fileName) {
-			$parts = explode('.', $fileName);
-			if(isset($parts[0])) {
-				return(strtolower($parts[0]));
-			}
-		}		
-		
+				
+				function makeUploadName($string) {
+					$salt = '07zhsuioedfzha87';
+					$saltedString = $salt.$string.date('U');
+					$name = hash('sha256', $saltedString);
+					$name = substr($name, 0, 12);
+					return($name);
+				}		
 		
 	?>
-				
+					</p>
 			</div>
 		</body>
 </html>
