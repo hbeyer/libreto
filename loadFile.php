@@ -132,12 +132,30 @@ function testGetty($id) {
 
 function validateCSV($path) {
 	$return = 0;
+	$fail = 0;
 	$csv = file_get_contents($path);
 	$document = str_getcsv($csv, "\n");
-	if(isset($document[1])) {
-		if(is_string($document[1]) == TRUE) {
-			$return = 1;
+	if($document == NULL) {
+		$fail = 1;
+	}
+	$widths = array();
+	foreach($document as $row) {
+		$fields = str_getcsv($row, ";");
+		if($fields == NULL) {
+			$fail = 1;
+			break;
 		}
+		$columns = count($fields);
+		$widths[] = $columns;
+	}
+	foreach($widths as $width) {
+		if($width != $widths[0]) {
+			$fail = 1;
+			break;
+		}
+	}
+	if($fail == 0) {
+		$return = 1;
 	}
 	return($return);
 }

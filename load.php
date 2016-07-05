@@ -35,7 +35,7 @@ foreach($directories as $folder) {
 $htaccess = "Order Deny,Allow\r\nDeny from All";
 $fileName = 'upload/.htaccess';
 $datei = fopen($fileName,"w");
-fwrite($datei, $htaccess, 30000000);
+fwrite($datei, $htaccess, 2000);
 fclose($datei);
 
 ?>
@@ -69,8 +69,8 @@ fclose($datei);
 						<input type="submit" value="Laden" />
 					</div>
 				</form>
-	
-	<?php
+				<p>
+				<?php
 		
 				if(isset($_POST['filePosted'])) {					
 					$_SESSION['fileName'] = strtolower(pathinfo($_FILES['userfile']['name'], PATHINFO_FILENAME));
@@ -122,8 +122,8 @@ fclose($datei);
 					return($name);
 				}		
 		
-	?>
-					</p>
+				?>
+				</p>
 			</div>
 		</body>
 </html>
