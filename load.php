@@ -97,7 +97,8 @@ fclose($datei);
 						echo 'Upload war erfolgreich.<br/>';
 						
 						if($_SESSION['extension'] == 'csv') {
-							$valid = validateCSV('upload/files/'.$_SESSION['fileNameInternal'].'.'.'csv');
+							//validateCSV has to be called with the minimal number of columns as second argument
+							$valid = validateCSV('upload/files/'.$_SESSION['fileNameInternal'].'.'.'csv', 40);
 							if($valid == 1) {
 								$data = loadCSV('upload/files/'.$_SESSION['fileNameInternal'].'.'.$_SESSION['extension']);
 								$serialize = serialize($data);

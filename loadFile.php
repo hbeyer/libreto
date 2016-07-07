@@ -130,7 +130,7 @@ function testGetty($id) {
 	}
 }
 
-function validateCSV($path) {
+function validateCSV($path, $minColumns) {
 	$csv = file_get_contents($path);
 	$document = str_getcsv($csv, "\n");
 	if($document == NULL) {
@@ -148,13 +148,15 @@ function validateCSV($path) {
 		$columns = count($fields);
 		$widths[] = $columns;
 	}
-	if($widths[0] < 40) {
-		return('Das Dokument enth&auml;lt nur '.$widths[0].' Spalten.');
+	if($widths[0] < $minColumns) {
+		return('Das Dokument enth&auml;lt nur '.$widths[0].' Spalten. Mindestzahl ist '.$minColumns.'.');
 	}	
+	$count = 1;
 	foreach($widths as $width) {
 		if($width != $widths[0]) {
-			return('Die Zeilen enthalten ungleich viele Felder.');
+			return('Die Zeilen enthalten ungleich viele Felder (nur '.$width.' Felder in Zeile '.$count.'). Mindestzahl ist '.$minColumns.'.');
 		}
+		$count++;
 	}
 	return(1);
 }
