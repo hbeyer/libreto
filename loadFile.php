@@ -131,33 +131,32 @@ function testGetty($id) {
 }
 
 function validateCSV($path) {
-	$return = 0;
-	$fail = 0;
 	$csv = file_get_contents($path);
 	$document = str_getcsv($csv, "\n");
 	if($document == NULL) {
-		$fail = 1;
+		return('Das Dokument konnte nicht gelesen werden.');
+	}
+	if(isset($document[1]) == FALSE) {
+		return('Das Dokument umfasst nur eine Zeile.');
 	}
 	$widths = array();
 	foreach($document as $row) {
 		$fields = str_getcsv($row, ";");
 		if($fields == NULL) {
-			$fail = 1;
-			break;
+			return('Das Dokument konnte nicht gelesen werden.');
 		}
 		$columns = count($fields);
 		$widths[] = $columns;
 	}
+	if($widths[0] < 39) {
+		return('Das Dokument enthält nur '.$width.' Spalten.');
+	}	
 	foreach($widths as $width) {
 		if($width != $widths[0]) {
-			$fail = 1;
-			break;
+			return('Die Zeilen enthalten ungleich viele Felder.');
 		}
 	}
-	if($fail == 0) {
-		$return = 1;
-	}
-	return($return);
+	return(1);
 }
 
 ?>

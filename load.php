@@ -98,7 +98,7 @@ fclose($datei);
 						
 						if($_SESSION['extension'] == 'csv') {
 							$valid = validateCSV('upload/files/'.$_SESSION['fileNameInternal'].'.'.'csv');
-							if($valid == TRUE) {
+							if($valid == 1) {
 								$data = loadCSV('upload/files/'.$_SESSION['fileNameInternal'].'.'.$_SESSION['extension']);
 								$serialize = serialize($data);
 								file_put_contents('upload/files/dataPHP-'.$_SESSION['fileNameInternal'], $serialize);
@@ -106,7 +106,8 @@ fclose($datei);
 								echo 'Import war erfolgreich.<br /><a href="annotate.php">Weiter zur Metadatenaufnahme</a>';
 							}
 							else {
-								die('Die CSV-Datei hat die Validit&auml;tspr&uuml;fung nicht bestanden.');
+								unlink('upload/files/'.$_SESSION['fileNameInternal'].'.'.'csv');
+								die('Fehler beim Import: '.$valid);
 							}
 						}
 						
