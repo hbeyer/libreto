@@ -148,8 +148,8 @@ function validateCSV($path) {
 		$columns = count($fields);
 		$widths[] = $columns;
 	}
-	if($widths[0] < 39) {
-		return('Das Dokument enthält nur '.$widths[0].' Spalten.');
+	if($widths[0] < 40) {
+		return('Das Dokument enth&auml;lt nur '.$widths[0].' Spalten.');
 	}	
 	foreach($widths as $width) {
 		if($width != $widths[0]) {
