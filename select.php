@@ -186,8 +186,7 @@ session_start();
 			
 			zipFolderContent($_SESSION['folderName'], $catalogue->fileName);
 			if(file_exists($_SESSION['folderName'].'/'.$catalogue->fileName.'.zip')) {
-				echo 'Zip-Archiv '.$fileName.' wurde erstellt.<br/>
-				';
+				echo 'Zip-Archiv '.$_SESSION['folderName'].'/'.$catalogue->fileName.'.zip wurde erstellt.<br/>';
 			}
 			
 			

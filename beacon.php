@@ -38,7 +38,7 @@ include('storeBeacon.php');
 
 		if($test1 == 1) {
 			if($test2 == 0) {
-				echo '<p>Bitte w&auml;hlen Sie die Nachweissysteme ab, zu denen auf der Seite &bdquo;Personen&rdquo; keine Links angezeigt werden sollen.</p>';
+				echo '<p>Auf der Seite &bdquo;Personen&rdquo; werden Links zu weiterf&uuml;renden Informationen soweit vorhanden angezeigt. Wenn Sie bestimmte Nachweissysteme ganz ausschlie&szlig;en wollen, k&ouml;nnen Sie sie hier abw&auml;hlen.</p>';
 				echo '<form action="beacon.php" method="post">';
 				foreach($beaconSources as $key => $value) {
 					echo '
