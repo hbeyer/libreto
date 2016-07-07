@@ -182,10 +182,19 @@ session_start();
 			if(file_exists($fileName)) {
 				echo 'Datei '.$fileName.' wurde erstellt.<br/>
 				';
-			}	
+			}
+			
+			zipFolderContent($_SESSION['folderName'], $catalogue->fileName);
+			if(file_exists($_SESSION['folderName'].'/'.$catalogue->fileName.'.zip')) {
+				echo 'Zip-Archiv '.$fileName.' wurde erstellt.<br/>
+				';
+			}
+			
+			
 			echo '</p>';
 			$_SESSION['catalogueObject'] = serialize($catalogue);
-			echo '<p><a href="'.$firstFileName.'">Website aufrufen</a></p>';
+			echo '<p><a href="'.$firstFileName.'" target="_blank">Website aufrufen</a><br />
+			<a href="'.$_SESSION['folderName'].'/'.$catalogue->fileName.'.zip">Download als ZIP-Datei</a></p>';
 			
 		}
 		
@@ -242,6 +251,17 @@ function insertFacetsToCatalogue($catalogue, $post) {
 		}
 	}
 	return($catalogue);
+}
+
+function zipFolderContent($folder, $fileName) {
+	$zip = new ZipArchive();
+	$zipFile = $folder.'/'.$fileName.'.zip';
+	if ($zip->open($zipFile, ZipArchive::CREATE) !== TRUE) {
+		die('cannot open '.$fileName);
+	}	
+	$options = array('add_path' => $fileName.'/', 'remove_all_path' => TRUE);
+	$zip->addGlob($folder.'/*', 0, $options);
+	$zip->close();
 }
 		
 	?>
