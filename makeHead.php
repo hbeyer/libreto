@@ -22,6 +22,14 @@ function makeHead($thisCatalogue, $navigation, $field) {
 		$chart = '
 		<script type="text/javascript" src="chart.js"></script>';
 	}
+	$cloudEntry = '';
+	if($thisCatalogue->cloudFacets != array()) {
+		$cloudEntry = '<li><a href="'.$fileName.'-wordCloud.html" title="Wortwolken">Word Clouds</a></li>';
+	}
+	$doughnutEntry = '';
+	if($thisCatalogue->doughnutFacets != array()) {
+		$cloudEntry = '<li><a href="'.$fileName.'-doughnut.html" title="Kreisdiagramme">Kreisdiagramme</a></li>';
+	}
 	
 	$description = makeDescription($thisCatalogue);
 	
@@ -53,8 +61,8 @@ function makeHead($thisCatalogue, $navigation, $field) {
 				<li class="'.$classLi.'">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-picture"></span> Visualisierung<span class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<li><a href="'.$fileName.'-wordCloud.html" title="Wortwolken">Word Clouds</a></li>
-						<li><a href="'.$fileName.'-doughnut.html" title="Kreisdiagramme">Kreisdiagramme</a></li>				
+						'.$cloudEntry.'
+						'.$doughnutEntry.'				
 						<li><a href="'.$geoBrowserLink.'" target="_blank" title="Druckorte in Kartenansicht">GeoBrowser</a></li>
 					</ul>
 				</li>
@@ -91,7 +99,7 @@ function makeCatalogueDescription($catalogue) {
 
 function makeGeoBrowserLink($storageID, $year) {
 	$mapDate = assignMapDate($year);
-	$link = 'https://geobrowser.de.dariah.eu/?csv1=http://geobrowser.de.dariah.eu./storage/'.$storageID.'&currentStatus=mapChanged=Historical+Map+of+'.$mapDate;
+	$link = 'https://geobrowser.de.dariah.eu/?csv1=http://geobrowser.de.dariah.eu./storage/'.$storageID.'&currentStatus=mapChanged=Historical+map+of+'.$mapDate;
 	return($link);
 }
 

@@ -158,30 +158,34 @@ session_start();
 			unset($structures);
 						
 			// Erzeugen der Seite mit den Word Clouds
-			$navigation = makeNavigation($catalogue->fileName, $tocs, 'jqcloud');
-			$content = makeHead($catalogue, $navigation, 'jqcloud');
-			$content .= makeCloudPageContent($data, $catalogue->cloudFacets, $catalogue->fileName);
-			$content .= $foot;
-			$fileName = fileNameTrans($_SESSION['folderName'].'/'.$catalogue->fileName).'-wordCloud.html';
-			$datei = fopen($fileName,"w");
-			fwrite($datei, $content, 3000000);
-			fclose($datei);
-			if(file_exists($fileName)) {
-				echo 'Datei '.$fileName.' wurde erstellt.<br/>';
-			}			
+			if($catalogue->cloudFacets != array()) {
+				$navigation = makeNavigation($catalogue->fileName, $tocs, 'jqcloud');
+				$content = makeHead($catalogue, $navigation, 'jqcloud');
+				$content .= makeCloudPageContent($data, $catalogue->cloudFacets, $catalogue->fileName);
+				$content .= $foot;
+				$fileName = fileNameTrans($_SESSION['folderName'].'/'.$catalogue->fileName).'-wordCloud.html';
+				$datei = fopen($fileName,"w");
+				fwrite($datei, $content, 3000000);
+				fclose($datei);
+				if(file_exists($fileName)) {
+					echo 'Datei '.$fileName.' wurde erstellt.<br/>';
+				}
+			}
 
 			// Erzeugen der Seite mit den Doughnut Charts
-			$navigation = makeNavigation($catalogue->fileName, $tocs, 'doughnut');
-			$content = makeHead($catalogue, $navigation, 'doughnut');
-			$content .= makeDoughnutPageContent($data, $catalogue->doughnutFacets, $_SESSION['folderName']);
-			$content .= $foot;
-			$fileName = fileNameTrans($_SESSION['folderName'].'/'.$catalogue->fileName).'-doughnut.html';
-			$datei = fopen($fileName,"w");
-			fwrite($datei, $content, 3000000);
-			fclose($datei);
-			if(file_exists($fileName)) {
-				echo 'Datei '.$fileName.' wurde erstellt.<br/>
-				';
+			if($catalogue->doughnutFacets != array()) {
+				$navigation = makeNavigation($catalogue->fileName, $tocs, 'doughnut');
+				$content = makeHead($catalogue, $navigation, 'doughnut');
+				$content .= makeDoughnutPageContent($data, $catalogue->doughnutFacets, $_SESSION['folderName']);
+				$content .= $foot;
+				$fileName = fileNameTrans($_SESSION['folderName'].'/'.$catalogue->fileName).'-doughnut.html';
+				$datei = fopen($fileName,"w");
+				fwrite($datei, $content, 3000000);
+				fclose($datei);
+				if(file_exists($fileName)) {
+					echo 'Datei '.$fileName.' wurde erstellt.<br/>
+					';
+				}
 			}
 			
 			zipFolderContent($_SESSION['folderName'], $catalogue->fileName);
