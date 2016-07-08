@@ -9,6 +9,7 @@ session_start();
 $_SESSION['upload'] = 0;
 $_SESSION['store'] = 0;
 $_SESSION['annotation'] = 0;
+$_SESSION['copiedToFolder'] = 0;
 $_SESSION['folder'] = 0;
 $_SESSION['geoData'] = 0;
 $_SESSION['storageID'] = 0;

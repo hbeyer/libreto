@@ -57,7 +57,7 @@ session_start();
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="year">GND der Person oder Institution</label>
 					<div class="col-sm-9">
-						<input type="text" class="form-control" name="ownerGND" pattern="[0-9X-]{4,9}" placeholder="Beispiel: 116048921">
+						<input type="text" class="form-control" name="ownerGND" maxlength="12" pattern="[0-9X-]{4,12}" placeholder="Beispiel: 116048921">
 					</div>
 				</div>
 				<div class="form-group">
@@ -134,13 +134,16 @@ session_start();
 				mkdir($folderName, 0700);
 			}
 			
-			copy ('proprietary.css', $folderName.'/proprietary.css');
-			copy ('proprietary.js', $folderName.'/proprietary.js');
-			copy ('chart.js', $folderName.'/chart.js');
-			copy ('upload/files/dataPHP-'.$_SESSION['fileNameInternal'], $folderName.'/dataPHP');
+			if($_SESSION['copiedToFolder'] == 0) {
+				copy ('proprietary.css', $folderName.'/proprietary.css');
+				copy ('proprietary.js', $folderName.'/proprietary.js');
+				copy ('chart.js', $folderName.'/chart.js');
+				copy ('upload/files/dataPHP-'.$_SESSION['fileNameInternal'], $folderName.'/dataPHP');
 			
-			unlink('upload/files/dataPHP-'.$_SESSION['fileNameInternal']);
-			unlink('upload/files/'.$_SESSION['fileNameInternal'].'.'.$_SESSION['extension']);
+				unlink('upload/files/dataPHP-'.$_SESSION['fileNameInternal']);
+				unlink('upload/files/'.$_SESSION['fileNameInternal'].'.'.$_SESSION['extension']);
+				$_SESSION['copiedToFolder'] = 1;
+			}
 			
 			if(file_exists($folderName.'/dataPHP')) {
 				$_SESSION['folder'] = 1;
