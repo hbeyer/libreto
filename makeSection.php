@@ -11,13 +11,46 @@ function makeSections($data, $field) {
 		$section->level = $entry->level;
 		$section->authority = $entry->authority;
 		$section->geoData = $entry->geoData;
+		$count = 1;
 		foreach($entry->content as $idItem) {
 			$section->content[] = $data[$idItem];
+			$count++;
 		}
 		$structuredData[] = $section;
 	}
 	$structuredData = addHigherLevel($structuredData, $field);
+	
+	quantifyLabels($structuredData);
 	return($structuredData);
+}
+
+function quantifyLabels($structuredData) {
+	$count = 0;
+	foreach($structuredData as $section) {
+		// Wenn die section den Level 1 hat, also im Inhaltsverzeichnis angezeigt werden soll,
+		// wird überprüft, ob dahinter weitere sections mit Level 2 kommen. Ist das der Fall,
+		// wird die Anzahl der enthaltenen Datensätze addiert und unter quantifiedLabel gespeichert.
+		if($section->level == 1) {
+			$countFrom = $count + 1;
+			$countEntries = 0;
+			if(isset($structuredData[$countFrom])) {
+				while($structuredData[$countFrom]->level == 2) {
+					$countEntries += count($structuredData[$countFrom]->content);
+					$countFrom++;
+					if(isset($structuredData[$countFrom]) == FALSE) {
+						break;
+					}
+				}
+			}
+			// Wenn die section zwar Level 1 hat, aber keine weiteren mit Level 2 folgen,
+			// wird die Anzahl der in dieser section enthaltenen Datensätze unter quantified Label gespeichert-
+			if($countEntries == 0) {
+				$countEntries = count($section->content);
+			}
+			$section->quantifiedLabel = $section->label.' ('.$countEntries.')';
+		}
+		$count ++;
+	}
 }
 
 function addHigherLevel($structuredData, $field) {

@@ -28,7 +28,7 @@ function makeHead($thisCatalogue, $navigation, $field) {
 	}
 	$doughnutEntry = '';
 	if($thisCatalogue->doughnutFacets != array()) {
-		$cloudEntry = '<li><a href="'.$fileName.'-doughnut.html" title="Kreisdiagramme">Kreisdiagramme</a></li>';
+		$doughnutEntry = '<li><a href="'.$fileName.'-doughnut.html" title="Kreisdiagramme">Kreisdiagramme</a></li>';
 	}
 	
 	$description = makeDescription($thisCatalogue);

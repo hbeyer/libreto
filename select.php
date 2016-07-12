@@ -195,10 +195,9 @@ session_start();
 			
 			
 			echo '</p>';
-			$_SESSION['catalogueObject'] = serialize($catalogue);
 			echo '<p><a href="'.$firstFileName.'" target="_blank">Website aufrufen</a><br />
 			<a href="'.$_SESSION['folderName'].'/'.$catalogue->fileName.'.zip">Download als ZIP-Datei</a></p>';
-			
+			$_SESSION['catalogueObject'] = serialize($catalogue);
 		}
 		
 function makeSelectForm() {

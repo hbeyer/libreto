@@ -4,16 +4,21 @@ function makeToC($structure) {
 	$ToC = array();
 	foreach($structure as $section) {
 		if($section->level == 1) {
-			$ToC[] = $section->label;
+			$ToCEntry = array('label' => $section->label, 'quantifiedLabel' => $section->quantifiedLabel);
+			$ToC[] = $ToCEntry;
 		}
 	}
 	return($ToC);
-}	
+}
 
 function makeULContent($toc, $nameCat, $type) {
 	$result = '';
-	foreach($toc as $category) {
-		$result .= '<li><a href="'.$nameCat.'-'.$type.'.html#'.translateAnchor($category).'">'.$category.'</a></li>';
+	foreach($toc as $entry) {
+		$displayLabel = $entry['quantifiedLabel'];
+		if($type == 'persName') {
+			$displayLabel = $entry['label'];
+		}
+		$result .= '<li><a href="'.$nameCat.'-'.$type.'.html#'.translateAnchor($entry['label']).'">'.$displayLabel.'</a></li>';
 	}
 	return($result);
 }
