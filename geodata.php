@@ -6,6 +6,7 @@ include('encode.php');
 include('makeGeoDataArchive.php');
 include('beaconSources.php');
 include('storeBeacon.php');
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -171,31 +172,46 @@ function makeGeoDataFormRow($cityID, $city) {
 }
 
 function addPostedDataToArchive() {
+	include('settings.php');
 	$archiveGeoNames = new GeoDataArchive();
 	$archiveGeoNames->loadFromFile('geoNames');
 	$archiveGetty = new GeoDataArchive();
 	$archiveGetty->loadFromFile('getty');
+	$archiveGND = new GeoDataArchive();
+	$archiveGND->loadFromFile('gnd');	
 	$count = 0;
 	foreach($_SESSION['unidentifiedPlaces'] as $city) {
 		$placeFromWeb = NULL;
 		if(isset($_POST['geoNames_'.$count])) {
 			$geoNames = $_POST['geoNames_'.$count];
 			if($geoNames != '') {
-				$placeFromWeb = $archiveGeoNames->makeEntryFromGeoNames($geoNames);
+				$placeFromWeb = $archiveGeoNames->makeEntryFromGeoNames($geoNames, $userGeoNames);
+				$placeFromWeb->label = $_SESSION['unidentifiedPlaces'][$count];
 				$archiveGeoNames->insertEntry($placeFromWeb);
 			}
 		}
+		if(isset($_POST['gnd_'.$count])) {
+			$gnd = $_POST['gnd_'.$count];
+			if($gnd != '') {
+				$placeFromWeb = $archiveGeoNames->makeEntryFromGNDTTL($gnd);
+				$placeFromWeb->label = $_SESSION['unidentifiedPlaces'][$count];
+				$archiveGND->insertEntry($placeFromWeb);
+			}
+		}		
 		elseif(isset($_POST['getty_'.$count])) {
 			$getty = $_POST['getty_'.$count];
 			if($getty != '') {
 				$placeFromWeb = $archiveGetty->makeEntryFromGetty($getty);
+				$placeFromWeb->label = $_SESSION['unidentifiedPlaces'][$count];				
 				$archiveGetty->insertEntry($placeFromWeb);
 			}
 		}
+		unset($_SESSION['unidentifiedPlaces'][$count]);
 		$count++;
 	}
 	$archiveGeoNames->saveToFile('geoNames');
 	$archiveGetty->saveToFile('getty');
+	$archiveGND->saveToFile('gnd');
 }
 		
 		
