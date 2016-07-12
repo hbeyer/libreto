@@ -97,7 +97,7 @@ function makePersonFromCSV($string, $role) {
 }
 
 function insertGND($gndString, $person) {
-	preg_match('~^([0-9X-]{5,11})?([MmFfWw]?)$~', $gndString, $hits);
+	preg_match('~^([0-9X-]{5,11})?([MmFfWw*]?)$~', $gndString, $hits);
 	if(isset($hits[1])) {
 		$person->gnd = $hits[1];
 	}
