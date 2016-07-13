@@ -12,11 +12,10 @@ Edit the file settings.php:
 	
 Creating Data
 
-Use "vorlage.csv" as a template. 
+Use "vorlage.csv" as a template. Sample data can be found in example.csv.
 Fill in the data according to the documentation "Dokumentation_CSV.doc" (German).
 Take care not to change the number or order of columns.
 Save the file as CSV. In the German version of MS Excel select "CSV (Trennzeichen-getrennt)".
-
 
 Uploading data
 

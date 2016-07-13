@@ -45,19 +45,19 @@ session_start();
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="heading">Name der Sammlung</label>
 						<div class="col-sm-9">
-						<input type="text" class="form-control" name="heading"  maxlength="140" required placeholder="Beispiel: Bibliothek Thomas Bang">
+						<input type="text" class="form-control" name="heading"  maxlength="140" required placeholder="Beispiel: Bibliothek des Heinrich Bernhard Schrader von Schliestedt">
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="heading">Besitzende Person oder Institution</label>
 						<div class="col-sm-9">
-						<input type="text" class="form-control" name="owner"  maxlength="140" required placeholder="Beispiel: Bang, Thomas">
+						<input type="text" class="form-control" name="owner"  maxlength="140" required placeholder="Beispiel: Schrader von Schliestedt, Heinrich Bernhard">
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="year">GND der Person oder Institution</label>
 					<div class="col-sm-9">
-						<input type="text" class="form-control" name="ownerGND" maxlength="12" pattern="[0-9X-]{4,12}" placeholder="Beispiel: 116048921">
+						<input type="text" class="form-control" name="ownerGND" maxlength="12" pattern="[0-9X-]{4,12}" placeholder="Beispiel: 117024988">
 					</div>
 				</div>
 				<div class="form-group">
@@ -69,13 +69,13 @@ session_start();
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="fileName">Dateiname</label>
 						<div class="col-sm-9">
-						<input type="text" class="form-control" name="fileName" pattern="[A-Za-z0-9-_]{4,28}" required placeholder="Beispiel: bangius">
+						<input type="text" class="form-control" name="fileName" pattern="[A-Za-z0-9-_]{4,28}" required placeholder="Beispiel: schliestedt">
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="title">Titel des Altkatalogs</label>
 						<div class="col-sm-9">
-						<input type="text" class="form-control" name="title" maxlength="280" placeholder="Beispiel: Catalogus librorum Thomae Bangii in Regia Hafniae Academia quondam Professoris">
+						<input type="text" class="form-control" name="title" maxlength="280" placeholder="Beispiel: Apparatus librorum Henrici Bernhardi de Schliestedt">
 					</div>
 				</div>
 				<div class="form-group">
@@ -87,13 +87,13 @@ session_start();
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="shelfmark">Signatur</label>
 						<div class="col-sm-9">
-						<input type="text" class="form-control" name="shelfmark" maxlength="40" placeholder="Beispiel: M: Bc 62">
+						<input type="text" class="form-control" name="shelfmark" maxlength="40" placeholder="Beispiel: M: Bc 1982">
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="base">Basis-URL f&uuml;r Links</label>
 						<div class="col-sm-9">
-						<input type="text" class="form-control" name="base" type="url" maxlength="280" placeholder="Beispiel: http://diglib.hab.de/drucke/bc-kapsel-19-7s/start.htm?image=">
+						<input type="text" class="form-control" name="base" type="url" maxlength="280" placeholder="Beispiel: http://diglib.hab.de/drucke/bc-1982/start.htm?image=">
 					</div>
 				</div>
 				<div class="form-group">

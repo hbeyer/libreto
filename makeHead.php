@@ -8,10 +8,9 @@ function makeHead($thisCatalogue, $navigation, $field) {
 	else {
 		$title = $thisCatalogue->heading;
 	}
-	$transcriptionLink = '';
-	if($thisCatalogue->shelfmark) {
-		$transcriptionLink = '<span id="switchLink"><a href="javascript:switchToOriginal()">Anzeige in Vorlageform</a></span><br/>&nbsp;';
-	}
+	
+	$metadata = displayCatalogueMetadata($thisCatalogue, $field);
+	
 	$classLi = 'download';
 	if($field == 'jqcloud' or $field == 'doughnut') {
 		$classLi = 'active';
@@ -31,10 +30,6 @@ function makeHead($thisCatalogue, $navigation, $field) {
 		$doughnutEntry = '<li><a href="'.$fileName.'-doughnut.html" title="Kreisdiagramme">Kreisdiagramme</a></li>';
 	}
 	
-	$description = makeDescription($thisCatalogue);
-	
-	$catalogueDescription = makeCatalogueDescription($thisCatalogue);
-	
 	$geoBrowserLink = makeGeoBrowserLink($thisCatalogue->GeoBrowserStorageID, $thisCatalogue->year);
 	
 	$frontMatter = '<!DOCTYPE html>
@@ -53,8 +48,7 @@ function makeHead($thisCatalogue, $navigation, $field) {
 		<div class="container">
 		<div class="container-fluid">
 			<h1>'.$title.'</h1>
-			'.$description.'
-			'.$catalogueDescription.'
+			'.$metadata.'
 		</div>
 		<nav class="navbar navbar-default" data-spy="affix" data-offset-top="197">'.$navigation.'
 			<ul class="nav navbar-nav navbar-right" style="padding-right:15px">
@@ -78,23 +72,30 @@ $foot = '
 	</body>
 </html>';
 
-function makeDescription($catalogue) {
-	$description = '';
+function displayCatalogueMetadata($catalogue, $field) {
+	$return = '<p>';
 	if($catalogue->description) {
-		$description = '<p>'.$catalogue->description.'</p>';
+		$return .= $catalogue->description.'</p><p>';
 	}
-	return($description);
-}
-
-function makeCatalogueDescription($catalogue) {
-	$transcriptionLink = '<span id="switchLink"><a href="javascript:switchToOriginal()">Anzeige in Vorlageform</a></span><br/>&nbsp;';
-	$description = '';
 	if($catalogue->institution and $catalogue->shelfmark) {
-			$description = 'Altkatalog: '.$catalogue->institution.', '.$catalogue->shelfmark;
-			$description = $description.'<br />'.$transcriptionLink;
-			$description = '<p>'.$description.'</p>';
+		$return .= 'Altkatalog: '.$catalogue->institution.', '.$catalogue->shelfmark;
 	}
-	return $description;
+	if($catalogue->title and $catalogue->description == '') {
+		$title = $catalogue->title;
+		$return .= ': '.$title;
+	}
+	if($catalogue->base) {
+		$space = ' ';
+		if($return == '<p>') {
+			$space = '';
+		}
+		$return .= $space.'<a href="'.$catalogue->base.'1" target="_blank">[Digitalisat]</a>';
+	}
+	if($catalogue->shelfmark and $field != 'doughnut' and $field != 'wordCloud') {
+		$return .= '<br /><span id="switchLink"><a href="javascript:switchToOriginal()">Anzeige in Vorlageform</a></span>';
+	}
+	$return .= '</p>';
+	return($return);
 }
 
 function makeGeoBrowserLink($storageID, $year) {
@@ -117,6 +118,5 @@ function assignMapDate($year) {
 	}
 	return($selectedYear);
 }
-
 
 ?>
