@@ -51,9 +51,6 @@ fclose($datei);
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-		
-		
-		
 	</head>
 		<body>
 			<div class="container">
@@ -113,7 +110,6 @@ fclose($datei);
 								die('Fehler beim Import: '.$valid);
 							}
 						}
-						// Beginn Baustelle
 						elseif($_SESSION['extension'] == 'xml') {
 							$valid = validateXML('upload/files/'.$_SESSION['fileNameInternal'].'.xml', 'uploadXML.xsd');
 							if($valid == 1) {
@@ -128,7 +124,6 @@ fclose($datei);
 								die('Fehler beim Import: '.$valid);
 							}
 						}
-						// Ende Baustelle
 					}
 				}
 				
