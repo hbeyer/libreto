@@ -2,7 +2,8 @@
 include('classDefinition.php');
 include('settings.php');
 include('encode.php');
-include('loadFile.php');
+include('loadCSV.php');
+include('loadXML.php');
 
 session_start();
 //The following variables control the steps taken by users
@@ -76,7 +77,7 @@ fclose($datei);
 				if(isset($_POST['filePosted'])) {					
 					$_SESSION['fileName'] = strtolower(pathinfo($_FILES['userfile']['name'], PATHINFO_FILENAME));
 					$_SESSION['extension'] = strtolower(pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION));
-					$allowedExtensions = array('csv');
+					$allowedExtensions = array('csv', 'xml');
 					if(in_array($_SESSION['extension'], $allowedExtensions) == FALSE) {
 						die('Ung&uuml;ltige Dateiendung.');
 					}
@@ -99,7 +100,7 @@ fclose($datei);
 						
 						if($_SESSION['extension'] == 'csv') {
 							//validateCSV has to be called with the minimal number of columns as second argument
-							$valid = validateCSV('upload/files/'.$_SESSION['fileNameInternal'].'.'.'csv', 40);
+							$valid = validateCSV('upload/files/'.$_SESSION['fileNameInternal'].'.csv', 40);
 							if($valid == 1) {
 								$data = loadCSV('upload/files/'.$_SESSION['fileNameInternal'].'.'.$_SESSION['extension']);
 								$serialize = serialize($data);
@@ -108,12 +109,26 @@ fclose($datei);
 								echo 'Import war erfolgreich.<br /><a href="annotate.php">Weiter zur Metadatenaufnahme</a>';
 							}
 							else {
-								unlink('upload/files/'.$_SESSION['fileNameInternal'].'.'.'csv');
+								unlink('upload/files/'.$_SESSION['fileNameInternal'].'.csv');
 								die('Fehler beim Import: '.$valid);
 							}
 						}
-						
-						
+						// Beginn Baustelle
+						elseif($_SESSION['extension'] == 'xml') {
+							$valid = validateXML('upload/files/'.$_SESSION['fileNameInternal'].'.xml', 'uploadXML.xsd');
+							if($valid == 1) {
+								$data = loadXML('upload/files/'.$_SESSION['fileNameInternal'].'.'.$_SESSION['extension']);
+								$serialize = serialize($data);
+								file_put_contents('upload/files/dataPHP-'.$_SESSION['fileNameInternal'], $serialize);
+								$_SESSION['store'] = 1;
+								echo 'Import war erfolgreich.<br /><a href="annotate.php">Weiter zur Metadatenaufnahme</a>';
+							}
+							else {
+								unlink('upload/files/'.$_SESSION['fileNameInternal'].'.xml');
+								die('Fehler beim Import: '.$valid);
+							}
+						}
+						// Ende Baustelle
 					}
 				}
 				
