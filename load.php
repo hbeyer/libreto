@@ -26,7 +26,7 @@ $_SESSION['catalogueObject'] = NULL;
 $_SESSION['folderName'] = '';
 
 // Create the necessary directories if not already there
-$directories = array('user', 'beaconFiles', 'geoDataArchive', 'upload', 'upload/files');
+$directories = array('user', 'beaconFiles', 'geoDataArchive', 'upload', 'upload/files', 'download');
 foreach($directories as $folder) {
 	if(is_dir($folder) == FALSE) {
 		mkdir($folder, 0700);
@@ -111,13 +111,23 @@ fclose($datei);
 							}
 						}
 						elseif($_SESSION['extension'] == 'xml') {
-							$valid = validateXML('upload/files/'.$_SESSION['fileNameInternal'].'.xml', 'uploadXML.xsd');
+							$valid = validateXML('upload/files/'.$_SESSION['fileNameInternal'].'.xml', 'uploadXML.xsd', 'mods-3-4.xsd');
 							if($valid == 1) {
 								$data = loadXML('upload/files/'.$_SESSION['fileNameInternal'].'.'.$_SESSION['extension']);
 								$serialize = serialize($data);
 								file_put_contents('upload/files/dataPHP-'.$_SESSION['fileNameInternal'], $serialize);
 								$_SESSION['store'] = 1;
 								echo 'Import war erfolgreich.<br /><a href="annotate.php">Weiter zur Metadatenaufnahme</a>';
+							}
+							elseif($valid == 'mods') {
+								transformMODS($_SESSION['fileNameInternal']);
+								if(file_exists('download/'.$_SESSION['fileNameInternal'].'.xml')) {
+									unlink('upload/files/'.$_SESSION['fileNameInternal'].'.xml');
+									echo 'Es wurde eine valide MODS-Datei erkannt und konvertiert.<br />Sie k&ouml;nnen mit <a href="download/'.$_SESSION['fileNameInternal'].'.xml" target="_blank">dieser XML-Datei</a> weiterarbeiten.';
+								}
+								else {
+									die('Fehler beim Konvertieren der MODS-Datei.');
+								}
 							}
 							else {
 								unlink('upload/files/'.$_SESSION['fileNameInternal'].'.xml');

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mods="http://www.loc.gov/mods/v3" version="1.0">
+<!--<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:mods="http://www.loc.gov/mods/v3" 
     exclude-result-prefixes="xs"
-    version="2.0">
+    version="2.0">-->
     
     <xsl:template match="/">
         <collection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:noNamespaceSchemaLocation="vorlage.xsd">
+            xsi:noNamespaceSchemaLocation="http://dev.hab.de/auktionskataloge/uploadXML.xsd">
             <xsl:for-each select="//mods:mods">
                 <item>
                     <titleBib><xsl:value-of select="mods:titleInfo/mods:title"/></titleBib>
@@ -29,9 +30,16 @@
                     <xsl:if test="mods:originInfo/mods:publisher">
                         <publisher><xsl:value-of select="mods:originInfo/mods:publisher"/></publisher>
                     </xsl:if>
-                    <xsl:if test="mods:originInfo/mods:dateIssued">
-                        <year><xsl:value-of select="mods:originInfo/mods:dateIssued"/></year>
-                    </xsl:if>
+                    <xsl:choose>
+                        <xsl:when test="mods:originInfo/mods:dateIssued">
+                            <year><xsl:value-of select="mods:originInfo/mods:dateIssued"/></year>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:if test="mods:originInfo/mods:copyrightDate">
+                                <year><xsl:value-of select="mods:originInfo/mods:copyrightDate"/></year>
+                            </xsl:if>
+                        </xsl:otherwise>
+                    </xsl:choose>
                     <xsl:if test="mods:language/mods:languageTerm">
                         <languages>
                             <language><xsl:value-of select="mods:language/mods:languageTerm"/></language>

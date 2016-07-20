@@ -1,17 +1,29 @@
 ﻿<?php
 
-function validateXML($path, $pathSchema) {
+function validateXML($path, $pathSchema, $pathMODS) {
 	$xml = new DOMDocument();
 	$xml->load($path);
 	if($xml == FALSE) {
 		return('Das Dokument ist offenbar nicht wohlgeformt.');
 	}
-	$valid = $xml->schemaValidate($pathSchema);
-	if($valid == TRUE) {
-		return(1);
+	$mods = testIfMODS($xml);
+	if($mods == 1) {
+		$validMODS = $xml->schemaValidate($pathMODS);
+		if($validMODS == TRUE) {
+			return('mods');
+		}
+		else {
+			return('Die Validierung des MODS-Dokuments ist fehlgeschlagen.');
+		}		
 	}
-	elseif($valid == FALSE) {
-		return('Die Validierung gegen das <a href="'.$pathSchema.'" target="_blank">Schema</a> ist fehlgeschlagen.');
+	elseif($mods == 0) {
+		$valid = $xml->schemaValidate($pathSchema);
+		if($valid == TRUE) {
+			return(1);
+		}
+		else {
+			return('Die Validierung gegen das <a href="'.$pathSchema.'" target="_blank">Schema</a> ist fehlgeschlagen.');
+		}		
 	}
 }
 
@@ -131,6 +143,32 @@ function makePlaceFromNode($node) {
 		}
 	}
 	return($place);
+}
+
+function testIfMODS($dom) {
+	$rootElement = $dom->documentElement;
+	$rootTag = $rootElement->tagName;
+	if($rootTag == 'modsCollection') {
+		return(1);
+	}
+	else {
+		return(0);
+	}
+}
+
+function transformMODS($fileName) {
+	$mods = new DOMDocument();
+	$mods->load('upload/files/'.$fileName.'.xml');
+	$xsl = new DOMDocument();
+	$xsl->load('transformMODS.xsl');
+	$proc = new XSLTProcessor();
+	$proc->importStyleSheet($xsl);
+	$dom = $proc->transformToDoc($mods);
+	unset($mods, $xsl);
+	$dom->formatOutput = true;
+	$result = $dom->saveXML();
+	$handle = fopen('download/'.$fileName.'.xml', "w");
+	fwrite($handle, $result, 3000000);
 }
 
 ?>

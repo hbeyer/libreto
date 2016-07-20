@@ -1,6 +1,6 @@
 ﻿Documentation for users and developers
 https://github.com/hbeyer/liddel-tool
-Version: 2016/07/18
+Version: 2016/07/20
 By Hartmut Beyer (beyer@hab.de)
 
 Installation of the software
@@ -21,6 +21,7 @@ For CSV:
 	Save the file as CSV. In the German version of MS Excel select "CSV (Trennzeichen-getrennt)".
 For XML: 
 	Use the schema file "uploadXML.xsd" to create an XML document.
+	You can likewise upload a MODS file. In this case, the data will be transformed to the format defined by "uploadXML.xsd" and returned to you. Use this option to import data from a reference management program.
 	
 
 Uploading data
