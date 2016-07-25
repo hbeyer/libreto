@@ -59,8 +59,26 @@ include('storeBeacon.php');
 			
 			foreach($data as $item) {
 				foreach($item->places as $place) {
-					if($place->placeName != 's. l.') {
-						
+					
+					$searchName = trim($place->placeName, '[]');
+
+					$testUnidentified = preg_match('~^[sSoO]\.? ?[oOlL].?$|^[oO]hne Ort|[sS]ine [lL]oco|[oO]hne Angabe~', $searchName);
+					if(strstr($searchName, 'fingiert') != FALSE) {
+						$testUnidentified = 1;
+					}
+					elseif($searchName == '') {
+						$testUnidentified = 1;
+					}
+					$testGeoData = 0;
+					if($place->geoData['lat'] and $place->geoData['long']) {
+						$testGeoData == 1;
+					}
+					
+					if($testUnidentified == 1) {
+						$place->placeName = 's. l.';
+					}
+					
+					if($testUnidentified == 0 and $testGeoData == 0) {
 						if($place->geoNames) {
 							$placeFromArchive = $archiveGeoNames->getByGeoNames($place->geoNames);
 							if($placeFromArchive == NULL) {
@@ -100,14 +118,14 @@ include('storeBeacon.php');
 						}
 						
 						else {
-							$placeFromArchive = $archiveGeoNames->getByName($place->placeName);
+							$placeFromArchive = $archiveGeoNames->getByName($searchName);
 						}
 						if($placeFromArchive) {
 							$place->geoData['lat'] = $placeFromArchive->lat;
 							$place->geoData['long'] = $placeFromArchive->long;
 						}
-						elseif($place->placeName != 's.l.') {
-							$unidentifiedPlaces[] = $place->placeName;
+						elseif($testUnidentified == 0) {
+							$unidentifiedPlaces[] = $searchName;
 						}
 					}
 				}
@@ -186,7 +204,8 @@ function addPostedDataToArchive() {
 			$geoNames = $_POST['geoNames_'.$count];
 			if($geoNames != '') {
 				$placeFromWeb = $archiveGeoNames->makeEntryFromGeoNames($geoNames, $userGeoNames);
-				$placeFromWeb->label = $_SESSION['unidentifiedPlaces'][$count];
+				//$placeFromWeb->label = $_SESSION['unidentifiedPlaces'][$count];
+				$placeFromWeb->label = $city;
 				$archiveGeoNames->insertEntry($placeFromWeb);
 			}
 		}
@@ -194,7 +213,8 @@ function addPostedDataToArchive() {
 			$gnd = $_POST['gnd_'.$count];
 			if($gnd != '') {
 				$placeFromWeb = $archiveGeoNames->makeEntryFromGNDTTL($gnd);
-				$placeFromWeb->label = $_SESSION['unidentifiedPlaces'][$count];
+				//$placeFromWeb->label = $_SESSION['unidentifiedPlaces'][$count];
+				$placeFromWeb->label = $city;
 				$archiveGND->insertEntry($placeFromWeb);
 			}
 		}		
@@ -202,7 +222,8 @@ function addPostedDataToArchive() {
 			$getty = $_POST['getty_'.$count];
 			if($getty != '') {
 				$placeFromWeb = $archiveGetty->makeEntryFromGetty($getty);
-				$placeFromWeb->label = $_SESSION['unidentifiedPlaces'][$count];				
+				//$placeFromWeb->label = $_SESSION['unidentifiedPlaces'][$count];				
+				$placeFromWeb->label = $city;				
 				$archiveGetty->insertEntry($placeFromWeb);
 			}
 		}

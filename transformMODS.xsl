@@ -9,23 +9,29 @@
                     <titleBib><xsl:value-of select="mods:titleInfo/mods:title"/></titleBib>
                     <xsl:if test="mods:name">
                         <persons>
-                        <xsl:for-each select="mods:name[@type='personal']">
-                            <person>
-                                <persName><xsl:value-of select="mods:namePart[@type='family']"/><xsl:if test="mods:namePart[@type='given']">, </xsl:if><xsl:value-of select="mods:namePart[@type='given']"/></persName>
-                                <xsl:if test="mods:role/mods:roleTerm = 'aut'">
-                                    <role>author</role>
-                                </xsl:if>
-                                <xsl:if test="mods:role/mods:roleTerm = 'edt'">
-                                    <role>contributor</role>
-                                </xsl:if>
-                                <xsl:if test="mods:role/mods:roleTerm = 'trl'">
-                                    <role>translator</role>
-                                </xsl:if>                                
-                                <xsl:if test="mods:role/mods:roleTerm != 'aut' and mods:role/mods:roleTerm != 'edr' and mods:role/mods:roleTerm != 'trl'">
-                                    <role><xsl:value-of select="mods:role/mods:roleTerm"/></role>
-                                </xsl:if>
-                            </person>
-                        </xsl:for-each>
+                            <xsl:for-each select="mods:name[@type='personal']">
+                                <person>
+                                    <persName><xsl:value-of select="mods:namePart[@type='family']"/><xsl:if test="mods:namePart[@type='given']">, </xsl:if><xsl:value-of select="mods:namePart[@type='given']"/></persName>
+                                    <xsl:if test="mods:role/mods:roleTerm = 'aut'">
+                                        <role>author</role>
+                                    </xsl:if>
+                                    <xsl:if test="mods:role/mods:roleTerm = 'edt'">
+                                        <role>contributor</role>
+                                    </xsl:if>
+                                    <xsl:if test="mods:role/mods:roleTerm = 'edr'">
+                                        <role>contributor</role>
+                                    </xsl:if>                                    
+                                    <xsl:if test="mods:role/mods:roleTerm = 'trl'">
+                                        <role>translator</role>
+                                    </xsl:if>
+                                    <xsl:if test="mods:role/mods:roleTerm = 'wac'">
+                                        <role>commentator</role>
+                                    </xsl:if>                                         
+                                    <xsl:if test="mods:role/mods:roleTerm != 'aut' and mods:role/mods:roleTerm != 'edr' and mods:role/mods:roleTerm != 'edt' and mods:role/mods:roleTerm != 'trl' and mods:role/mods:roleTerm != 'wac'">
+                                        <role><xsl:value-of select="mods:role/mods:roleTerm"/></role>
+                                    </xsl:if>
+                                </person>
+                            </xsl:for-each>
                         </persons>
                     </xsl:if>
                     <xsl:if test="mods:originInfo/mods:place/mods:placeTerm">
@@ -56,6 +62,12 @@
                             <xsl:for-each select="mods:subject"><subject><xsl:value-of select="mods:topic"/></subject></xsl:for-each>
                         </subjects>
                     </xsl:if>
+                    <xsl:if test="mods:location/mods:url">
+                        <digitalCopy><xsl:value-of select="mods:location/mods:url"/></digitalCopy>
+                    </xsl:if>
+                    <xsl:if test="mods:note">
+                        <comment><xsl:value-of select="mods:note/text()" /></comment>
+                    </xsl:if>                          
                 </item>
             </xsl:for-each>
         </collection>

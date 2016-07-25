@@ -120,10 +120,16 @@ function makeDigiLink($digi) {
 	return($result);
 }
 	
-function makeProof($thisBook) {
+function makeProof($item) {
 	include('targetData.php');
-	$system = $thisBook->manifestation['systemManifestation'];
-	$id = $thisBook->manifestation['idManifestation'];
+	$system = '';
+	if(isset($item->manifestation['systemManifestation'])) {
+		$system = $item->manifestation['systemManifestation'];
+	}
+	$id = '';
+	if(isset($item->manifestation['idManifestation'])) {
+		$id = $item->manifestation['idManifestation'];
+	}
 	$result = '';
 	$systemClean = translateAnchor($system);
 	$systemClean = strtolower(str_replace(' ', '', $systemClean));
