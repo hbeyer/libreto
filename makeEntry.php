@@ -107,15 +107,20 @@ function makeWorkLink($work) {
 }
 	
 function makeDigiLink($digi) {
+	$title = 'Digitalisat';
 	$result = '';
 	$resolver = '';
 	if($digi != '') {
+		if(substr($digi, 0, 4) == 'KEYP') {
+			$title = 'Schl&uuml;sselseiten';
+			$digi = substr($digi, 4);
+		}
 		$urn = strstr($digi, 'urn:');
 		if($urn != FALSE) {
 			$digi = $urn;
 			$resolver = 'http://nbn-resolving.de/';
 		}
-		$result = '<span class="heading_info">Digitalisat: </span><a href="'.$resolver.$digi.'" target="_blank">'.$digi.'</a><br />';
+		$result = '<span class="heading_info">'.$title.': </span><a href="'.$resolver.$digi.'" target="_blank">'.$digi.'</a><br />';
 	}
 	return($result);
 }
