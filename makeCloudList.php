@@ -2,11 +2,15 @@
 
 function makeCloudPageContent($data, $facets, $folder) {
 	include('fieldList.php');
+	$firstFacet = $facets[0];
+	if(in_array('persName', $facets)) {
+		$firstFacet = 'persName';
+	}
 	$facets = array_intersect($facets, $wordCloudFields);
 	$content = makeCloudScript($data, $facets, $folder);
 	foreach($facets as $facet) {
 		$status = '';
-		if($facet == 'persName') {
+		if($facet == $firstFacet) {
 			$status = ' active';
 		}
 		$content .= '<button type="button" class="btn btn-default'.$status.'" onclick="javascript:updateWordCloud('.$facet.')">'.translateFieldNamesButtons($facet).'</button>
@@ -25,14 +29,17 @@ function makeCloudScript($data, $facets, $folder) {
 		$content .= 'var '.$facet.' = \''.$json.'\';
 		';
 	}
-	$content .= 'makeWordCloud(persName);
+	$firstFacet = $facets[0];
+	if(in_array('persName', $facets)) {
+		$firstFacet = 'persName';
+	}
+	$content .= 'makeWordCloud('.$firstFacet.');
 	</script>
 	';
 	return($content);
 }
 
 function makeCloudJSON($data, $field, $limit, $folder) {
-	//$path = $folder.'-'.$field.'.html#';
 	$path = $folder.'-'.$field.'.html#';
 	if($field == 'persName') {
 		$cloudArrays = makeCloudArraysPersons($data);

@@ -91,7 +91,7 @@ function displayCatalogueMetadata($catalogue, $field) {
 		}
 		$return .= $space.'<a href="'.$catalogue->base.'1" target="_blank">[Digitalisat]</a>';
 	}
-	if($catalogue->shelfmark and $field != 'doughnut' and $field != 'wordCloud') {
+	if($catalogue->shelfmark != '' and $field != 'doughnut' and $field != 'jqcloud') {
 		$return .= '<br /><span id="switchLink"><a href="javascript:switchToOriginal()">Anzeige in Vorlageform</a></span>';
 	}
 	$return .= '</p>';
