@@ -43,12 +43,12 @@ function makeItemFromNode($node) {
 	$simpleFields = array('id', 'pageCat', 'imageCat', 'numberCat', 'itemInVolume', 'volumes', 'titleCat', 'titleBib', 'titleNormalized', 'publisher', 'year', 'format', 'histSubject', 'mediaType', 'bound', 'comment');
 	$multiValuedFields = array('subjects', 'genres', 'languages');
 	$subFieldFields = array('manifestation', 'originalItem', 'work');
-	$item = new item;
+	$item = new item();
 	$children = $node->childNodes;
 	foreach($children as $child) {
 		$field = strval($child->nodeName);
 		if(in_array($field, $simpleFields)) {
-			$item->$field = $child->nodeValue;
+			$item->$field = trim($child->nodeValue);
 		}
 		elseif(in_array($field, $multiValuedFields)) {
 			$item = insertMultiValued($item, $field, $child);
@@ -72,7 +72,7 @@ function insertMultiValued($item, $field, $node) {
 	$children = $node->childNodes;
 	foreach($children as $child) {
 		if($child->nodeName != '#text') {
-			$insert[] = $child->nodeValue;
+			$insert[] = trim($child->nodeValue);
 		}
 	}
 	$item->$field = $insert;
@@ -84,10 +84,10 @@ function insertSubFields($item, $field, $node) {
 	$children = $node->childNodes;
 	foreach($children as $child) {
 		if($child->nodeName != '#text') {
-			$insert[$child->nodeName] = $child->nodeValue;
+			$insert[$child->nodeName] = trim($child->nodeValue);
 		}
 	}
-	$item->$field = $insert;
+	$item->$field = array_merge($item->$field, $insert);
 	return($item);	
 }
 
@@ -120,7 +120,7 @@ function makePersonFromNode($node) {
 	foreach($children as $child) {
 		$field = strval($child->nodeName);
 		if(in_array($child->nodeName, $properties)) {
-			$person->$field = $child->nodeValue;
+			$person->$field = trim($child->nodeValue);
 		}
 		elseif($field == 'beacon') {
 			$person = insertMultiValued($person, 'beacon', $child);
@@ -136,7 +136,7 @@ function makePlaceFromNode($node) {
 	foreach($children as $child) {
 		$field = strval($child->nodeName);
 		if(in_array($child->nodeName, $properties)) {
-			$place->$field = $child->nodeValue;
+			$place->$field = trim($child->nodeValue);
 		}
 		elseif($field == 'geoData') {
 			$place = insertSubFields($place, 'geoData', $child);

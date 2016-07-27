@@ -31,7 +31,7 @@ function setConfiguration($key) {
 		$thisCatalogue->database = 'bahnsen';
 		$thisCatalogue->title = 'Catalogus Variorum, insignium, rarißimorumque tàm Theologicorum, Mathematicorum, Historicorum, Medicorum & Chymicorum, quàm Miscellaneorum, Compactorum & Incompactorum Librorum. Reverend. Dn. Petri Serrarii, Theologi. P.M. Et Experientiss. Dn. Benedicti Bahnsen, Mathemat. P.M. In quâvis Linguâ Hebraîca, Graecâ, Latinâ, Gallicâ & Italicâ scriptorum, Als mede Hoogh en Nederduytsche Boecken, Welcke sullen verkocht worden ... den [...] April 1670 ... / De Catalogen zijn te bekomen ten huyse van Hendrick en Dirck Boom, Boeckverkoopers op de Singel ...';
 		$thisCatalogue->year = '1670';
-		$thisCatalogue->description = 'Der aus Norddeutschland stammende Chiliast Benedikt Bahnsen (gest. 1669) emigrierte vermutlich aus Glaubensgründen in die Niederlande. Tätig war er als Verleger, Buchhändler und Bücheragent, Mathematiker und Rechenmeister. Auch als Autor trat er hervor.';
+		$thisCatalogue->description = 'Der aus Norddeutschland stammende Chiliast Benedikt Bahnsen (gest. 1669) emigrierte vermutlich aus Glaubensgründen in die Niederlande. Tätig war er als Verleger, Buchhändler und Bücheragent, Mathematiker und Rechenmeister, daneben verfasste er auch eigene Werke.';
 		$thisCatalogue->institution = 'HAB Wolfenbüttel';
 		$thisCatalogue->shelfmark = 'M: Bc Kapsel 7 (23)';
 		$thisCatalogue->GeoBrowserStorageID = '267851';
