@@ -56,7 +56,6 @@ fclose($datei);
 			<div class="container">
 				<h1>Visualisierung historischer Sammlungen</h1>
 				<h2>1. Hochladen der Datei</h2>
-				
 				<!-- Die Encoding-Art enctype MUSS wie dargestellt angegeben werden -->
 				<form  enctype="multipart/form-data" action="load.php" method="POST">
 					<div class="form-group">
@@ -68,10 +67,11 @@ fclose($datei);
 						<input type="submit" value="Laden" />
 					</div>
 				</form>
+				
 				<p>
 				<?php
 		
-				if(isset($_POST['filePosted'])) {					
+				if(isset($_POST['filePosted'])) {			
 					$_SESSION['fileName'] = strtolower(pathinfo($_FILES['userfile']['name'], PATHINFO_FILENAME));
 					$_SESSION['extension'] = strtolower(pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION));
 					$allowedExtensions = array('csv', 'xml');
@@ -136,6 +136,16 @@ fclose($datei);
 						}
 					}
 				}
+				else {
+					echo '
+				<p>
+					Daten k&ouml;nnen in folgenden Formaten hochgeladen werden:
+					<ul>
+						<li><b>CSV</b>: Ein Dokument im CSV-Format kann mit einem Tabellenkalkulationsprogramm bearbeitet werden. Sie k&ouml;nnen dazu <a href="vorlage.csv" target="_blank">diese Vorlage</a> verwenden. Eine <a href="Dokumentation_CSV.doc" target="_blank">Dokumentation</a> der einzelnen Felder liegt ebenfalls vor, ebenso ein Dokument mit <a href="example.csv" target="_blank">Beispieldaten</a></li>
+						<li><b>XML</b>: Dokumente, die gegen das <a href="uploadXML.xsd" target="_blank">projekteigene Schema</a> validieren, k&ouml;nnen direkt hochgeladen werden. Dokumente im MODS-Format (dazu <a href="mods-3-4.xsd" target="_blank">dieses Schema</a>) werden in das projekteigene Format konvertiert und k&ouml;nnen dann weiterbearbeitet werden.</li>
+					</ul>
+				</p>';
+				}
 				
 				function makeUploadName($string) {
 					$salt = '07zhsuioedfzha87';
@@ -143,7 +153,7 @@ fclose($datei);
 					$name = hash('sha256', $saltedString);
 					$name = substr($name, 0, 12);
 					return($name);
-				}		
+				}
 		
 				?>
 				</p>
