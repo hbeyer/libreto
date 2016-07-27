@@ -45,6 +45,7 @@ function translateFieldNames($field) {
 		'languages' => 'Sprachen', 
 		'publisher' => 'Drucker', 
 		'format' => 'Formate', 
+		'volumes' => 'B&auml;nde', 
 		'mediaType' => 'Materialarten', 
 		'systemManifestation' => 'Nachweise', 
 		'genres' => 'Gattungen');
@@ -64,6 +65,7 @@ function translateFieldNamesButtons($field) {
 		'languages' => 'Sprachen', 
 		'publisher' => 'Drucker', 
 		'format' => 'Formate', 
+		'volumes' => 'B&auml;nde', 
 		'mediaType' => 'Materialarten', 
 		'systemManifestation' => 'Nachweise', 
 		'gnd' => 'GND-Nummern',
@@ -100,6 +102,7 @@ function translateCheckboxNames($field) {
 		'languages' => 'Sprache', 
 		'publisher' => 'Drucker', 
 		'format' => 'Format', 
+		'volumes' => 'B&auml;nde', 
 		'mediaType' => 'Materialart', 
 		'systemManifestation' => 'Nachgewiesen in', 
 		'genres' => 'Gattung'

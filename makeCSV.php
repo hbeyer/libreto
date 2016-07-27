@@ -70,6 +70,14 @@ function makeRowCSV($item) {
 			elseif($key == 'places') {
 				$row = array_merge($row, makePlaceRowCSV($value));
 			}
+			//Weil das Feld itemInVolumes in CSV auch genutzt wird um den Wert der Variable volumes aufzunehmen (in CSV nicht existent), muss hier eine Sonderregelung greifen.
+			elseif($key == 'volumes') {
+				if($value > 1) {
+					$valueVolumes = $value.'V';
+					array_pop($row);
+					$row[] = $valueVolumes;
+				}
+			}
 			else {
 				foreach($value as $subfieldContent) {
 					$row[] = $subfieldContent;

@@ -26,7 +26,13 @@ function makeItemFromCSVRow($row) {
 	$item->pageCat = $row[1];
 	$item->imageCat = $row[2];
 	$item->numberCat = $row[3];
-	$item->itemInVolume = $row[4];
+	preg_match('~^([0-9]+)[bBvV]$~', $row[4], $hits);
+	if(isset($hits[1])) {
+		$item->volumes = $hits[1];
+	}
+	elseif(is_int($row[4])) {
+		$item->itemInVolume = $row[4];
+	}
 	$item->titleCat = $row[5];
 	$item->titleBib = $row[6];
 	$item->titleNormalized = $row[7];

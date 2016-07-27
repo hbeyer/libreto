@@ -40,7 +40,7 @@ function loadXML($path) {
 }
 
 function makeItemFromNode($node) {
-	$simpleFields = array('id', 'pageCat', 'imageCat', 'numberCat', 'itemInVolume', 'titleCat', 'titleBib', 'titleNormalized', 'publisher', 'year', 'format', 'histSubject', 'mediaType', 'bound', 'comment');
+	$simpleFields = array('id', 'pageCat', 'imageCat', 'numberCat', 'itemInVolume', 'volumes', 'titleCat', 'titleBib', 'titleNormalized', 'publisher', 'year', 'format', 'histSubject', 'mediaType', 'bound', 'comment');
 	$multiValuedFields = array('subjects', 'genres', 'languages');
 	$subFieldFields = array('manifestation', 'originalItem', 'work');
 	$item = new item;

@@ -6,7 +6,7 @@ given as $field to the function makeIndex and inserted in setConfiguration.php u
 to generate a separata page.
  */
 
-$normalFields = array('id', 'pageCat', 'imageCat', 'numberCat', 'itemInVolume', 'titleCat', 'titleBib', 'titleNormalized', 'publisher', 'year', 'format', 'histSubject', 'mediaType', 'bound', 'comment', 'digitalCopy');
+$normalFields = array('id', 'pageCat', 'imageCat', 'numberCat', 'itemInVolume', 'volumes', 'titleCat', 'titleBib', 'titleNormalized', 'publisher', 'year', 'format', 'histSubject', 'mediaType', 'bound', 'comment', 'digitalCopy');
 $personFields = array('persName', 'gnd', 'gender', 'role');
 $placeFields = array('placeName', 'getty', 'geoNames');
 $arrayFields = array('languages', 'subjects', 'genres');
@@ -26,6 +26,6 @@ $wordCloudFields = array('publisher', 'format', 'histSubject', 'subjects', 'genr
 $doughnutFields = array('persName', 'gender', 'format', 'histSubject', 'subjects', 'genres', 'mediaType', 'languages', 'systemManifestation', 'institutionOriginal', 'provenanceAttribute', 'bound');
 
 // Checkbox-Fields
-$checkboxFields = array('numberCat', 'catSubjectFormat', 'shelfmarkOriginal', 'persName', 'gender', 'year', 'subjects', 'histSubject', 'genres', 'languages', 'placeName', 'publisher', 'format', 'mediaType', 'bound', 'systemManifestation', 'institutionOriginal', 'provenanceAttribute', 'pageCat', 'titleWork');
+$checkboxFields = array('numberCat', 'catSubjectFormat', 'shelfmarkOriginal', 'persName', 'gender', 'year', 'subjects', 'histSubject', 'genres', 'languages', 'placeName', 'publisher', 'format', 'volumes', 'mediaType', 'bound', 'systemManifestation', 'institutionOriginal', 'provenanceAttribute', 'pageCat', 'titleWork');
 
 ?>

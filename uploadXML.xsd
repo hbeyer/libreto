@@ -46,6 +46,7 @@
         <xs:element minOccurs="0" ref="imageCat"/>
         <xs:element minOccurs="0" ref="numberCat"/>
         <xs:element minOccurs="0" ref="itemInVolume"/>
+        <xs:element minOccurs="0" ref="volumes"/>		
         <xs:element minOccurs="0" ref="persons"/>
         <xs:element minOccurs="0" ref="titleNormalized"/>
         <xs:element minOccurs="0" ref="places"/>
@@ -68,7 +69,8 @@
   <xs:element name="pageCat" type="xs:string"/>
   <xs:element name="imageCat" type="xs:integer"/>
   <xs:element name="numberCat" type="xs:string"/>
-  <xs:element name="itemInVolume" type="xs:integer"/>
+  <xs:element name="itemInVolume" type="xs:string"/>
+  <xs:element name="itemInVolume" type="xs:integer"/>  
   <xs:element name="titleCat" type="xs:string"/>
   <xs:element name="titleBib" type="xs:string"/>
   <xs:element name="persons">
