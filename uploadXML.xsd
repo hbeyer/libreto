@@ -70,7 +70,7 @@
   <xs:element name="imageCat" type="xs:integer"/>
   <xs:element name="numberCat" type="xs:string"/>
   <xs:element name="itemInVolume" type="xs:string"/>
-  <xs:element name="itemInVolume" type="xs:integer"/>  
+  <xs:element name="volumes" type="xs:integer"/>  
   <xs:element name="titleCat" type="xs:string"/>
   <xs:element name="titleBib" type="xs:string"/>
   <xs:element name="persons">
