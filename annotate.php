@@ -2,6 +2,8 @@
 include('classDefinition.php');
 include('settings.php');
 include('encode.php');
+include('makeXML.php');
+include('makeCSV.php');
 session_start();
 ?>
 <!DOCTYPE html>
@@ -146,13 +148,17 @@ session_start();
 			
 			if(file_exists($folderName.'/dataPHP')) {
 				$_SESSION['folder'] = 1;
-				echo '<p>Die Metadaten wurden gespeichert.<br>
-				Weiter zur <a href="geodata.php">Geodatenanreicherung</a>.</p>';
+				$dataString = file_get_contents('bahnsen/dataPHP');
+				$data = unserialize($dataString);
+				unset($dataString);
+				saveXML($data, $catalogue, $folderName);
+				makeCSV($data, $folderName, $catalogue->fileName);
+				echo '<p>Die Metadaten wurden gespeichert.<br />';
+				echo 'Weiter zur <a href="geodata.php">Geodatenanreicherung</a>.</p>';
 			}
 			else {
 				echo '<p>Es ist ein Fehler aufgetreten. Bitte fangen Sie <a href="load.php">von vorne</a> an.</p>';
 			}
-			
 		}
 		
 	?>

@@ -1,30 +1,23 @@
 ﻿<?php
 
-/* 
-Ungelöstes Problem in diesem Skript: &-Zeichen in URLs lösen Fehlermeldungen aus. Codiert man sie als &amp;, 
-kann der Link nicht mehr aufgerufen werden. Der Versuch, sie stattdessen als &#38; zu codieren (Funktion replaceAmp)
-führt seltsamerweise zur Ausgabe &amp; 
-
-Die (noch nicht integrierte) Lösung:
-
-Einfügen von Text ins DOM nicht so:
-$node = $dom->createElement($key, $value);
-
-Sondern so:
-$node = $dom->createElement($key);
-$text = $dom->createTextNode($value);
-$node->appendChild($text);
-
-*/
-
 function saveXML($data, $catalogue, $folderName) {
 	$dom = new DOMDocument('1.0', 'UTF-8');
 	$dom->formatOutput = true;
 	$rootElement = $dom->createElement('collection');
 	$metadata = $dom->createElement('metadata');
-	$heading = $dom->createElement('heading', $catalogue->heading);
-	$year = $dom->createElement('year', $catalogue->year);
-	$fileName = $dom->createElement('fileName', $catalogue->fileName);
+	
+	$heading = $dom->createElement('heading');
+	$textHeading = $dom->createTextNode($catalogue->heading);
+	$heading->appendChild($textHeading);
+	
+	$year = $dom->createElement('year');
+	$textYear = $dom->createTextNode($catalogue->year);
+	$year->appendChild($textYear);
+	
+	$fileName = $dom->createElement('fileName');
+	$textFileName = $dom->createTextNode($catalogue->fileName);
+	$fileName->appendChild($textFileName);
+	
 	$metadata->appendChild($heading);
 	$metadata->appendChild($year);
 	$metadata->appendChild($fileName);
@@ -45,7 +38,10 @@ function fillDOMItem($itemElement, $item, $dom) {
 		// Fall 1: Variable ist ein einfacher Wert
 		if(is_array($value) == FALSE) {
 			$value = replaceAmp($value);
-			$itemProperty = $dom->createElement($key, $value);
+			$itemProperty = $dom->createElement($key);
+			$textProperty = $dom->createTextNode($value);
+			$itemProperty->appendChild($textProperty);
+			
 			$itemElement = appendNodeUnlessVoid($itemElement, $itemProperty);
 		}
 		else {
@@ -90,7 +86,10 @@ function fillDOMItem($itemElement, $item, $dom) {
 							}
 							//Fall 2.2.2: Variable im Objekt ist ein Integer oder String
 							elseif(is_int($objectValue) or is_string($objectValue)) {
-								$objectVariable = $dom->createElement($objectKey, $objectValue);
+								$objectVariable = $dom->createElement($objectKey);
+								$textObjectVariable = $dom->createTextNode($objectValue);
+								$objectVariable->appendChild($textObjectVariable);
+								
 								$objectElement = appendNodeUnlessVoid($objectElement, $objectVariable);
 							}
 						}
@@ -128,7 +127,9 @@ function testIfAssociative($array) {
 function appendAssocArrayToDOM($parent, $array, $dom) {
 	foreach($array as $key => $value) {
 		$value = replaceAmp($value);
-		$node = $dom->createElement($key, $value);
+		$node = $dom->createElement($key);
+		$textNode = $dom->createTextNode($value);
+		$node->appendChild($textNode);
 		$parent = appendNodeUnlessVoid($parent, $node);
 	}
 	return($parent);
@@ -137,7 +138,9 @@ function appendAssocArrayToDOM($parent, $array, $dom) {
 function appendNumericArrayToDOM($parent, $array, $dom, $fieldName = 'subfield') {
 	foreach($array as $value) {
 		$value = replaceAmp($value);
-		$node = $dom->createElement($fieldName, $value);
+		$node = $dom->createElement($fieldName);
+		$textNode = $dom->createTextNode($value);
+		$node->appendChild($textNode);		
 		$parent = appendNodeUnlessVoid($parent, $node);
 	}
 	return($parent);

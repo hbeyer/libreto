@@ -1,6 +1,6 @@
 ﻿<?php
 
-function makeCSV($data, $fileName) {
+function makeCSV($data, $folder, $fileName) {
 	$columns = array(
 		'id',
 		'pageCat',
@@ -44,7 +44,7 @@ function makeCSV($data, $fileName) {
 		'digitalCopy'
 		);
 		
-	$handle = fopen($fileName.'/'.$fileName.'.csv', "w");
+	$handle = fopen($folder.'/'.$fileName.'.csv', "w");
 	fwrite($handle, "sep=,\n", 100);
 	fputcsv($handle, $columns);
 	
@@ -53,7 +53,7 @@ function makeCSV($data, $fileName) {
 		$row = array_map('convertUTF8ToWindows', $row);
 		$row = array_map('htmlspecialchars_decode', $row);
 		fputcsv($handle, $row);
-	}	
+	}
 }
 
 function makeRowCSV($item) {
