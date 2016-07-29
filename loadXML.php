@@ -164,11 +164,23 @@ function transformMODS($fileName) {
 	$proc = new XSLTProcessor();
 	$proc->importStyleSheet($xsl);
 	$dom = $proc->transformToDoc($mods);
-	unset($mods, $xsl);
 	$dom->formatOutput = true;
 	$result = $dom->saveXML();
 	$handle = fopen('download/'.$fileName.'.xml', "w");
 	fwrite($handle, $result, 3000000);
+	
+	unset($xsl, $proc, $dom, $result);
+	
+	$xsl = new DOMDocument();
+	$xsl->load('transformMODS-CSV.xsl');
+	$proc = new XSLTProcessor();
+	$proc->importStyleSheet($xsl);
+	$dom = $proc->transformToDoc($mods);
+	// Hier muss ein gültiger Knoten für den Inhalt übergeben werden, damit das Dokument ohne XML-Deklaration gespeichert wird.
+	//$result = $dom->saveXML($dom->childNode);
+	$handle = fopen('download/'.$fileName.'.csv', "w");
+	fwrite($handle, $result, 3000000);
+	
 }
 
 ?>
