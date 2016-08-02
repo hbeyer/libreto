@@ -54,6 +54,9 @@ include('makeHead.php');
 			makeGeoDataSheet($data, $_SESSION['folderName'], 'KML');
 			makeGeoDataSheet($data, $_SESSION['folderName'], 'CSV');
 			
+			$catalogue = unserialize($_SESSION['catalogueObject']);
+			$valueID = $catalogue->geoBrowserStorageID;
+			
 			echo '<p>Es wurden Geodatenbl&auml;tter f&uuml;r das Projekt in zwei verschiedenen Formaten erstellt:</p>';
 			echo '<ul>';
 			echo '<li><a href="'.$_SESSION['folderName'].'/printingPlaces.csv">printingPlaces.csv</a></li>';
@@ -67,7 +70,7 @@ include('makeHead.php');
 				<div class="form-group">
 					<label class="control-label col-sm-2" for="heading">GeoBrowser Storage ID</label>
 					<div class="col-sm-6">
-						<input type="text" class="form-control" name="storageID" pattern="[0-9]{4,8}" maxlength="8" required>
+						<input type="text" class="form-control" name="storageID" pattern="[0-9]{4,8}" maxlength="8" required value="'.$valueID.'">
 					</div>
 				</div>
 				<input type="hidden" name="storageIDPosted">

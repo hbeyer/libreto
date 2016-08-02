@@ -4,6 +4,7 @@ include('settings.php');
 include('encode.php');
 include('loadCSV.php');
 include('loadXML.php');
+include('makeCSV.php');
 
 session_start();
 //The following variables control the steps taken by users
@@ -70,7 +71,8 @@ fclose($datei);
 				
 				<p>
 				<?php
-		
+				
+				//If the Butten "Laden" has been pushed
 				if(isset($_POST['filePosted'])) {			
 					$_SESSION['fileName'] = strtolower(pathinfo($_FILES['userfile']['name'], PATHINFO_FILENAME));
 					$_SESSION['extension'] = strtolower(pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION));
@@ -117,13 +119,17 @@ fclose($datei);
 								$serialize = serialize($data);
 								file_put_contents('upload/files/dataPHP-'.$_SESSION['fileNameInternal'], $serialize);
 								$_SESSION['store'] = 1;
-								echo 'Import war erfolgreich.<br /><a href="annotate.php">Weiter zur Metadatenaufnahme</a>';
+								echo 'Import war erfolgreich.<br /><a href="annotate.php">Weiter zur Metadatenaufnahme</a>';								
 							}
 							elseif($valid == 'mods') {
+								//Deleting older files from folder "download"
+								array_map('unlink', glob('download/*'));						
 								transformMODS($_SESSION['fileNameInternal']);
 								if(file_exists('download/'.$_SESSION['fileNameInternal'].'.xml')) {
+									$data = loadXML('download/'.$_SESSION['fileNameInternal'].'.xml');
+									makeCSV($data, 'download', $_SESSION['fileNameInternal']);
 									unlink('upload/files/'.$_SESSION['fileNameInternal'].'.xml');
-									echo 'Es wurde eine valide MODS-Datei erkannt und konvertiert.<br />Sie k&ouml;nnen mit <a href="download/'.$_SESSION['fileNameInternal'].'.xml" target="_blank">dieser XML-Datei</a> weiterarbeiten.';
+									echo 'Es wurde eine valide MODS-Datei erkannt und konvertiert.<br />Sie k&ouml;nnen mit <a href="download/'.$_SESSION['fileNameInternal'].'.xml" target="_blank">dieser XML-Datei</a> oder <a href="download/'.$_SESSION['fileNameInternal'].'.csv" target="_blank">dieser CSV-Datei</a> weiterarbeiten.';
 								}
 								else {
 									die('Fehler beim Konvertieren der MODS-Datei.');
@@ -136,12 +142,13 @@ fclose($datei);
 						}
 					}
 				}
+				//If the page has been loaded without pushing the button "Laden"
 				else {
 					echo '
 				<p>
 					Daten k&ouml;nnen in folgenden Formaten hochgeladen werden:
 					<ul>
-						<li><b>CSV</b>: Ein Dokument im CSV-Format kann mit einem Tabellenkalkulationsprogramm bearbeitet werden. Sie k&ouml;nnen dazu <a href="vorlage.csv" target="_blank">diese Vorlage</a> verwenden. Eine <a href="Dokumentation_CSV.doc" target="_blank">Dokumentation</a> der einzelnen Felder liegt ebenfalls vor, ebenso ein Dokument mit <a href="example.csv" target="_blank">Beispieldaten</a></li>
+						<li><b>CSV</b>: Ein Dokument im CSV-Format kann mit einem Tabellenkalkulationsprogramm bearbeitet werden. Sie k&ouml;nnen dazu <a href="vorlage.csv" target="_blank">diese Vorlage</a> verwenden. Eine <a href="Dokumentation_CSV.doc" target="_blank">Dokumentation</a> der einzelnen Felder liegt ebenfalls vor, ebenso ein Dokument mit <a href="example.csv" target="_blank">Beispieldaten</a>.</li>
 						<li><b>XML</b>: Dokumente, die gegen das <a href="uploadXML.xsd" target="_blank">projekteigene Schema</a> validieren, k&ouml;nnen direkt hochgeladen werden. Dokumente im MODS-Format (dazu <a href="mods-3-4.xsd" target="_blank">dieses Schema</a>) werden in das projekteigene Format konvertiert und k&ouml;nnen dann weiterbearbeitet werden.</li>
 					</ul>
 				</p>';

@@ -1,22 +1,19 @@
 <?php
 	
 	class catalogue {
-		public $key; //A file name extension to specify the catalogue represented
 		public $owner; // A person or institution that owned the collection
 		public $ownerGND; // The GND of this person or institution
 		public $fileName; //The file name to be used in the URL
-		public $database; //Name of the database under localhost, which contains the data in MySQL format.
 		public $base; //The string to be put before the image number of a digitized catalogue page
 		public $heading;
 		public $title;
 		public $place;
 		public $printer;
 		public $year;
-		//public $copy = array('institution' => '', 'shelfmark' => ''); //The copy used for the reconstruction of the catalogue
 		public $institution; //Institution possessing the copy of the catalogue
 		public $shelfmark; //Shelfmark of the copy of the catalogue
 		public $description;
-		public $GeoBrowserStorageID;
+		public $geoBrowserStorageID;
 		public $listFacets = array();
 		public $cloudFacets = array();
 		public $doughnutFacets = array();

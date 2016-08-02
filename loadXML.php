@@ -30,6 +30,10 @@ function validateXML($path, $pathSchema, $pathMODS) {
 function loadXML($path) {
 	$xml = new DOMDocument();
 	$xml->load($path);
+	$metadataNode = $xml->getElementsByTagName('metadata');
+	if($metadataNode->item(0)) {
+		loadMetadataFromNode($metadataNode->item(0));
+	}
 	$resultArray = array();
 	$nodeList = $xml->getElementsByTagName('item');
 	foreach ($nodeList as $node) {
@@ -37,6 +41,20 @@ function loadXML($path) {
 		$resultArray[] = $item;
 	}
 	return($resultArray);
+}
+
+function loadMetadataFromNode($node) {
+	$children = $node->childNodes;
+	$metadataFields = array('heading', 'owner', 'ownerGND', 'fileName', 'title', 'base', 'place', 'year', 'institution', 'shelfmark', 'description', 'geoBrowserStorageID');
+	$catalogue = new catalogue();
+	foreach($children as $child) {
+		$field = strval($child->nodeName);
+		if(in_array($field, $metadataFields)) {
+			$catalogue->$field = $child->nodeValue;
+		}
+	}
+	$catalogue = serialize($catalogue);
+	$_SESSION['catalogueObject'] = $catalogue;
 }
 
 function makeItemFromNode($node) {
@@ -168,19 +186,6 @@ function transformMODS($fileName) {
 	$result = $dom->saveXML();
 	$handle = fopen('download/'.$fileName.'.xml', "w");
 	fwrite($handle, $result, 3000000);
-	
-	unset($xsl, $proc, $dom, $result);
-	
-	$xsl = new DOMDocument();
-	$xsl->load('transformMODS-CSV.xsl');
-	$proc = new XSLTProcessor();
-	$proc->importStyleSheet($xsl);
-	$dom = $proc->transformToDoc($mods);
-	// Hier muss ein gültiger Knoten für den Inhalt übergeben werden, damit das Dokument ohne XML-Deklaration gespeichert wird.
-	//$result = $dom->saveXML($dom->childNode);
-	$handle = fopen('download/'.$fileName.'.csv', "w");
-	fwrite($handle, $result, 3000000);
-	
 }
 
 ?>

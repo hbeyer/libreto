@@ -4,24 +4,7 @@ function saveXML($data, $catalogue, $folderName) {
 	$dom = new DOMDocument('1.0', 'UTF-8');
 	$dom->formatOutput = true;
 	$rootElement = $dom->createElement('collection');
-	$metadata = $dom->createElement('metadata');
-	
-	$heading = $dom->createElement('heading');
-	$textHeading = $dom->createTextNode($catalogue->heading);
-	$heading->appendChild($textHeading);
-	
-	$year = $dom->createElement('year');
-	$textYear = $dom->createTextNode($catalogue->year);
-	$year->appendChild($textYear);
-	
-	$fileName = $dom->createElement('fileName');
-	$textFileName = $dom->createTextNode($catalogue->fileName);
-	$fileName->appendChild($textFileName);
-	
-	$metadata->appendChild($heading);
-	$metadata->appendChild($year);
-	$metadata->appendChild($fileName);
-	$rootElement->appendChild($metadata);
+	$dom = insertMetadataFromCatalogue($dom, $rootElement, $catalogue);
 	foreach($data as $item) {
 		$itemElement = $dom->createElement('item');
 		$itemElement = fillDOMItem($itemElement, $item, $dom);
@@ -31,6 +14,22 @@ function saveXML($data, $catalogue, $folderName) {
 	$result = $dom->saveXML();
 	$handle = fopen($folderName.'/'.$catalogue->fileName.'.xml', "w");
 	fwrite($handle, $result, 3000000);
+}
+
+function insertMetadataFromCatalogue($dom, $root, $catalogue) {
+	$metadata = $dom->createElement('metadata');
+	$metadataFields = array('heading', 'owner', 'ownerGND', 'fileName', 'title', 'base', 'place', 'year', 'institution', 'shelfmark', 'description', 'geoBrowserStorageID');
+	foreach($catalogue as $key => $value) {
+		if(in_array($key, $metadataFields)) {
+			$element = $dom->createElement($key);
+			$text = $dom->createTextNode($value);
+			$element->appendChild($text);
+			$metadata->appendChild($element);
+		}
+	}
+	$root->appendChild($metadata);
+	$dom->appendChild($root);
+	return($dom);
 }
 
 function fillDOMItem($itemElement, $item, $dom) {
