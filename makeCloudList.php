@@ -1,6 +1,39 @@
 ﻿<?php
 
+
 function makeCloudPageContent($data, $facets, $folder) {
+			$return= '
+			'.makeCloudScript($data, $facets, $folder).'
+			<div class="row">
+				<div class="buttonsTop">
+					'.makeButtonBar($facets).'
+				</div>
+			</div>
+				<div id="wordcloud"></div>
+			</div>';
+	return($return);
+}
+
+function makeButtonBar($facets) {
+	$result = '';
+	include('fieldList.php');
+	$firstFacet = $facets[0];
+	if(in_array('persName', $facets)) {
+		$firstFacet = 'persName';
+	}
+	$facets = array_intersect($facets, $wordCloudFields);
+	foreach($facets as $facet) {
+		$status = '';
+		if($facet == $firstFacet) {
+			$status = ' active';
+		}
+		$result .= '<button type="button" class="btn btn-default'.$status.'" onclick="javascript:updateWordCloud('.$facet.')">'.translateFieldNamesButtons($facet).'</button>
+	';
+	}
+	return($result);
+}
+
+function makeCloudPageContentOld($data, $facets, $folder) {
 	include('fieldList.php');
 	$firstFacet = $facets[0];
 	if(in_array('persName', $facets)) {

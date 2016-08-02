@@ -1,21 +1,28 @@
 ﻿<?php
-/* include('classDefinition.php');
-include('makeIndex.php');
-include('makeCloudList.php');
-include('setConfiguration.php');
-include('encode.php');
-
-$thisCatalogue = setConfiguration('bahn');
-$folderName = fileNameTrans($thisCatalogue->heading);
-$facets = $thisCatalogue->facets;
-$dataString = file_get_contents($folderName.'/data-'.$thisCatalogue->key);
-$data = unserialize($dataString);
-unset($dataString);
-
-$test = makeDoughnutPageContent($data, $facets, $folderName);
-print $test; */
 
 function makeDoughnutPageContent($data, $facets, $folder) {
+	include('fieldList.php');
+	$facets = array_intersect($facets, $doughnutFields);
+	$firstFacet = assignFirstFacet($facets);
+	$content = '			
+			<div class="row">
+				<div class="buttonsTop">
+					'.makeDoughnutButtons($facets, $firstFacet).'
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-6">
+					<canvas id="myDoughnutChart" width="400" height="400"></canvas>
+				</div>
+				<div class="col-sm-6">
+					<div id="chart-legend" class="chart-legend"></div>
+				</div>
+			</div>';
+		$content .= makeDoughnutScript($data, $facets, $firstFacet, $folder);
+	return($content);
+}
+
+function makeDoughnutPageContentOld($data, $facets, $folder) {
 	include('fieldList.php');
 	$facets = array_intersect($facets, $doughnutFields);
 	$firstFacet = assignFirstFacet($facets);

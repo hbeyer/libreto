@@ -41,6 +41,11 @@ ul.nav li.dropdown:hover ul.dropdown-menu {
 	margin-top:0px;
 }
 
+div.buttonsTop {
+	text-align:right
+}
+
+
 /* Formatierungen für WordClouds */	
 
 div#wordCloudButtons {
@@ -127,7 +132,7 @@ div#wordcloud span.w1 {
 }
 
 div.chart-legend {
-	margin-top:15px;
+	margin-top:3em;
 }
 
 #myDoughnutChart {
