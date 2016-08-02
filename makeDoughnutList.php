@@ -112,23 +112,33 @@ function assignColor($count) {
 	$colorsMWW = array(
 		'#035151', // MWW-grün
 		'#a08246', // MWW-gold
-		'#002222', // Es folgen alternierende Abstufungen
-		'#5c420e',
-		'#003a3a',
-		'#836528',
-		'#126565',
-		'#c1a56c',
-		'#257878',
-		'#ecd5a7',
-		'#00b2b2',
-		'#808080', // Dunkelgrau
-		'#00FF00', // Grün		
-		'#00FFFF', // Türkis
-		//'#FF0000', // Rot
-		//'#0000FF', // Blau
-		//'#CC00CC', // Lila
-		//'#ffcc00', // Dunkelgelb
-		'#33CCFF', // Hellblau
+		
+		'#046262', // Es folgen alternierende Abstufungen
+		'#b1904e',
+		
+		'#034a4a',
+		'#8e733e',
+		
+		'#047b7b',
+		'#b99b5f',
+		
+		'#023131',
+		'#7c6536',
+		
+		'#059494',
+		'#c1a671',
+		
+		'#011919',
+		'#6a562f',
+		
+		'#06acac',
+		'#c9b183',
+		
+		'#000000',
+		'#594827',
+		
+		'#07c5c5',
+		'#d0bc95'
 	);
 	if(isset($colorsMWW[$count])) {
 		return($colorsMWW[$count]);
