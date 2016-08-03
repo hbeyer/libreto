@@ -2,6 +2,7 @@
 
 function makeDoughnutPageContent($data, $facets, $folder) {
 	include('fieldList.php');
+	$number = countCollection($data);
 	$facets = array_intersect($facets, $doughnutFields);
 	$firstFacet = assignFirstFacet($facets);
 	$content = '			
@@ -16,6 +17,7 @@ function makeDoughnutPageContent($data, $facets, $folder) {
 				</div>
 				<div class="col-sm-6">
 					<div id="chart-legend" class="chart-legend"></div>
+					<div class="chart-numbers">Gesamtzahl: '.$number['items'].'<br />B&auml;nde: '.$number['volumes'].'</div>
 				</div>
 			</div>';
 		$content .= makeDoughnutScript($data, $facets, $firstFacet, $folder);
@@ -156,6 +158,22 @@ function assignFirstFacet($facets) {
 		$return = $facets[0];
 	}
 	return($return);
+}
+
+function countCollection($data) {
+	$items = count($data);
+	$volumes = 0;
+	foreach($data as $item) {
+		//If the item is not a miscellany, the number of volumes is being added.
+		if($item->itemInVolume == 0) {
+			$volumes += $item->volumes;
+		}
+		//If the item is part of a miscellany, only the first part of it is being countet
+		elseif($item->itemInVolume == 1) {
+			$volumes += 1;
+		}
+	}
+	return(array('items' => $items, 'volumes' => $volumes));
 }
 
 ?>

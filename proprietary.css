@@ -135,6 +135,10 @@ div.chart-legend {
 	margin-top:3em;
 }
 
+div.chart-numbers {
+	margin-left:40px;
+}
+
 #myDoughnutChart {
 	position: relative;
 	margin-left: auto;
