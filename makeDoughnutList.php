@@ -22,24 +22,6 @@ function makeDoughnutPageContent($data, $facets, $folder) {
 	return($content);
 }
 
-function makeDoughnutPageContentOld($data, $facets, $folder) {
-	include('fieldList.php');
-	$facets = array_intersect($facets, $doughnutFields);
-	$firstFacet = assignFirstFacet($facets);
-	$content = '			
-			<div class="row">
-				<div class="col-sm-6">
-					<canvas id="myDoughnutChart" width="400" height="400"></canvas>
-				</div>
-				<div class="col-sm-6">
-					'.makeDoughnutButtons($facets, $firstFacet).'
-					<div id="chart-legend" class="chart-legend"></div>
-				</div>
-			</div>';
-		$content .= makeDoughnutScript($data, $facets, $firstFacet, $folder);
-	return($content);
-}
-
 function makeDoughnutScript($data, $facets, $firstFacet, $folder) {
 	$content = '
 			<script type="text/javascript">

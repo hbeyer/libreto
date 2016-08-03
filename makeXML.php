@@ -36,7 +36,7 @@ function fillDOMItem($itemElement, $item, $dom) {
 	foreach($item as $key => $value) {
 		// Fall 1: Variable ist ein einfacher Wert
 		if(is_array($value) == FALSE) {
-			$value = replaceAmp($value);
+			//$value = replaceAmp($value);
 			$itemProperty = $dom->createElement($key);
 			$textProperty = $dom->createTextNode($value);
 			$itemProperty->appendChild($textProperty);
@@ -125,7 +125,7 @@ function testIfAssociative($array) {
 
 function appendAssocArrayToDOM($parent, $array, $dom) {
 	foreach($array as $key => $value) {
-		$value = replaceAmp($value);
+		//$value = replaceAmp($value);
 		$node = $dom->createElement($key);
 		$textNode = $dom->createTextNode($value);
 		$node->appendChild($textNode);
@@ -136,7 +136,7 @@ function appendAssocArrayToDOM($parent, $array, $dom) {
 
 function appendNumericArrayToDOM($parent, $array, $dom, $fieldName = 'subfield') {
 	foreach($array as $value) {
-		$value = replaceAmp($value);
+		//$value = replaceAmp($value);
 		$node = $dom->createElement($fieldName);
 		$textNode = $dom->createTextNode($value);
 		$node->appendChild($textNode);		

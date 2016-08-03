@@ -150,6 +150,9 @@ session_start();
 			if(is_dir($folderName) == FALSE) {
 				mkdir($folderName, 0700);
 			}
+			else {
+				array_map('unlink', glob($folderName.'/*'));
+			}
 			
 			if($_SESSION['copiedToFolder'] == 0) {
 				copy ('proprietary.css', $folderName.'/proprietary.css');
