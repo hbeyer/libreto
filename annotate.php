@@ -151,7 +151,7 @@ session_start();
 				mkdir($folderName, 0700);
 			}
 			else {
-				array_map('unlink', glob($folderName.'/*'));
+				array_map('unlink', glob($folderName.'/*.html'));
 			}
 			
 			if($_SESSION['copiedToFolder'] == 0) {

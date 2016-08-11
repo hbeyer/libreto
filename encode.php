@@ -12,8 +12,8 @@ function replaceSlash($string) {
 	return($string);
 }
 
-function replaceAmp($string) {
-	$translate = array('&' => '&#38;');
+function replaceAmpChar($string) {
+	$translate = array('&amp;' => '&');
 	$string = strtr($string, $translate);
 	return($string);
 }
@@ -156,7 +156,7 @@ function removeSpecial($name) {
 }
 
 function convertWindowsToUTF8($string) {
-  $charset =  mb_detect_encoding($string, "Windows-1252, ISO-8859-1, ISO-8859-15", true);
+  $charset =  mb_detect_encoding($string, "windows-1250, Windows-1252, ISO-8859-1, ISO-8859-15", true);
   $string =  mb_convert_encoding($string, "UTF-8", $charset);
   return $string;
 }

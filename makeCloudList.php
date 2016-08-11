@@ -33,26 +33,6 @@ function makeButtonBar($facets) {
 	return($result);
 }
 
-function makeCloudPageContentOld($data, $facets, $folder) {
-	include('fieldList.php');
-	$firstFacet = $facets[0];
-	if(in_array('persName', $facets)) {
-		$firstFacet = 'persName';
-	}
-	$facets = array_intersect($facets, $wordCloudFields);
-	$content = makeCloudScript($data, $facets, $folder);
-	foreach($facets as $facet) {
-		$status = '';
-		if($facet == $firstFacet) {
-			$status = ' active';
-		}
-		$content .= '<button type="button" class="btn btn-default'.$status.'" onclick="javascript:updateWordCloud('.$facet.')">'.translateFieldNamesButtons($facet).'</button>
-	';
-	}
-	$content = '<div id="wordCloudButtons">'.$content.'</div><div id="wordcloud"></div>';
-	return($content);
-}
-
 function makeCloudScript($data, $facets, $folder) {
 	$content = '<script type="text/javascript">
 	';
@@ -99,6 +79,7 @@ function makeCloudArrays($data, $field) {
 		if($entry->label != 'ohne Kategorie') {
 			$text = htmlspecialchars($entry->label);
 			$text = preprocessText($text, $field);
+			$text = replaceAmpChar($text);
 			$weight = count($entry->content);
 			$weightArray[$count] = $weight;
 			$nameArray[$count] = $text;
