@@ -148,7 +148,7 @@ session_start();
 			$folderName = 'user/'.$catalogue->fileName;
 			$_SESSION['folderName'] = $folderName;
 			if(is_dir($folderName) == FALSE) {
-				mkdir($folderName, 0700);
+				mkdir($folderName, 0777);
 			}
 			else {
 				array_map('unlink', glob($folderName.'/*.html'));
@@ -167,7 +167,7 @@ session_start();
 			
 			if(file_exists($folderName.'/dataPHP')) {
 				$_SESSION['folder'] = 1;
-				$dataString = file_get_contents('bahnsen/dataPHP');
+				$dataString = file_get_contents($folderName.'/dataPHP');
 				$data = unserialize($dataString);
 				unset($dataString);
 				saveXML($data, $catalogue, $folderName);
