@@ -30,6 +30,14 @@ function fileNameTrans($fileName) {
 	return($fileName);
 }
 
+function encodeXMLID($string) {
+	$string = strtolower($string);
+	$translation = array(' ' => '_', '–' => '-', '/' => '_', 'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'ß' => 's', 'é' => 'e', 'è' => 'e', 'à' => 'a', 'ò' => 'o');
+	$id = strtr($string, $translation);
+	$id = preg_replace( '/[^a-z0-9_\-]/i', '', $id); 
+	return($id);
+}
+
 function translateFieldNames($field) {
 	$translation = array(
 		'catSubjectFormat' => 'Katalog', 

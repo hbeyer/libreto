@@ -204,6 +204,7 @@ function collectIDsPersons($data) {
 	return($return);
 }
 
+//Die Funktion muss so umgebaut werden, dass nicht nur Geodaten, sondern auch Identifier per Konkordanz übergeben werden können.
 function collectIDsPlaces($data) {
 	$collectPlaceName = array();
 	$collectGeoData = array();
