@@ -2,7 +2,7 @@
 include('classDefinition.php');
 include('settings.php');
 include('makeGeoDataSheet.php');
-include('addToSOLR.php');
+include('addToSolr.php');
 include('encode.php');
 include('makeIndex.php');
 include('makeSection.php');

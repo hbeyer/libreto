@@ -30,7 +30,7 @@ $_SESSION['folderName'] = '';
 $directories = array('user', 'beaconFiles', 'geoDataArchive', 'upload', 'upload/files', 'download');
 foreach($directories as $folder) {
 	if(is_dir($folder) == FALSE) {
-		mkdir($folder, 0700);
+		mkdir($folder, 0777);
 	}
 }
 
