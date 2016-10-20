@@ -79,9 +79,22 @@ function makeEntries($collect, $field = '') {
 		elseif($field == 'id' or $field == 'numberCat') {
 			$entry->level = 0;
 		}
-		// Prüfen, ob Geodaten in einem eigenen Array hinterlegt wurden (Funktion collectIDsPlaces)
-		if(isset($collect['concordanceGeoData'])) {
-			$entry->geoData = $collect['concordanceGeoData'][$value];
+		// Prüfen, ob eine Konkordanz der Place-Objekte übergeben wurde
+		if(isset($collect['placeObjects'])) {
+			$placeObject = $collect['placeObjects'][$value];
+			$entry->geoData = $placeObject->geoData;
+			if($placeObject->geoNames) {
+				$entry->authority['system'] = 'geoNames';
+				$entry->authority['id'] = $placeObject->geoNames;
+			}
+			elseif($placeObject->getty) {
+				$entry->authority['system'] = 'getty';
+				$entry->authority['id'] = $placeObject->getty;				
+			}
+			elseif($placeObject->gnd) {
+				$entry->authority['system'] = 'gnd';
+				$entry->authority['id'] = $placeObject->gnd;				
+			}			
 		}
 		$entry->content = $IDs;
 		$index[] = $entry;
@@ -204,10 +217,10 @@ function collectIDsPersons($data) {
 	return($return);
 }
 
-//Die Funktion muss so umgebaut werden, dass nicht nur Geodaten, sondern auch Identifier per Konkordanz übergeben werden können.
 function collectIDsPlaces($data) {
 	$collectPlaceName = array();
 	$collectGeoData = array();
+	$collectPlaceObjects = array();
 	$count = 0;
 	foreach($data as $item) {
 		foreach($item->places as $place) {
@@ -215,12 +228,13 @@ function collectIDsPlaces($data) {
 			if(array_key_exists($key, $collectPlaceName) == FALSE) {
 				$collectPlaceName[$key] = array();
 				$collectGeoData[$key] = $place->geoData;
+				$collectPlaceObjects[$key] = $place;
 			}
 			$collectPlaceName[$key][] = $count;
 		}
 	$count++;
 	}
-	$return = array('collect' => $collectPlaceName, 'concordanceGeoData' => $collectGeoData);
+	$return = array('collect' => $collectPlaceName, 'placeObjects' => $collectPlaceObjects);
 	return($return);
 }
 
