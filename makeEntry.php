@@ -34,7 +34,7 @@ function makePlaces($placeList) {
 function makeVolumes($volumes) {
 	$return = '';
 	if($volumes > 1) {
-		$return = ', '.$volumens;
+		$return = ', '.$volumes;
 	}
 	return($return);
 }
@@ -82,8 +82,41 @@ function makeOriginalLink($originalItem) {
 	$provenanceAttribute = $originalItem['provenanceAttribute'];
 	$digitalCopyOriginal = $originalItem['digitalCopyOriginal'];
 	
+	if($institutionOriginal and $shelfmarkOriginal and $targetOPAC == '') {
+		$result = 'Originalexemplar: '.$institutionOriginal.', '.$shelfmarkOriginal;
+	}
+	elseif($institutionOriginal and $shelfmarkOriginal and $targetOPAC and $searchID == '') {
+		$link = makeBeaconLink($shelfmarkOriginal, $targetOPAC);
+		$result = 'Originalexemplar: <a href="'.$link.'">'.$institutionOriginal.', '.$shelfmarkOriginal.'</a>';
+	}
+	elseif($institutionOriginal and $shelfmarkOriginal and $targetOPAC and $searchID) {
+		$link = makeBeaconLink($searchID, $targetOPAC);
+		$result = 'Originalexemplar: <a href="'.$link.'">'.$institutionOriginal.', '.$shelfmarkOriginal.'</a>';
+	}
+	if($result and $provenanceAttribute) {
+		$result .= '; Grund für Zuschreibung: '.$provenanceAttribute;
+	}
+	if($result and $digitalCopyOriginal) {
+		$result .= '; Digitalisat: '.makeDigiLink($digitalCopyOriginal);
+	}
+	if($result) { 
+		$result = 'Originalexemplar: '.$result.'<br/>';
+	}
+	return($result);
+}	
+
+/* function makeOriginalLinkOld($originalItem) {
+	$result = '';
+	$institutionOriginal = $originalItem['institutionOriginal'];
+	$shelfmarkOriginal = $originalItem['shelfmarkOriginal'];
+	$targetOPAC = $originalItem['targetOPAC'];
+	$searchID = $originalItem['searchID'];
+	$provenanceAttribute = $originalItem['provenanceAttribute'];
+	$digitalCopyOriginal = $originalItem['digitalCopyOriginal'];
+	
 	if($institutionOriginal and $shelfmarkOriginal) {
 		$result = $institutionOriginal.', '.$shelfmarkOriginal;
+		$link = '#';
 		if($targetOPAC and $searchID) {
 			$link = makeBeaconLink($searchID, $targetOPAC);
 		}
@@ -100,7 +133,7 @@ function makeOriginalLink($originalItem) {
 		$result = 'Originalexemplar: '.$result.'<br/>';
 	}
 	return($result);
-}	
+}	 */
 
 function makeWorkLink($work) {
 	if($work['systemWork'] and $work['idWork']) {

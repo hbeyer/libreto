@@ -39,7 +39,11 @@ function makeItemFromCSVRow($row) {
 	$item->publisher = $row[18];
 	$item->year = $row[19];
 	$item->format = $row[20];
-	$item->histSubject = $row[21];
+	$explodeHistSubject = explode('#', $row[21]);
+	$item->histSubject = $explodeHistSubject[0];
+	if(isset($explodeHistSubject[1])) {
+		$item->histShelfmark = $explodeHistSubject[1];
+	}
 	$item->subjects = explode(';', $row[22]);
 	$item->genres = explode(';', $row[23]);
 	$item->mediaType = $row[24];
