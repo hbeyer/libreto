@@ -121,7 +121,7 @@ $beaconSources = array(
 		'location' => 'http://www.portraitindex.de/pnd_beacon.txt',
 		'target' => 'http://www.portraitindex.de/dokumente/pnd/{ID}'
 	),
-	'tpd' => array(
+/* 	'tpd' => array(
 		'label' => 'Tripota - Trierer Porträtdatenbank',
 		'location' => 'http://www.tripota.uni-trier.de/beacon_tripota.txt',
 		'target' => 'http://www.tripota.uni-trier.de/beacon.php?ID={ID}'
@@ -130,7 +130,7 @@ $beaconSources = array(
 		'label' => 'Portraitsammlung der USB Köln',
 		'location' => 'http://beacon.findbuch.de/downloads/ps_usbk/DE-38-USB_Koeln-Portraitsammlung-portraitierte-beacon.txt',
 		'target' => 'http://beacon.findbuch.de/portraits/ps_usbk?format=redirect&id={ID}'
-	),	
+	),	 */
  	'vkk' => array(
 		'label' => 'Virtuelles Kupferstichkabinett',
 		'location' => 'http://www.virtuelles-kupferstichkabinett.de/beacon.php',

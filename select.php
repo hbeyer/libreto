@@ -154,8 +154,11 @@ session_start();
 					echo 'Datei '.$fileName.' wurde erstellt.<br/>';
 				}
 			}
-
+			
 			unset($structures);
+			
+			//Anlegen der Datei index.php mit Weiterleitung auf die Startseite
+			makeStartPage($facets[0], $catalogue->fileName, $_SESSION['folderName']);
 						
 			// Erzeugen der Seite mit den Word Clouds
 			if($catalogue->cloudFacets != array()) {
@@ -265,6 +268,19 @@ function zipFolderContent($folder, $fileName) {
 	$zip->addGlob($folder.'/*', 0, $options);
 	$zip->close();
 }
+
+function makeStartPage($facet, $fileName, $folder) {
+	$content = '<?php
+header("Location: '.$fileName.'-'.$facet.'.html");
+?>';
+	$datei = fopen($folder.'/index.php',"w");
+	fwrite($datei, $content, 300000);
+	fclose($datei);
+	if(file_exists($folder.'/index.php')) {
+		echo 'Datei '.$folder.'/index.php wurde erstellt.<br/>';
+	}
+}
+
 		
 	?>
 				

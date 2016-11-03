@@ -19,13 +19,13 @@ $virtualFields = array('catSubjectFormat');
 $indexFields = array_merge($normalFields, $personFields, $placeFields, $arrayFields, $workFields, $manifestationFields, $originalItemFields, $virtualFields);
 
 // The following fields are displayed with miscellanies as unordered lists
-$volumeFields = array('numberCat', 'catSubjectFormat');
+$volumeFields = array('numberCat', 'catSubjectFormat', 'histSubject');
 
 // The following fields get additional word clouds or doughnuts if they are selected
 $wordCloudFields = array('publisher', 'format', 'histSubject', 'subjects', 'genres', 'mediaType', 'persName', 'gnd', 'role', 'placeName', 'languages', 'systemManifestation', 'institutionOriginal', 'shelfmarkOriginal', 'provenanceAttribute');
 $doughnutFields = array('persName', 'gender', 'format', 'histSubject', 'subjects', 'genres', 'mediaType', 'languages', 'systemManifestation', 'institutionOriginal', 'provenanceAttribute', 'bound');
 
 // Checkbox-Fields
-$checkboxFields = array('numberCat', 'catSubjectFormat', 'shelfmarkOriginal', 'persName', 'gender', 'year', 'subjects', 'histSubject', 'histShelfmark', 'genres', 'languages', 'placeName', 'publisher', 'format', 'volumes', 'mediaType', 'bound', 'systemManifestation', 'institutionOriginal', 'provenanceAttribute', 'pageCat', 'titleWork');
+$checkboxFields = array('numberCat', 'catSubjectFormat', 'shelfmarkOriginal', 'histSubject', 'persName', 'gender', 'year', 'subjects', 'histShelfmark', 'genres', 'languages', 'placeName', 'publisher', 'format', 'volumes', 'mediaType', 'bound', 'systemManifestation', 'institutionOriginal', 'provenanceAttribute', 'pageCat', 'titleWork');
 
 ?>
