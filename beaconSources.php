@@ -112,7 +112,7 @@ $beaconSources = array(
 		'target' => 'http://correspsearch.bbaw.de/search.xql?correspondent=http://d-nb.info/gnd/{ID}&l=de'
 	),
 	'muenz' => array(
-		'label' => 'Interaktiver Katalog des Münzkabinetts Staatliche Museen zu Berlin – Stiftung Preußischer Kulturbesitz',
+		'label' => 'Katalog des Münzkabinetts Staatliche Museen zu Berlin',
 		'location' => 'http://ww2.smb.museum/ikmk/beacon_gnd.php',
 		'target' => 'http://ww2.smb.museum/ikmk/filter_text.php?filter%5B0%5D%5Bfield%5D=gnd&filter%5B0%5D%5Btext%5D={ID}'
 	),	
