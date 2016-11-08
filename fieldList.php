@@ -3,10 +3,10 @@
 /* 
 The following defines the fields which can be indexed and displayed. Each field listed in $indexFields can be 
 given as $field to the function makeIndex and inserted in setConfiguration.php under $catalogue->facets 
-to generate a separata page.
+to generate a separate page.
  */
 
-$normalFields = array('id', 'pageCat', 'imageCat', 'numberCat', 'itemInVolume', 'volumes', 'titleCat', 'titleBib', 'titleNormalized', 'publisher', 'year', 'format', 'histSubject', 'histShelfmark', 'mediaType', 'bound', 'comment', 'digitalCopy');
+$normalFields = array('id', 'pageCat', 'imageCat', 'numberCat', 'itemInVolume', 'volumes', 'volumesMisc', 'titleCat', 'titleBib', 'titleNormalized', 'publisher', 'year', 'format', 'histSubject', 'histShelfmark', 'mediaType', 'bound', 'comment', 'digitalCopy');
 $personFields = array('persName', 'gnd', 'gender', 'role');
 $placeFields = array('placeName', 'getty', 'geoNames');
 $arrayFields = array('languages', 'subjects', 'genres');

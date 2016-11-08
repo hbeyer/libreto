@@ -170,7 +170,13 @@ function countCollection($data) {
 		}
 		//If the item is part of a miscellany, only the first part of it is being countet
 		elseif($item->itemInVolume == 1) {
-			$volumes += 1;
+			if(is_int($item->volumesMisc)) {
+				$volumes += $item->volumesMisc;
+			}
+			//Für Altdaten, die noch keinen Wert für volumesMisc haben.
+			else {
+				$volumes += 1;
+			}
 		}
 	}
 	return(array('items' => $items, 'volumes' => $volumes));

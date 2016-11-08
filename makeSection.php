@@ -103,8 +103,9 @@ function makeDecadeFromTo($year) {
 function joinVolumes($section) {
 	$newContent = array();
 	$buffer = array();
-	$lastNumberCat = '';
+	$lastID = '';
 	foreach($section->content as $item) {
+		// Case 1: A one-volume item
 		if($item->itemInVolume == 0) {
 			if(isset($buffer[0])) {
 				$newContent[] = makeVolume($buffer);
@@ -112,15 +113,17 @@ function joinVolumes($section) {
 			}
 			$newContent[] = $item;
 		}
-		elseif($item->itemInVolume > 0 and $item->numberCat != $lastNumberCat and isset($buffer[0])) {
+		// Case 2: An item of a new miscellany
+		elseif($item->itemInVolume == 1 and isset($buffer[0])) {
 			$newContent[] = makeVolume($buffer);
 			$buffer = array();
 			$buffer[] = $item;
 		}
+		// Case 3: An item of a known miscellany
 		elseif($item->itemInVolume > 0) {
 			$buffer[] = $item;
 		}
-		$lastNumberCat = $item->numberCat;
+		$lastID = $item->id;
 	}
 	if(isset($buffer[0])) {
 		$newContent[] = makeVolume($buffer);
@@ -132,6 +135,11 @@ function joinVolumes($section) {
 function makeVolume($buffer) {
 	uasort($buffer, 'compareItemInVolume');
 	$result = new volume();
+	$volumesMisc = $buffer[0]->volumesMisc;
+	$volumesMisc = intval($volumesMisc);
+	if(is_int($volumesMisc)) {
+		$result->volumes = $buffer[0]->volumesMisc;
+	}
 	$result->content = $buffer;
 	return($result);
 }
@@ -165,8 +173,12 @@ function makeList($structuredData, $thisCatalogue, $folderName) {
 			</div>';
 			}
 			elseif(get_class($item) == 'volume') {
+				$heading = 'Sammelband';
+				if($item->volumes > 1) {
+					$heading = 'Sammlung in '.$item->volumes.' B&auml;nden';
+				}
 				$content .= '
-			<div class="entry">Sammelband
+			<div class="entry">'.$heading.'
 				<ul>';
 				foreach($item->content as $itemInVol) {
 					$content .= '

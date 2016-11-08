@@ -24,8 +24,9 @@
 			public $pageCat; //Page in the catalogue where the item was found
 			public $imageCat; //Image number of the page in the digitized catalogue
 			public $numberCat; //Number of the item as found in catalogue
-			public $itemInVolume = 0; //If the item is part of a volume, the number indicates its position, otherwise it is 0.
+			public $itemInVolume = 0; //If the item is part of a miscellany, the number indicates its position, otherwise it is 0.
 			public $volumes = 1; //Number of volumes corresponding to the entry.
+			public $volumesMisc; //If the item is part of a miscellany, the number indicates the number of volumes of the miscellany.			
 			public $titleCat; //The title as found in the catalogue
 			public $titleBib;	//The title as copied from a bibliographic database (cf. $manifestation)
 			public $titleNormalized; // A normalized form of the title to facilitate reading and searching
@@ -65,6 +66,8 @@
 	
 	class volume { // A list of items bound together in one volume
 		public $content = array();
+		// In case several items have been bound to more than one volume, this can be indicated here.
+		public $volumes = 1;
 	}
 
 	class section { // A list of items with a title to be displayed as a chapter of a web page
