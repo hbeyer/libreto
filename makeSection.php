@@ -137,7 +137,7 @@ function makeVolume($buffer) {
 	$result = new volume();
 	$volumesMisc = $buffer[0]->volumesMisc;
 	$volumesMisc = intval($volumesMisc);
-	if(is_int($volumesMisc)) {
+	if($volumesMisc) {
 		$result->volumes = $buffer[0]->volumesMisc;
 	}
 	$result->content = $buffer;

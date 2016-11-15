@@ -32,7 +32,10 @@ function makeIndex($data, $field) {
 		$collect = collectIDsArrayValues($data, $field);
 	}
 	
-	if(isset($collect)) {
+	if($field == 'histSubject') {
+		$index = makeEntries($collect, $field);
+	}
+	elseif(isset($collect)) {
 		$collect = sortCollect($collect);
 		$index = makeEntries($collect, $field);
 	}

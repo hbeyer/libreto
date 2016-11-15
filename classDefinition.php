@@ -36,6 +36,7 @@
 			public $year;
 			public $format;
 			public $histSubject;
+			public $histShelfmark;
 			public $subjects = array(); // Contains one ore more indications of subject as string
 			public $genres = array(); // Contains one ore more indications of genre as string
 			public $mediaType; //Book, Manuscript, Physical Object, etc.
