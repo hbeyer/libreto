@@ -2,7 +2,7 @@
 
 function makeEntry($thisBook, $thisCatalogue, $id) {
 	$buffer = makeAuthors($thisBook->persons).makeTitle($thisBook->titleBib, $thisBook->titleCat, $thisBook->work).makeVolumes($thisBook->volumes).makePublished(makePlaces($thisBook->places), $thisBook->publisher, $thisBook->year).' <a id="linkid'.$id.'" href="javascript:toggle(\'id'.$id.'\')">Mehr</a>
-				<div id="id'.$id.'" style="display:none; padding-top:0px; padding-bottom:15px; padding-left:10px;">'.makeSourceLink($thisBook, $thisCatalogue->base).makeHistShelfmark($thisBook->histShelfmark).makeOriginalLink($thisBook->originalItem).makeWorkLink($thisBook->work).makeDigiLink($thisBook->digitalCopy).makeProof($thisBook).makeComment($thisBook->comment).'</div>';
+				<div id="id'.$id.'" style="display:none; padding-top:0px; padding-bottom:15px; padding-left:10px;">'.makeSourceLink($thisBook, $thisCatalogue->base).makeHistShelfmark($thisBook->histShelfmark).makeOriginalLink($thisBook->originalItem).makeWorkLink($thisBook->work).makeDigiLink($thisBook->digitalCopy).makeProof($thisBook).makeCopiesHAB($thisBook->copiesHAB).makeComment($thisBook->comment).'</div>';
 	return($buffer);
 }
 
@@ -112,36 +112,6 @@ function makeOriginalLink($originalItem) {
 	return($result);
 }	
 
-/* function makeOriginalLinkOld($originalItem) {
-	$result = '';
-	$institutionOriginal = $originalItem['institutionOriginal'];
-	$shelfmarkOriginal = $originalItem['shelfmarkOriginal'];
-	$targetOPAC = $originalItem['targetOPAC'];
-	$searchID = $originalItem['searchID'];
-	$provenanceAttribute = $originalItem['provenanceAttribute'];
-	$digitalCopyOriginal = $originalItem['digitalCopyOriginal'];
-	
-	if($institutionOriginal and $shelfmarkOriginal) {
-		$result = $institutionOriginal.', '.$shelfmarkOriginal;
-		$link = '#';
-		if($targetOPAC and $searchID) {
-			$link = makeBeaconLink($searchID, $targetOPAC);
-		}
-		elseif($targetOPAC and $shelfmarkOriginal) {
-			$link = makeBeaconLink($shelfmarkOriginal, $targetOPAC);
-		}
-		$result = '<a href="'.$link.'" target="_blank">'.$result.'</a>';		
-		if($provenanceAttribute) {
-			$result .= '; Grund für Zuschreibung: '.$provenanceAttribute;
-		}
-		if($digitalCopyOriginal) {
-			$result .= '; Digitalisat: '.makeDigiLink($digitalCopyOriginal);
-		}
-		$result = 'Originalexemplar: '.$result.'<br/>';
-	}
-	return($result);
-}	 */
-
 function makeWorkLink($work) {
 	if($work['systemWork'] and $work['idWork']) {
 	include('targetData.php');
@@ -212,6 +182,19 @@ function makeProof($item) {
 		$result = '<span class="heading_info">Nachweis: </span>'.$system.$page.'<br/>';
 	}
 	return($result);
+}
+
+function makeCopiesHAB($copies) {
+	if($copies[0]) {
+		$base = 'http://opac.lbs-braunschweig.gbv.de/DB=2/SET=31/TTL=1/CMD?ACT=SRCHA&TRM=sgb+';
+		$links = array();
+		foreach($copies as $copy) {
+			$links[] = '<a href="'.$base.urlencode($copy).'" target="_blank">'.$copy.'</a>';
+		}
+		$result = implode('; ', $links);
+		$result = 'Exemplare der HAB: '.$result.'<br/>';
+		return($result);
+	}
 }
 
 function makeComment($text) {

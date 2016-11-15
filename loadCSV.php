@@ -1,6 +1,10 @@
 <?php
 
+//$test = getColumnNames('Material\\Antoinette-Amalie.csv');
+//var_dump($test);
+
 function loadCSV($path) {
+	$fieldNames = getColumnNames($path);
 	$data = array();
 	$csv = file_get_contents($path);
 	$document = str_getcsv($csv, "\n");
@@ -9,18 +13,99 @@ function loadCSV($path) {
 		$fields = str_getcsv($row, ";");
 		$fields = array_map('convertWindowsToUTF8', $fields);
 		if($firstRow == TRUE) {
-			$fieldNames = $fields;
 			$firstRow = FALSE;
 		}
 		elseif($firstRow == FALSE) {
-			$item = makeItemFromCSVRow($fields);
+			$item = makeItemFromCSVRow($fields, $fieldNames);
 			$data[] = $item;
 		}
 	}
 	return($data);
 }
 
-function makeItemFromCSVRow($row) {
+function makeItemFromCSVRow($row, $fieldNames) {
+	$item = new item();
+	$item->id = $row[$fieldNames['id']];
+	$item->pageCat = $row[$fieldNames['pageCat']];
+	$item->imageCat = $row[$fieldNames['imageCat']];
+	$item->numberCat = $row[$fieldNames['numberCat']];
+	preg_match('~^([0-9]+)[bBvV]([0-9]{0,3})$~', $row[$fieldNames['itemInVolume']], $hits);
+	if(isset($hits[1]) and isset($hits[2])) {
+		$item->volumesMisc = $hits[1];
+		$item->itemInVolume = $hits[2];
+	}
+	elseif(isset($hits[1])) {
+		$item->volumes = $hits[1];
+	}
+	elseif(is_int($row[4])) {
+		$item->itemInVolume = $row[$fieldNames['itemInVolume']];
+		$item->volumesMisc = 1;
+	}
+	$item->titleCat = $row[$fieldNames['titleCat']];
+	$item->titleBib = $row[$fieldNames['titleBib']];
+	$item->titleNormalized = $row[$fieldNames['titleNormalized']];
+	$item->publisher = $row[$fieldNames['publisher']];
+	$item->year = $row[$fieldNames['year']];
+	$item->format = $row[$fieldNames['format']];
+	$explodeHistSubject = explode('#', $row[$fieldNames['histSubject']]);
+	$item->histSubject = $explodeHistSubject[0];
+	if(isset($explodeHistSubject[1])) {
+		$item->histShelfmark = $explodeHistSubject[1];
+	}
+	$item->subjects = explode(';', $row[$fieldNames['subjects']]);
+	$item->genres = explode(';', $row[$fieldNames['genres']]);
+	$item->mediaType = $row[$fieldNames['mediaType']];
+	$item->manifestation = array('systemManifestation' => $row[$fieldNames['systemManifestation']], 'idManifestation' => $row[$fieldNames['idManifestation']]);
+	$item->originalItem =  array('institutionOriginal' => $row[$fieldNames['institutionOriginal']], 'shelfmarkOriginal' => $row[$fieldNames['shelfmarkOriginal']], 'provenanceAttribute' => $row[$fieldNames['provenanceAttribute']], 'digitalCopyOriginal' => $row[$fieldNames['digitalCopyOriginal']], 'targetOPAC' => $row[$fieldNames['targetOPAC']], 'searchID' => $row[$fieldNames['searchID']]);
+	$item->work = array('titleWork' => $row[$fieldNames['titleWork']], 'systemWork' => $row[$fieldNames['systemWork']], 'idWork' => $row[$fieldNames['idWork']]);		
+	$item->bound = $row[$fieldNames['bound']];
+	$item->comment = $row[$fieldNames['comment']];
+	$item->digitalCopy = $row[$fieldNames['digitalCopy']];
+	$item->languages = explode(';', $row[$fieldNames['languages']]);
+	$authorFields = array($row[$fieldNames['author1']], $row[$fieldNames['author2']], $row[$fieldNames['author3']], $row[$fieldNames['author4']]);
+	foreach($authorFields as $authorString) {
+		if($authorString != '') {
+			$item->persons[] = makePersonFromCSV($authorString, 'author');
+		}
+	}
+	$contributorFields = array($row[$fieldNames['contributor2']], $row[$fieldNames['contributor2']], $row[$fieldNames['contributor3']], $row[$fieldNames['contributor4']]);
+	foreach($contributorFields as $contributorString) {
+		if($contributorString != '') {
+			$item->persons[] = makePersonFromCSV($contributorString, 'contributor');
+		}
+	}
+	
+	$placeFields = array($row[$fieldNames['place1']], $row[$fieldNames['place2']]);
+	foreach($placeFields as $placeString) {
+		if($placeString != '') {
+			$parts = explode('#', $placeString);
+			$place = new place();
+			$place->placeName = $parts[0];
+			if(isset($parts[1])) {
+				if(substr($parts[1], 0, 8) == 'geoNames') {
+					$geoNames = substr($parts[1], 8);
+					$place->geoNames = testGeoNames($geoNames);
+				}
+				elseif(substr($parts[1], 0, 3) == 'gnd') {
+					$gnd = substr($parts[1], 3);
+					$place->gnd = testGND($gnd);
+				}				
+				elseif(substr($parts[1], 0, 5) == 'getty') {
+					$getty = substr($parts[1], 5);
+					$place->getty = testGetty($getty);
+				}
+			}
+			$item->places[] = $place;
+		}
+	}
+	
+	if(isset($fieldNames['copiesHAB'])) {
+		$item->copiesHAB = explode(';', $row[$fieldNames['copiesHAB']]);
+	}
+	return($item);
+}
+	
+function makeItemFromCSVRowOld($row) {
 	$item = new item();
 	$item->id = $row[0];
 	$item->pageCat = $row[1];
@@ -96,7 +181,6 @@ function makeItemFromCSVRow($row) {
 			$item->places[] = $place;
 		}
 	}
-	
 	return($item);
 }
 
@@ -174,6 +258,22 @@ function validateCSV($path, $minColumns) {
 		$count++;
 	}
 	return(1);
+}
+
+function getColumnNames($path) {
+	$result = array();
+	$allowed = array('id', 'pageCat', 'imageCat', 'numberCat', 'itemInVolume', 'titleCat', 'titleBib', 'titleNormalized', 'author1', 'author2', 'author3', 'author4', 'contributor1', 'contributor2', 'contributor3', 'contributor4', 'place1', 'place2', 'publisher', 'year', 'format', 'histSubject', 'subjects', 'genres', 'mediaType', 'languages', 'systemManifestation', 'idManifestation', 'institutionOriginal', 'shelfmarkOriginal', 'provenanceAttribute', 'digitalCopyOriginal', 'targetOPAC', 'searchID', 'titleWork', 'systemWork', 'idWork', 'bound', 'comment', 'digitalCopy', 'copiesHAB');
+	$csv = file_get_contents($path);
+	$document = str_getcsv($csv, "\n");
+	$fieldNames = str_getcsv($document[0], ";");
+	$count = 0;
+	foreach($fieldNames as $fieldName) {
+		if(in_array($fieldName, $allowed) == TRUE) {
+			$result[$fieldName] = $count;
+		}
+		$count++;
+	}
+	return($result);
 }
 
 ?>

@@ -47,6 +47,7 @@
 			public $bound = 1;
 			public $comment;
 			public $digitalCopy;
+			public $copiesHAB; //Array of shelfmarks from the HAB
 		}
 		
 	class person {
