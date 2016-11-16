@@ -105,6 +105,7 @@ function makeItemFromCSVRow($row, $fieldNames) {
 	
 	if(isset($fieldNames['copiesHAB'])) {
 		$item->copiesHAB = explode(';', $row[$fieldNames['copiesHAB']]);
+		$item->copiesHAB = array_map('trim', $item->copiesHAB);
 	}
 	return($item);
 }
