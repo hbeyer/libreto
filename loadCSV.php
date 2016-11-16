@@ -48,12 +48,15 @@ function makeItemFromCSVRow($row, $fieldNames) {
 	$item->year = $row[$fieldNames['year']];
 	$item->format = $row[$fieldNames['format']];
 	$explodeHistSubject = explode('#', $row[$fieldNames['histSubject']]);
+	$explodeHistSubject = array_map('trim', $explodeHistSubject);
 	$item->histSubject = $explodeHistSubject[0];
 	if(isset($explodeHistSubject[1])) {
 		$item->histShelfmark = $explodeHistSubject[1];
 	}
 	$item->subjects = explode(';', $row[$fieldNames['subjects']]);
+	$item->subjects = array_map('trim', $item->subjects);
 	$item->genres = explode(';', $row[$fieldNames['genres']]);
+	$item->genres = array_map('trim', $item->genres);
 	$item->mediaType = $row[$fieldNames['mediaType']];
 	$item->manifestation = array('systemManifestation' => $row[$fieldNames['systemManifestation']], 'idManifestation' => $row[$fieldNames['idManifestation']]);
 	$item->originalItem =  array('institutionOriginal' => $row[$fieldNames['institutionOriginal']], 'shelfmarkOriginal' => $row[$fieldNames['shelfmarkOriginal']], 'provenanceAttribute' => $row[$fieldNames['provenanceAttribute']], 'digitalCopyOriginal' => $row[$fieldNames['digitalCopyOriginal']], 'targetOPAC' => $row[$fieldNames['targetOPAC']], 'searchID' => $row[$fieldNames['searchID']]);
@@ -62,6 +65,7 @@ function makeItemFromCSVRow($row, $fieldNames) {
 	$item->comment = $row[$fieldNames['comment']];
 	$item->digitalCopy = $row[$fieldNames['digitalCopy']];
 	$item->languages = explode(';', $row[$fieldNames['languages']]);
+	$item->languages = array_map('trim', $item->languages);
 	$authorFields = array($row[$fieldNames['author1']], $row[$fieldNames['author2']], $row[$fieldNames['author3']], $row[$fieldNames['author4']]);
 	foreach($authorFields as $authorString) {
 		if($authorString != '') {
