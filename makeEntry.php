@@ -107,7 +107,7 @@ function makeOriginalLink($originalItem) {
 		$result .= '; Digitalisat: '.makeDigiLink($digitalCopyOriginal);
 	}
 	if($result) { 
-		$result = 'Originalexemplar: '.$result.'<br/>';
+		$result = $result.'<br/>';
 	}
 	return($result);
 }	
@@ -188,8 +188,10 @@ function makeCopiesHAB($copies) {
 	if($copies[0]) {
 		$base = 'http://opac.lbs-braunschweig.gbv.de/DB=2/SET=31/TTL=1/CMD?ACT=SRCHA&TRM=sgb+';
 		$links = array();
+		$translation = array('(' => '', ')' => '');
 		foreach($copies as $copy) {
-			$links[] = '<a href="'.$base.urlencode($copy).'" target="_blank">'.$copy.'</a>';
+			$copyOPAC = strtr($copy, $translation);
+			$links[] = '<a href="'.$base.urlencode($copyOPAC).'" target="_blank">'.$copy.'</a>';
 		}
 		$result = implode('; ', $links);
 		$result = 'Exemplare der HAB: '.$result.'<br/>';

@@ -13,6 +13,8 @@ function makeTEI($data, $folder, $fileName, $catalogue) {
 }
 
 function insertMetadata($dom, $catalogue) {
+	
+	// Insert title of the reconstructed library
 	$titleNodeList = $dom->getElementsByTagName('title');
 	$title = $titleNodeList->item(0);
 	$headingText = $catalogue->heading;
@@ -21,6 +23,22 @@ function insertMetadata($dom, $catalogue) {
 	}
 	$heading = $dom->createTextNode($headingText);
 	$title->appendChild($heading);
+	
+	// Insert date of reconstruction
+	$dateNodeList = $dom->getElementsByTagName('date');
+	$date = $dateNodeList->item(0);
+	$year = $dom->createTextNode(date('Y'));
+	$date->appendChild($year);
+	$date->setAttribute('when', date('Y-m-d'));
+	
+	// Insert source information from catalogue object
+	$listWitList = $dom->getElementsByTagName('listWit');
+	$listWit = $listWitList->item(0);
+	$witness = $dom->createElement('witness');
+	$witness->setAttribute('xml:id', 'witness_0');
+	$textWitness = $dom->createTextNode($catalogue->institution.', '.$catalogue->shelfmark);
+	$witness->appendChild($textWitness);
+	$listWit->appendChild($witness);
 }
 
 function insertPersonList($dom, $data) {
