@@ -1,19 +1,53 @@
 ﻿<?php
 
+/*
+Ausstehend in diesem Skript:
+Regelung für die Werkebene bzw. für nicht identifizierte Titel
+Klammern von Sammelbänden
+*/
+
 function makeTEI($data, $folder, $fileName, $catalogue) {
 	$dom = new DOMDocument('1.0', 'UTF-8');
 	$dom->formatOutput = true;
 	$dom->load('templateTEI.xml');
 	insertMetadata($dom, $catalogue);
-	insertBibl($dom, $data, $catalogue);
-	insertPersonList($dom, $data);
-	insertPlaceList($dom, $data);	
+	insertTranscription($dom, $data, $catalogue);
+	insertBibliography($dom, $data, $catalogue);
 	$xml = $dom->saveXML();
 	$handle = fopen($folder.'/'.$fileName.'-tei.xml', 'w');
 	fwrite($handle, $xml, 3000000);
 }
 
-function insertBibl($dom, $data, $catalogue) {
+function insertMetadata($dom, $catalogue) {
+	
+	// Insert title of the reconstructed library
+	$titleNodeList = $dom->getElementsByTagName('title');
+	$title = $titleNodeList->item(0);
+	$headingText = $catalogue->heading;
+	if($catalogue->year) {
+		$headingText .= ' ('.$catalogue->year.')';
+	}
+	$heading = $dom->createTextNode($headingText);
+	$title->appendChild($heading);
+	
+	// Insert date of reconstruction
+	$dateNodeList = $dom->getElementsByTagName('date');
+	$date = $dateNodeList->item(0);
+	$year = $dom->createTextNode(date('Y'));
+	$date->appendChild($year);
+	$date->setAttribute('when', date('Y-m-d'));
+	
+	// Insert source information from catalogue object
+	$listWitList = $dom->getElementsByTagName('listWit');
+	$listWit = $listWitList->item(0);
+	$witness = $dom->createElement('witness');
+	$witness->setAttribute('xml:id', 'witness_0');
+	$textWitness = $dom->createTextNode($catalogue->institution.', '.$catalogue->shelfmark);
+	$witness->appendChild($textWitness);
+	$listWit->appendChild($witness);
+}
+
+function insertTranscription($dom, $data, $catalogue) {
 
 	$listBiblNodeList = $dom->getElementsByTagName('listBibl');
 	$listBibl = $listBiblNodeList->item(0);
@@ -76,108 +110,113 @@ function insertBibl($dom, $data, $catalogue) {
 	}
 }
 
-function insertMetadata($dom, $catalogue) {
-	
-	// Insert title of the reconstructed library
-	$titleNodeList = $dom->getElementsByTagName('title');
-	$title = $titleNodeList->item(0);
-	$headingText = $catalogue->heading;
-	if($catalogue->year) {
-		$headingText .= ' ('.$catalogue->year.')';
+function insertBibliography($dom, $data, $catalogue) {
+
+	$listBiblNodeList = $dom->getElementsByTagName('listBibl');
+	$listBibl = $listBiblNodeList->item(1);
+
+	$count = 0;	
+
+	foreach($data as $item) {
+		$bibl = $dom->createElement('bibl');
+
+		$id = assignID($item->id, $count, $catalogue->fileName);		
+		$bibl->setAttribute('xml:id', $id.'-reference');
+		$bibl->setAttribute('corresp', $id);
+		$bibl = insertBibliographicData($bibl, $dom, $item);
+		
+		$listBibl->appendChild($bibl);
+		$count++;
 	}
-	$heading = $dom->createTextNode($headingText);
-	$title->appendChild($heading);
-	
-	// Insert date of reconstruction
-	$dateNodeList = $dom->getElementsByTagName('date');
-	$date = $dateNodeList->item(0);
-	$year = $dom->createTextNode(date('Y'));
-	$date->appendChild($year);
-	$date->setAttribute('when', date('Y-m-d'));
-	
-	// Insert source information from catalogue object
-	$listWitList = $dom->getElementsByTagName('listWit');
-	$listWit = $listWitList->item(0);
-	$witness = $dom->createElement('witness');
-	$witness->setAttribute('xml:id', 'witness_0');
-	$textWitness = $dom->createTextNode($catalogue->institution.', '.$catalogue->shelfmark);
-	$witness->appendChild($textWitness);
-	$listWit->appendChild($witness);
 }
 
-function insertPersonList($dom, $data) {
-	$personIndex = makeIndex($data, 'persName');
-	$personList = $dom->createElement('listPerson');
-	$xmlIDs = array();
-	foreach($personIndex as $entry) {
-		$xmlID = $entry->label;
-		$xmlID = encodeXMLID($xmlID);
-		//Prüfen, ob ein Eintrag mit dieser ID schon angelegt wurde.
-		if(in_array($xmlID, $xmlIDs) == FALSE) {
-			$xmlIDs[] = $xmlID;
+function insertBibliographicData($bibl, $dom, $item) {
+	if($item->titleBib) {
+		//Avoid &amp;amp;
+		$titleBibText = $dom->createTextNode(html_entity_decode($item->titleBib));
+		$titleBib = $dom->createElement('title');
+		$titleBib->appendChild($titleBibText);
+		$bibl->appendChild($titleBib);
+	}
+	foreach($item->persons as $person) {
+
+		$tagName = translateRoleTEI($person->role);
+		if($tagName != 'author' and $tagName != 'editor') {
+			$tagName = 'author';		
 		}
-		//Wenn ein entsprechender Eintrag existiert, wird davon ausgegangen, dass beide identisch sind.
-		else {
-			continue;
-		}
-		if($entry->authority['system'] == 'gnd' and $entry->authority['id'] != '') {
-			$keyValue = 'gnd_'.$entry->authority['id'];
+
+		$persName = $dom->createTextNode($person->persName);
+		$personElement = $dom->createElement($tagName);
+
+		if($person->gnd) {
+			$rs = $dom->createElement('rs');
+			$rs->setAttribute('type', 'person');
+			$rs->setAttribute('key', 'gnd_'.$person->gnd);
+			$rs->appendChild($persName);
+			$personElement->appendChild($rs);
 		}
 		else {
-			$keyValue = $xmlID;
+			$personElement->appendChild($persName);
 		}
-		$listEntry = $dom->createElement('person');
-		$xmlIDAttr = $dom->createAttribute('xml:id');
-		$xmlIDAttr->value = $xmlID;
-		$listEntry->appendChild($xmlIDAttr);
-		$persName = $dom->createElement('persName');
-		$key = $dom->createAttribute('key');
-		$key->value = $keyValue;
-		$persName->appendChild($key);
-		$name = $dom->createTextNode($entry->label);
-		$persName->appendChild($name);
-		$listEntry->appendChild($persName);
-		$personList->appendChild($listEntry);
-	}
-	$bodyNodeList = $dom->getElementsByTagName('body');
-	$body = $bodyNodeList->item(0);
-	$body->appendChild($personList);
-	return($dom);
-}
 
-function insertPlaceList($dom, $data) {
-	$placeIndex = makeIndex($data, 'placeName');
-	$placeList = $dom->createElement('listPlace');
-	foreach($placeIndex as $entry) {
-		$xmlID = $entry->label;
-		$xmlID = encodeXMLID($xmlID);
-		$keyValue = '';
-		if($entry->authority['id'] != '') {
-			$keyValue = $entry->authority['system'].'_'.$entry->authority['id'];
-		}
-		$listEntry = $dom->createElement('place');
-		$xmlIDAttr = $dom->createAttribute('xml:id');
-		$xmlIDAttr->value = $xmlID;
-		$listEntry->appendChild($xmlIDAttr);
-		$placeName = $dom->createElement('placeName');
-		if($keyValue != '') {
-			$key = $dom->createAttribute('key');
-			$key->value = $keyValue;
-			$placeName->appendChild($key);
-		}
-		$name = $dom->createTextNode($entry->label);
-		$placeName->appendChild($name);
-		$listEntry->appendChild($placeName);
-		$placeList->appendChild($listEntry);
+		$bibl->appendChild($personElement);
+				
 	}
-	$bodyNodeList = $dom->getElementsByTagName('body');
-	$body = $bodyNodeList->item(0);
-	$body->appendChild($placeList);
-	return($dom);
-}
-
-function insertEntries($data, $dom) {
-	
+	if($item->volumes > 1) {
+		$extent = $dom->createElement('extent');
+		$extentText = $dom->createTextNode($item->volumes.' Bde.');
+		$extent->appendChild($extentText);
+		$bibl->appendChild($extent);
+	}
+	foreach($item->places as $place) {
+		$placeName = $dom->createTextNode($place->placeName);
+		$pubPlace = $dom->createElement('pubPlace');
+		$key = '';		
+		if($place->geoNames) {
+			$key = 'geoNames_'.$place->geoNames;		
+		}
+		elseif($place->getty) {
+			$key = 'getty_'.$place->getty;
+		}
+		elseif($place->gnd) {
+			$key = 'gnd_'.$place->gnd;
+		}
+		if($key != '') {
+			$rs = $dom->createElement('rs');
+			$rs->setAttribute('type', 'place');
+			$rs->setAttribute('key', $key);
+			$rs->appendChild($placeName);
+			$pubPlace->appendChild($rs);
+		}
+		else {
+			$pubPlace->appendChild($placeName);			
+		}
+		$bibl->appendChild($pubPlace);
+	}
+	if($item->publisher) {
+		$publisherText = $dom->createTextNode(html_entity_decode($item->publisher));
+		$publisher = $dom->createElement('publisher');
+		$publisher->appendChild($publisherText);
+		$bibl->appendChild($publisher);	
+	}
+	if($item->year) {
+		$yearText = $dom->createTextNode($item->year);
+		$year = $dom->createElement('date');
+		$year->appendChild($yearText);
+		$when = normalizeYear($item->year);
+		if(preg_match('~[12][0-9]{3}~', $when) == TRUE) {
+			$year->setAttribute('when', $when);
+		}
+		$bibl->appendChild($year);
+	}
+	if($item->manifestation['systemManifestation'] and $item->manifestation['idManifestation']) {
+		$idnoText = $dom->createTextNode($item->manifestation['idManifestation']);	
+		$idno = $dom->createElement('idno');
+		$idno->appendChild($idnoText);
+		$idno->setAttribute('type', $item->manifestation['systemManifestation']);
+		$bibl->appendChild($idno);
+	}
+	return($bibl);
 }
 
 ?>

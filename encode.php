@@ -207,4 +207,22 @@ function shortenPath($fileName) {
 	return($result);
 }
 
+function assignID($given, $count, $fileName) {
+	if($fileName == '') {
+		$fileName = 'library';
+	}
+	if($given) {
+		return($fileName.$given);	
+	}
+	elseif($count) {
+		return($fileName.'-position'.$count);
+	}
+}
+
+function translateRoleTEI($role) {
+	$translate = array('creator' => 'author', 'contributor' => 'editor', 'translator' => 'editor');
+	$result = strtr($role, $translate);
+	return($result);
+}
+
 ?>
