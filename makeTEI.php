@@ -5,11 +5,75 @@ function makeTEI($data, $folder, $fileName, $catalogue) {
 	$dom->formatOutput = true;
 	$dom->load('templateTEI.xml');
 	insertMetadata($dom, $catalogue);
-	insertPersonList($dom, $data);	
+	insertBibl($dom, $data, $catalogue);
+	insertPersonList($dom, $data);
 	insertPlaceList($dom, $data);	
 	$xml = $dom->saveXML();
 	$handle = fopen($folder.'/'.$fileName.'-tei.xml', 'w');
 	fwrite($handle, $xml, 3000000);
+}
+
+function insertBibl($dom, $data, $catalogue) {
+
+	$listBiblNodeList = $dom->getElementsByTagName('listBibl');
+	$listBibl = $listBiblNodeList->item(0);
+
+	$count = 0;
+	$lastHistSubject = '';
+	$lastPageCat = '';
+
+	foreach($data as $item) {
+
+		// Insert heading of new section
+		if(trim(strtolower($item->histSubject)) != trim(strtolower($lastHistSubject))) {
+			$histSubjectText = $dom->createTextNode($item->histSubject);
+			$histSubject = $dom->createElement('head');
+			$histSubject->appendChild($histSubjectText);
+			$listBibl->appendChild($histSubject);
+		}
+		
+		// Insert page break
+		if(trim(strtolower($item->pageCat)) != trim(strtolower($lastPageCat))) {
+			$pageBreak = $dom->createElement('pb');
+			$pageBreak->setAttribute('n', $item->pageCat);
+			if($item->imageCat) {
+				$pageBreak->setAttribute('facs', $catalogue->base.$item->imageCat);
+			}
+			$listBibl->appendChild($pageBreak);
+		}
+		
+		// Insert a bibl element for each catalogue entry
+		$bibl = $dom->createElement('bibl');
+		if($item->numberCat) {
+			$bibl->setAttribute('n', $item->numberCat);
+		}
+		$id = assignID($item->id, $count, $catalogue->fileName);
+		$bibl->setAttribute('xml:id', $id);
+		unset($id);
+		if($item->titleCat) {
+			//Avoid &amp;amp;
+			$titleCatText = html_entity_decode($item->titleCat);
+			$titleCat = $dom->createTextNode($titleCatText);
+			$bibl->appendChild($titleCat);
+		} 
+
+		// Add a note to the bibl element
+		if($item->comment) {
+			//Avoid &amp;amp;
+			$text = html_entity_decode($item->comment);
+			$commentText = $dom->createTextNode($text);
+			$comment = $dom->createElement('note');
+			$comment->appendChild($commentText);
+			$bibl->appendChild($comment);
+		}
+
+		$listBibl->appendChild($bibl);
+
+		unset($bibl);
+		$count++;
+		$lastHistSubject = $item->histSubject;
+		$lastPageCat = $item->pageCat;
+	}
 }
 
 function insertMetadata($dom, $catalogue) {
