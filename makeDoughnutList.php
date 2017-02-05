@@ -93,6 +93,56 @@ function calculateMinWeight($weightArray, $percentage) {
 }
 
 function assignColor($count) {
+	$colors = array(
+		'#035151', // MWW-grün
+		'#a08246', // MWW-gold	
+//		'#FFB6C1',	//light pink
+		'#66CDAA',	//medium aquamarine
+		'#00008B',	//dark  blue
+		'#B0C4DE',	//light steel blue
+		'#FF4500',	//orange red
+		'#D8BFD8',	//thistle
+		'#F0E68C',	//khaki
+		'#FFF5EE',	//seashell
+		'#F4A460',	//sandy brown
+		'#32CD32',	//lime
+		'#D2691E',	//chocolate
+		'#DB7093',	//pale violet red
+		'#E0FFFF',	//light cyan
+		'#DC143C',	//crimson
+		'#B0E0E6',	//powder blue
+		'#FFA500',	//orange
+		'#DA70D6',	//orchid
+		'#BDB76B',	//dark khaki
+		'#F0FFF0',	//honeydew
+		'#ADFF2F',	//green yellow
+		'#BC8F8F',	//rosy brown
+		'#C71585',	//medium violet red
+		'#AFEEEE',	//pale turquoise
+		'#B22222',	//fire brick
+		'#87CEFA',	//light sky blue
+		'#9370DB',	//medium purple
+		'#FFD700',	//gold
+		'#FFFFFF',	//white
+		'#8FBC8F',	//dark sea green
+		'#A52A2A',	//brown
+		'#5F9EA0',	//cadet blue
+		'#556B2F',	//dark olive		
+		'#8B0000',	//dark red
+		'#6495ED',	//cornflower blue
+		'#9400D3',	//dark violet
+		'#FFFF00',	//yellow
+		'#008000',	//green
+		'#800000',	//maroon
+		'#008080',	//teal
+		'#FF0000',	//red
+		'#4682B4',	//steel blue
+		'#8B008B',	//dark magenta
+		'#4B0082',	//indigo
+		'#FFA07A'	//light salmon			
+	);
+	
+	
 	$colorsMWW = array(
 		'#035151', // MWW-grün
 		'#a08246', // MWW-gold
@@ -124,9 +174,13 @@ function assignColor($count) {
 		'#07c5c5',
 		'#d0bc95'
 	);
-	if(isset($colorsMWW[$count])) {
-		return($colorsMWW[$count]);
+	
+	if(isset($colors[$count])) {
+		return($colors[$count]);
 	}
+/* 	if(isset($colorsMWW[$count])) {
+		return($colorsMWW[$count]);
+	} */	
 	else {
 		return 'outOfColors';
 	}
