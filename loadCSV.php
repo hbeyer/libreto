@@ -30,7 +30,7 @@ function makeItemFromCSVRow($row, $fieldNames) {
 	$item->imageCat = $row[$fieldNames['imageCat']];
 	$item->numberCat = $row[$fieldNames['numberCat']];
 	preg_match('~^([0-9]+)[bBvV]([0-9]{0,3})$~', $row[$fieldNames['itemInVolume']], $hits);
-	if(isset($hits[1]) and isset($hits[2])) {
+	if(isset($hits[1]) and $hits[2] != '') {
 		$item->volumesMisc = $hits[1];
 		$item->itemInVolume = $hits[2];
 	}
