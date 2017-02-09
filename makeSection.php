@@ -165,7 +165,6 @@ function makeList($structuredData, $thisCatalogue, $folderName) {
 			$info = makeCollapseBeacon($section->authority['id'], $folderName);
 			$anchor = 'person'.$section->authority['id'];
 		}
-		//$content .= makeHeadline($section->level, $section->label, $info, $anchor);
 		$content .= makeHeadline($section, $info, $anchor);
 		foreach($section->content as $item) {
 			if(get_class($item) == 'item') {

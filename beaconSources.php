@@ -6,6 +6,11 @@ $beaconSources = array(
 		'location' => 'http://tools.wmflabs.org/persondata/beacon/dewiki.txt',
 		'target' => 'http://tools.wmflabs.org/persondata/redirect/gnd/de/{ID}'
 	),
+	'ddb' => array(
+		'label' => 'Deutsche Digitale Bibliothek',
+		'location' => 'https://www.archivportal-d.de/static/de/beacon-archivportal-persons.txt',
+		'target' => 'https://www.archivportal-d.de/person/gnd/{ID}'
+	), 		
 	'db' => array(
 		'label' => 'Deutsche Biographie',
 		'location' => 'http://www.historische-kommission-muenchen-editionen.de/beacon_db_register.txt',
