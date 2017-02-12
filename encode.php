@@ -46,6 +46,7 @@ function translateFieldNames($field) {
 		'shelfmarkOriginal' => 'Signaturen', 		 		
 		'persName' => 'Personen',
 		'gender' => 'Gender',
+		'beacon' => 'Personenprofil',
 		'subjects' => 'Inhalte', 
 		'histSubject' => 'Rubriken',
 		'histShelfmark' => 'Altsignatur',		
@@ -66,6 +67,7 @@ function translateFieldNamesButtons($field) {
 	$translation = array(
 		'shelfmarkOriginal' => 'Signaturen',
 		'persName' => 'Personen',
+		'beacon' => 'Personenprofil',
 		'gender' => 'Gender',
 		'subjects' => 'Inhalte', 
 		'histSubject' => 'Rubriken',
@@ -104,6 +106,7 @@ function translateCheckboxNames($field) {
 		'shelfmarkOriginal' => 'Signatur', 		
 		'persName' => 'Person',
 		'gender' => 'Gender',
+		'beacon' => 'Personenprofil',
 		'subjects' => 'Inhalt', 
 		'histSubject' => 'Rubrik', 
 		'histShelfmark' => 'Altsignatur', 

@@ -7,6 +7,9 @@ function makeIndex($data, $field) {
 	if(in_array($field, $normalFields)) {
 		$collect = collectIDs($data, $field);
 	}
+	elseif($field == 'beacon') {
+		$collect = collectIDsBeacon($data);
+	}
 	elseif($field == 'persName') {
 		$collect = collectIDsPersons($data);
 	}
@@ -190,6 +193,26 @@ function collectIDsSubObjects($data, $field, $subField) {
 				$collect[$key] = array();
 			}
 			$collect[$key][] = $count;
+		}
+	$count ++;
+	}
+	$return = array('collect' => $collect);
+	return($return);
+}
+
+function collectIDsBeacon($data) {
+	include('beaconSources.php');
+	$collect = array();
+	$count = 0;
+	foreach($data as $item) {
+		foreach($item->persons as $person) {
+			foreach($person->beacon as $beacon) {
+				$key = $beaconSources[$beacon]['label'];
+				if(array_key_exists($key, $collect) == FALSE) {
+					$collect[$key] = array();
+				}
+				$collect[$key][] = $count;
+			}
 		}
 	$count ++;
 	}
