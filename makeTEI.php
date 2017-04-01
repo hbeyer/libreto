@@ -6,7 +6,7 @@ Regelung für die Werkebene bzw. für nicht identifizierte Titel
 Klammern von Sammelbänden
 */
 
-function makeTEI($data, $folder, $fileName, $catalogue) {
+function makeTEI($data, $folder, catalogue $catalogue) {
 	$dom = new DOMDocument('1.0', 'UTF-8');
 	$dom->formatOutput = true;
 	$dom->load('templateTEI.xml');
@@ -14,7 +14,7 @@ function makeTEI($data, $folder, $fileName, $catalogue) {
 	insertTranscription($dom, $data, $catalogue);
 	insertBibliography($dom, $data, $catalogue);
 	$xml = $dom->saveXML();
-	$handle = fopen($folder.'/'.$fileName.'-tei.xml', 'w');
+	$handle = fopen($folder.'/'.$catalogue->fileName.'-tei.xml', 'w');
 	fwrite($handle, $xml, 3000000);
 }
 
@@ -48,34 +48,43 @@ function insertMetadata($dom, $catalogue) {
 }
 
 function insertTranscription($dom, $data, $catalogue) {
-
-	$listBiblNodeList = $dom->getElementsByTagName('listBibl');
-	$listBibl = $listBiblNodeList->item(0);
-
+	$bodyNodeList = $dom->getElementsByTagName('body');
+	$body = $bodyNodeList->item(0);
 	$count = 0;
 	$lastHistSubject = '';
 	$lastPageCat = '';
 
 	foreach($data as $item) {
-
-		// Insert heading of new section
-		if(trim(strtolower($item->histSubject)) != trim(strtolower($lastHistSubject))) {
-			$histSubjectText = $dom->createTextNode($item->histSubject);
-			$histSubject = $dom->createElement('head');
-			$histSubject->appendChild($histSubjectText);
-			$listBibl->appendChild($histSubject);
-		}
-		
-		// Insert page break
+	
+		//Wenn eine neue Seite beginnt, Pagebreak einfügen
+		$pageBreak = NULL;
 		if(trim(strtolower($item->pageCat)) != trim(strtolower($lastPageCat))) {
 			$pageBreak = $dom->createElement('pb');
 			$pageBreak->setAttribute('n', $item->pageCat);
 			if($item->imageCat) {
 				$pageBreak->setAttribute('facs', $catalogue->base.$item->imageCat);
 			}
-			$listBibl->appendChild($pageBreak);
 		}
 		
+		//Wenn ein neuer Abschnitt beginnt neue listBibl anlegen
+		if(trim(strtolower($item->histSubject)) != trim(strtolower($lastHistSubject))) {
+			//Wenn ein alter Abschnitt vorhergegangen ist, wird der Inhalt in body eingefügt
+			if(isset($listBibl)) {
+				$body->appendChild($listBibl);
+			}
+			$listBibl = $dom->createElement('listBibl');
+			$listBibl->setAttribute('type', 'transcription');
+			$histSubjectText = $dom->createTextNode($item->histSubject);
+			$histSubject = $dom->createElement('head');
+			$histSubject->appendChild($histSubjectText);
+			//Insert a pagebreak at the begin of listBibl (i. e. before head)
+			if(isset($pageBreak)) {
+				$listBibl->appendChild($pageBreak);
+				$pageBreak = NULL;
+			}
+			$listBibl->appendChild($histSubject);
+		}
+	
 		// Insert a bibl element for each catalogue entry
 		$bibl = $dom->createElement('bibl');
 		if($item->numberCat) {
@@ -100,20 +109,25 @@ function insertTranscription($dom, $data, $catalogue) {
 			$comment->appendChild($commentText);
 			$bibl->appendChild($comment);
 		}
-
+		//Insert a pagebreak in the middle of listBibl
+		if(isset($pageBreak)) {
+			$listBibl->appendChild($pageBreak);
+		}		
 		$listBibl->appendChild($bibl);
 
 		unset($bibl);
 		$count++;
 		$lastHistSubject = $item->histSubject;
 		$lastPageCat = $item->pageCat;
+		}
 	}
-}
 
 function insertBibliography($dom, $data, $catalogue) {
 
-	$listBiblNodeList = $dom->getElementsByTagName('listBibl');
-	$listBibl = $listBiblNodeList->item(1);
+	$bodyNodeList = $dom->getElementsByTagName('body');
+	$body = $bodyNodeList->item(0);
+	$listBibl = $dom->createElement('listBibl');
+	$listBibl->setAttribute('type', 'bibliography');
 
 	$count = 0;	
 
@@ -128,6 +142,9 @@ function insertBibliography($dom, $data, $catalogue) {
 		$listBibl->appendChild($bibl);
 		$count++;
 	}
+	
+	$body->appendChild($listBibl);
+	
 }
 
 function insertBibliographicData($bibl, $dom, $item) {
