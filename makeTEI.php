@@ -7,11 +7,19 @@ Klammern von Sammelbänden
 */
 
 function makeTEI($data, $folder, catalogue $catalogue) {
+	//Make sure that every item has an ID
+	$count = 0;
+	foreach($data as $item) {
+		$item->id = assignID($item->id, $count, $catalogue->fileName);
+		$count++;
+	}
+	
 	$dom = new DOMDocument('1.0', 'UTF-8');
 	$dom->formatOutput = true;
 	$dom->load('templateTEI.xml');
 	insertMetadata($dom, $catalogue);
 	insertTranscription($dom, $data, $catalogue);
+	insertPageBreaks($dom, $data);
 	insertBibliography($dom, $data, $catalogue);
 	$xml = $dom->saveXML();
 	$handle = fopen($folder.'/'.$catalogue->fileName.'-tei.xml', 'w');
@@ -47,80 +55,75 @@ function insertMetadata($dom, $catalogue) {
 	$listWit->appendChild($witness);
 }
 
-function insertTranscription($dom, $data, $catalogue) {
+function insertTranscription($dom, $data, catalogue $catalogue) {
 	$bodyNodeList = $dom->getElementsByTagName('body');
 	$body = $bodyNodeList->item(0);
-	$count = 0;
-	$lastHistSubject = '';
 	$lastPageCat = '';
-
-	foreach($data as $item) {
 	
-		//Wenn eine neue Seite beginnt, Pagebreak einfügen
-		$pageBreak = NULL;
-		if(trim(strtolower($item->pageCat)) != trim(strtolower($lastPageCat))) {
-			$pageBreak = $dom->createElement('pb');
-			$pageBreak->setAttribute('n', $item->pageCat);
-			if($item->imageCat) {
-				$pageBreak->setAttribute('facs', $catalogue->base.$item->imageCat);
-			}
+	$index = makeIndex($data, 'histSubject');
+	$structuredData = array();
+	foreach($index as $entry) {
+		$section = new section();
+		$section->label = $entry->label;
+		foreach($entry->content as $idItem) {
+			$section->content[] = $data[$idItem];
 		}
-		
-		//Wenn ein neuer Abschnitt beginnt neue listBibl anlegen
-		if(trim(strtolower($item->histSubject)) != trim(strtolower($lastHistSubject))) {
-			//Wenn ein alter Abschnitt vorhergegangen ist, wird der Inhalt in body eingefügt
-			if(isset($listBibl)) {
-				$body->appendChild($listBibl);
-			}
-			$listBibl = $dom->createElement('listBibl');
-			$listBibl->setAttribute('type', 'transcription');
-			$histSubjectText = $dom->createTextNode($item->histSubject);
-			$histSubject = $dom->createElement('head');
-			$histSubject->appendChild($histSubjectText);
-			//Insert a pagebreak at the begin of listBibl (i. e. before head)
-			if(isset($pageBreak)) {
-				$listBibl->appendChild($pageBreak);
-				$pageBreak = NULL;
-			}
-			$listBibl->appendChild($histSubject);
-		}
-	
-		// Insert a bibl element for each catalogue entry
-		$bibl = $dom->createElement('bibl');
-		if($item->numberCat) {
-			$bibl->setAttribute('n', $item->numberCat);
-		}
-		$id = assignID($item->id, $count, $catalogue->fileName);
-		$bibl->setAttribute('xml:id', $id);
-		unset($id);
-		if($item->titleCat) {
-			//Avoid &amp;amp;
-			$titleCatText = html_entity_decode($item->titleCat);
-			$titleCat = $dom->createTextNode($titleCatText);
-			$bibl->appendChild($titleCat);
-		} 
-
-		// Add a note to the bibl element
-		if($item->comment) {
-			//Avoid &amp;amp;
-			$text = html_entity_decode($item->comment);
-			$commentText = $dom->createTextNode($text);
-			$comment = $dom->createElement('note');
-			$comment->appendChild($commentText);
-			$bibl->appendChild($comment);
-		}
-		//Insert a pagebreak in the middle of listBibl
-		if(isset($pageBreak)) {
-			$listBibl->appendChild($pageBreak);
-		}		
-		$listBibl->appendChild($bibl);
-
-		unset($bibl);
-		$count++;
-		$lastHistSubject = $item->histSubject;
-		$lastPageCat = $item->pageCat;
-		}
+		$section = joinVolumes($section);
+		$structuredData[] = $section;
 	}
+	
+	foreach($structuredData as $section) {
+		$listBibl = $dom->createElement('listBibl');
+		$listBibl->setAttribute('type', 'transcription');
+		$textHead = $dom->createTextNode($section->label);
+		$head = $dom->createElement('head');
+		$head->appendChild($textHead);	
+		$listBibl->appendChild($head);
+		foreach($section->content as $object) {
+			if(get_class($object) == 'volume') {
+				insertVolumeTrans($dom, $listBibl, $object);
+			}			
+			elseif(get_class($object) == 'item') {
+				insertItemTrans($dom, $object, $listBibl);
+			}
+		}
+		$body->appendChild($listBibl);
+	}
+}
+
+function insertVolumeTrans($dom, $listBibl, $volume) {
+	$div = $dom->createElement('div');
+	$div->setAttribute('type', 'volume');
+	foreach($volume->content as $item) {
+		insertItemTrans($dom, $item, $div);
+	}
+	$listBibl->appendChild($div);
+}
+
+function insertItemTrans($dom, $item, $target) {
+	// Insert a bibl element for each catalogue entry
+	$bibl = $dom->createElement('bibl');
+	if($item->numberCat) {
+		$bibl->setAttribute('n', $item->numberCat);
+	}
+	$bibl->setAttribute('xml:id', $item->id);
+	if($item->titleCat) {
+		//Avoid &amp;amp;
+		$titleCatText = html_entity_decode($item->titleCat);
+		$titleCat = $dom->createTextNode($titleCatText);
+		$bibl->appendChild($titleCat);
+	} 
+	// Add a note to the bibl element
+	if($item->comment) {
+		//Avoid &amp;amp;
+		$text = html_entity_decode($item->comment);
+		$commentText = $dom->createTextNode($text);
+		$comment = $dom->createElement('note');
+		$comment->appendChild($commentText);
+		$bibl->appendChild($comment);
+	}
+	$target->appendChild($bibl);
+}
 
 function insertBibliography($dom, $data, $catalogue) {
 
@@ -133,10 +136,8 @@ function insertBibliography($dom, $data, $catalogue) {
 
 	foreach($data as $item) {
 		$bibl = $dom->createElement('bibl');
-
-		$id = assignID($item->id, $count, $catalogue->fileName);		
-		$bibl->setAttribute('xml:id', $id.'-reference');
-		$bibl->setAttribute('corresp', $id);
+		$bibl->setAttribute('xml:id', $item->id.'-reference');
+		$bibl->setAttribute('corresp', $item->id);
 		$bibl = insertBibliographicData($bibl, $dom, $item);
 		
 		$listBibl->appendChild($bibl);
@@ -234,6 +235,44 @@ function insertBibliographicData($bibl, $dom, $item) {
 		$bibl->appendChild($idno);
 	}
 	return($bibl);
+}
+
+function insertPageBreaks($dom, $data) {
+	
+	$firstItems = array();
+	$lastPageCat = '';
+	foreach($data as $item) {
+		$pageCat = $item->pageCat;
+		if($pageCat != $lastPageCat) {
+			$firstItems[$item->id] = $pageCat;
+		}
+		$lastPageCat = $pageCat;
+	}
+	
+	foreach($firstItems as $id => $pageNo) {
+		$xp = new DOMXPath($dom);
+		$expression = '//bibl[@xml:id="'.$id.'"]';
+ 		$biblNodes = $xp->evaluate($expression);
+		$bibl = $biblNodes->item(0);
+		$pb = $dom->createElement('pb');
+		$pb->setAttribute('n', $pageNo);
+		
+		$expressionParent = '//bibl[@xml:id="'.$id.'"]/parent::*';
+		$parentNodes = $xp->evaluate($expressionParent);
+		$parent = $parentNodes->item(0);
+		
+		$expressionPreceding = '//bibl[@xml:id="'.$id.'"]/preceding-sibling::*';
+		$precedingNodes = $xp->evaluate($expressionPreceding);
+		$preceding = $precedingNodes->item(0);
+		
+		if($preceding->tagName == 'head') {
+			$parent->insertBefore($pb, $preceding);
+		}
+		else {
+			$parent->insertBefore($pb, $bibl);
+		}	
+	}
+	
 }
 
 ?>

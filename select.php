@@ -147,7 +147,7 @@ session_start();
 					$firstFileName = $fileName;
 				}
 				$datei = fopen($fileName,"w");
-				fwrite($datei, $content, 3000000);
+				fwrite($datei, $content, 10000000);
 				fclose($datei);
 				$count++;
 				if(file_exists($fileName)) {
@@ -168,7 +168,7 @@ session_start();
 				$content .= $foot;
 				$fileName = fileNameTrans($_SESSION['folderName'].'/'.$catalogue->fileName).'-wordCloud.html';
 				$datei = fopen($fileName,"w");
-				fwrite($datei, $content, 3000000);
+				fwrite($datei, $content, 10000000);
 				fclose($datei);
 				if(file_exists($fileName)) {
 					echo 'Datei '.$fileName.' wurde erstellt.<br/>';
@@ -183,7 +183,7 @@ session_start();
 				$content .= $foot;
 				$fileName = fileNameTrans($_SESSION['folderName'].'/'.$catalogue->fileName).'-doughnut.html';
 				$datei = fopen($fileName,"w");
-				fwrite($datei, $content, 3000000);
+				fwrite($datei, $content, 10000000);
 				fclose($datei);
 				if(file_exists($fileName)) {
 					echo 'Datei '.$fileName.' wurde erstellt.<br/>
@@ -274,7 +274,7 @@ function makeStartPage($facet, $fileName, $folder) {
 header("Location: '.$fileName.'-'.$facet.'.html");
 ?>';
 	$datei = fopen($folder.'/index.php',"w");
-	fwrite($datei, $content, 300000);
+	fwrite($datei, $content, 1000000);
 	fclose($datei);
 	if(file_exists($folder.'/index.php')) {
 		echo 'Datei '.$folder.'/index.php wurde erstellt.<br/>';
