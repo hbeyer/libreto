@@ -56,6 +56,7 @@ function insertMetadata($dom, $catalogue) {
 }
 
 function insertTranscription($dom, $data, catalogue $catalogue) {
+	
 	$bodyNodeList = $dom->getElementsByTagName('body');
 	$body = $bodyNodeList->item(0);
 	$lastPageCat = '';
@@ -73,64 +74,69 @@ function insertTranscription($dom, $data, catalogue $catalogue) {
 	}
 	
 	foreach($structuredData as $section) {
-		$listBibl = $dom->createElement('listBibl');
-		$listBibl->setAttribute('type', 'transcription');
+		$transcription = $dom->createElement('div');
+		$transcription->setAttribute('type', 'transcription');
 		$textHead = $dom->createTextNode($section->label);
 		$head = $dom->createElement('head');
 		$head->appendChild($textHead);	
-		$listBibl->appendChild($head);
+		$transcription->appendChild($head);
 		foreach($section->content as $object) {
 			if(get_class($object) == 'volume') {
-				insertVolumeTrans($dom, $listBibl, $object);
+				insertVolumeTrans($dom, $transcription, $object);
 			}			
 			elseif(get_class($object) == 'item') {
-				insertItemTrans($dom, $object, $listBibl);
+				$div = $dom->createElement('div');
+				$div->setAttribute('type', 'volume');
+				insertItemTrans($dom, $object, $div);
+				$transcription->appendChild($div);
 			}
 		}
-		$body->appendChild($listBibl);
+		$body->appendChild($transcription);
 	}
+	
 }
 
-function insertVolumeTrans($dom, $listBibl, $volume) {
-	$div = $dom->createElement('div');
-	$div->setAttribute('type', 'volume');
+function insertVolumeTrans($dom, $div, $volume) {
+	$divSub = $dom->createElement('div');
+	$divSub->setAttribute('type', 'volume');
 	foreach($volume->content as $item) {
-		insertItemTrans($dom, $item, $div);
+		insertItemTrans($dom, $item, $divSub);
 	}
-	$listBibl->appendChild($div);
+	$div->appendChild($divSub);
 }
 
 function insertItemTrans($dom, $item, $target) {
-	// Insert a bibl element for each catalogue entry
-	$bibl = $dom->createElement('bibl');
+	// Insert a paragraph for each catalogue entry
+	$p = $dom->createElement('p');
 	if($item->numberCat) {
-		$bibl->setAttribute('n', $item->numberCat);
+		$p->setAttribute('n', $item->numberCat);
 	}
-	$bibl->setAttribute('xml:id', $item->id);
+	$p->setAttribute('xml:id', $item->id);
 	if($item->titleCat) {
 		//Avoid &amp;amp;
 		$titleCatText = html_entity_decode($item->titleCat);
 		$titleCat = $dom->createTextNode($titleCatText);
-		$bibl->appendChild($titleCat);
+		$p->appendChild($titleCat);
 	} 
-	// Add a note to the bibl element
+	// Add a note to the paragraph
 	if($item->comment) {
 		//Avoid &amp;amp;
 		$text = html_entity_decode($item->comment);
 		$commentText = $dom->createTextNode($text);
 		$comment = $dom->createElement('note');
 		$comment->appendChild($commentText);
-		$bibl->appendChild($comment);
+		$p->appendChild($comment);
 	}
-	$target->appendChild($bibl);
+	$target->appendChild($p);
 }
 
 function insertBibliography($dom, $data, $catalogue) {
 
 	$bodyNodeList = $dom->getElementsByTagName('body');
 	$body = $bodyNodeList->item(0);
+	$divBibliography = $dom->createElement('div');
+	$divBibliography->setAttribute('type', 'bibliography');
 	$listBibl = $dom->createElement('listBibl');
-	$listBibl->setAttribute('type', 'bibliography');
 
 	$count = 0;	
 
@@ -144,7 +150,8 @@ function insertBibliography($dom, $data, $catalogue) {
 		$count++;
 	}
 	
-	$body->appendChild($listBibl);
+	$divBibliography->appendChild($listBibl);
+	$body->appendChild($divBibliography);
 	
 }
 
@@ -231,7 +238,8 @@ function insertBibliographicData($bibl, $dom, $item) {
 		$idnoText = $dom->createTextNode($item->manifestation['idManifestation']);	
 		$idno = $dom->createElement('idno');
 		$idno->appendChild($idnoText);
-		$idno->setAttribute('type', $item->manifestation['systemManifestation']);
+		$type = translateIdNo($item->manifestation['systemManifestation']);
+		$idno->setAttribute('type', $type);
 		$bibl->appendChild($idno);
 	}
 	return($bibl);
@@ -250,18 +258,20 @@ function insertPageBreaks($dom, $data) {
 	}
 	
 	foreach($firstItems as $id => $pageNo) {
-		$xp = new DOMXPath($dom);
-		$expression = '//bibl[@xml:id="'.$id.'"]';
- 		$biblNodes = $xp->evaluate($expression);
-		$bibl = $biblNodes->item(0);
 		$pb = $dom->createElement('pb');
 		$pb->setAttribute('n', $pageNo);
 		
-		$expressionParent = '//bibl[@xml:id="'.$id.'"]/parent::*';
+		$xp = new DOMXPath($dom);
+		
+		$expression = '//p[@xml:id="'.$id.'"]/parent::div';
+ 		$divNodes = $xp->evaluate($expression);
+		$div = $divNodes->item(0);
+		
+		$expressionParent = '//p[@xml:id="'.$id.'"]/parent::*/parent::*';
 		$parentNodes = $xp->evaluate($expressionParent);
 		$parent = $parentNodes->item(0);
 		
-		$expressionPreceding = '//bibl[@xml:id="'.$id.'"]/preceding-sibling::*';
+		$expressionPreceding = '//p[@xml:id="'.$id.'"]/parent::*/preceding-sibling::*';
 		$precedingNodes = $xp->evaluate($expressionPreceding);
 		$preceding = $precedingNodes->item(0);
 		
@@ -269,7 +279,7 @@ function insertPageBreaks($dom, $data) {
 			$parent->insertBefore($pb, $preceding);
 		}
 		else {
-			$parent->insertBefore($pb, $bibl);
+			$parent->insertBefore($pb, $div);
 		}	
 	}
 	

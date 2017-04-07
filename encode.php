@@ -38,6 +38,12 @@ function encodeXMLID($string) {
 	return($id);
 }
 
+function translateIdNo($string) {
+	$translate = array(' ' => '_');
+	$string = strtr($string, $translate);
+	return($string);	
+}
+
 function translateFieldNames($field) {
 	$translation = array(
 		'catSubjectFormat' => 'Katalog', 
