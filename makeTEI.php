@@ -1,11 +1,5 @@
 ﻿<?php
 
-/*
-Ausstehend in diesem Skript:
-Regelung für die Werkebene bzw. für nicht identifizierte Titel
-Klammern von Sammelbänden
-*/
-
 function makeTEI($data, $folder, catalogue $catalogue) {
 	//Make sure that every item has an ID
 	$count = 0;
@@ -141,12 +135,14 @@ function insertBibliography($dom, $data, $catalogue) {
 	$count = 0;	
 
 	foreach($data as $item) {
-		$bibl = $dom->createElement('bibl');
-		$bibl->setAttribute('xml:id', $item->id.'-reference');
-		$bibl->setAttribute('corresp', $item->id);
-		$bibl = insertBibliographicData($bibl, $dom, $item);
-		
-		$listBibl->appendChild($bibl);
+		//Check if there is bibliographic data on work or manifestation level
+		if($item->titleBib or $item->work['titleWork']) {
+			$bibl = $dom->createElement('bibl');
+			$bibl->setAttribute('xml:id', $item->id.'-reference');
+			$bibl->setAttribute('corresp', $item->id);
+			$bibl = insertBibliographicData($bibl, $dom, $item);
+			$listBibl->appendChild($bibl);
+		}
 		$count++;
 	}
 	
@@ -159,10 +155,15 @@ function insertBibliographicData($bibl, $dom, $item) {
 	if($item->titleBib) {
 		//Avoid &amp;amp;
 		$titleBibText = $dom->createTextNode(html_entity_decode($item->titleBib));
-		$titleBib = $dom->createElement('title');
-		$titleBib->appendChild($titleBibText);
-		$bibl->appendChild($titleBib);
 	}
+	elseif($item->work['titleWork']) {
+		$titleBibText = $dom->createTextNode(html_entity_decode($item->work['titleWork']));
+	}
+	
+	$titleBib = $dom->createElement('title');
+	$titleBib->appendChild($titleBibText);
+	$bibl->appendChild($titleBib);	
+
 	foreach($item->persons as $person) {
 
 		$tagName = translateRoleTEI($person->role);
@@ -242,6 +243,15 @@ function insertBibliographicData($bibl, $dom, $item) {
 		$idno->setAttribute('type', $type);
 		$bibl->appendChild($idno);
 	}
+	if($item->work['systemWork'] and $item->work['idWork']) {
+		$idnoWorkText = $dom->createTextNode($item->work['idWork']);
+		$idnoWork = $dom->createElement('idno');
+		$idnoWork->appendChild($idnoWorkText);
+		$typeWork = translateIdNo($item->work['systemWork']);
+		$idnoWork->setAttribute('type', $typeWork);
+		$bibl->appendChild($idnoWork);
+	}
+	
 	return($bibl);
 }
 
