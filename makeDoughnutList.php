@@ -62,7 +62,7 @@ function makeDoughnutJSON($data, $field, $folder) {
 }
 
 function fillDoughnutList($weightArray, $nameArray) {
-	$content = '';
+	$content = array();
 	$count = 0;
 	$weightOthers = 0;
 	$minWeight = calculateMinWeight($weightArray, 1);

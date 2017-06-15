@@ -12,6 +12,7 @@ function loadCSV($path) {
 	foreach($document as $row) {
 		$fields = str_getcsv($row, ";");
 		$fields = array_map('convertWindowsToUTF8', $fields);
+		$fields = array_map('trim', $fields);
 		if($firstRow == TRUE) {
 			$firstRow = FALSE;
 		}

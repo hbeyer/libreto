@@ -112,7 +112,7 @@ function makeCloudArraysPersons($data) {
 
 function fillCloudList($weightArray, $nameArray, $limit, $path) {
 	$count = 0;
-	$content = '';
+	$content = array();
 	foreach($weightArray as $id => $weight) {
 		$name = $nameArray[$id];
 		$row = array('text' => $name, 'weight' => $weight);
