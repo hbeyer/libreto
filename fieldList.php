@@ -9,7 +9,8 @@ to generate a separate page.
 $normalFields = array('id', 'pageCat', 'imageCat', 'numberCat', 'itemInVolume', 'volumes', 'volumesMisc', 'titleCat', 'titleBib', 'titleNormalized', 'publisher', 'year', 'format', 'histSubject', 'histShelfmark', 'mediaType', 'bound', 'comment', 'digitalCopy');
 $personFields = array('persName', 'gnd', 'gender', 'role', 'beacon');
 $placeFields = array('placeName', 'getty', 'geoNames');
-$arrayFields = array('languages', 'subjects', 'genres', 'beacon');
+//$arrayFields = array('languages', 'subjects', 'genres', 'beacon');
+$arrayFields = array('languages', 'subjects', 'genres');
 $workFields = array('titleWork', 'systemWork', 'idWork');
 $manifestationFields = array('systemManifestation');
 $originalItemFields = array('institutionOriginal', 'shelfmarkOriginal', 'provenanceAttribute', 'targetOPAC', 'searchID');

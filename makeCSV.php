@@ -1,154 +1,159 @@
 ﻿<?php
 
+class flatItem {
+		public $id;
+		public $pageCat;
+		public $imageCat;
+		public $numberCat;
+		public $itemInVolume;
+		public $titleCat;
+		public $titleBib;
+		public $titleNormalized;
+		public $author1;
+		public $author2;
+		public $author3;
+		public $author4;
+		public $contributor1;
+		public $contributor2;
+		public $contributor3;
+		public $contributor4;
+		public $place1;
+		public $place2;
+		public $publisher;
+		public $year;
+		public $format;
+		public $histSubject;
+		public $subjects;
+		public $genres;
+		public $mediaType;
+		public $languages;
+		public $systemManifestation;
+		public $idManifestation;		
+		public $institutionOriginal;
+		public $shelfmarkOriginal;
+		public $provenanceAttribute;
+		public $digitalCopyOriginal;		
+		public $targetOPAC;		
+		public $searchID;		
+		public $titleWork;
+		public $systemWork;
+		public $idWork;		
+		public $bound;
+		public $comment;
+		public $digitalCopy;
+		public $copiesHAB;
+}
+
 function makeCSV($data, $folder, $fileName) {
-	$columns = array(
-		'id',
-		'pageCat',
-		'imageCat',
-		'numberCat',
-		'itemInVolume',
-		'titleCat',
-		'titleBib',
-		'titleNormalized',
-		'author1',
-		'author2',
-		'author3',
-		'author4',
-		'contributor1',
-		'contributor2',
-		'contributor3',
-		'contributor4',
-		'place1',
-		'place2',
-		'publisher',
-		'year',
-		'format',
-		'histSubject',
-		'subjects',
-		'genres',
-		'mediaType',
-		'languages',
-		'systemManifestation',
-		'idManifestation',		
-		'institutionOriginal',
-		'shelfmarkOriginal',
-		'provenanceAttribute',
-		'digitalCopyOriginal',		
-		'targetOPAC',		
-		'searchID',		
-		'titleWork',
-		'systemWork',
-		'idWork',		
-		'bound',
-		'comment',
-		'digitalCopy'
-		);
-		
+
 	$handle = fopen($folder.'/'.$fileName.'.csv', "w");
 	fwrite($handle, "sep=,\n", 100);
+	$test = new flatItem();
+	$columns = array();
+	foreach($test as $key => $value) {
+		$columns[] = $key;
+	}
 	fputcsv($handle, $columns);
 	
 	foreach($data as $item) {
-		$row = makeRowCSV($item);
-		$row = array_map('convertUTF8ToWindows', $row);
-		$row = array_map('htmlspecialchars_decode', $row);
-		fputcsv($handle, $row);
+		$template = new flatItem;
+		$template = templateInsertItem($template, $item);
+		$values = array();
+		foreach($template as $value) {
+			$values[] = $value;
+		}
+		fputcsv($handle, $values);
+		foreach($template as $value) {
+			$value == '';
+		}
 	}
 }
 
-function makeRowCSV($item) {
-	include('fieldList.php');
-	$row = array();
-	foreach($item as $key => $value) {
-		if(is_array($value)) {
-			if(in_array($key, $arrayFields)) {
-				$row[] = implode(';', $value);
-			}
-			elseif($key == 'persons') {
-				$row = array_merge($row, makePersonRowCSV($value));
-			}
-			elseif($key == 'places') {
-				$row = array_merge($row, makePlaceRowCSV($value));
-			}
-			//Weil das Feld itemInVolumes in CSV auch genutzt wird um den Wert der Variable volumes aufzunehmen (in CSV nicht existent), muss hier eine Sonderregelung greifen.
-			elseif($key == 'volumes') {
-				if($value > 1) {
-					$valueVolumes = $value.'V';
-					array_pop($row);
-					$row[] = $valueVolumes;
+function templateInsertItem($template, $item) {
+
+	//Einfügen der einfachen Felder
+	
+	$normalFields = array('id', 'pageCat', 'imageCat', 'numberCat', 'itemInVolume', 'titleCat', 'titleBib', 'titleNormalized', 'publisher', 'year', 'format', 'histSubject', 'histShelfmark', 'mediaType', 'bound', 'comment', 'digitalCopy');
+	
+	foreach($normalFields as $field) {
+		$template->$field = $item->$field;
+	}
+
+	// Einfügen der Bandzahl in itemInVolume
+	if($item->volumes > 1) {
+		$template->itemInVolume = $item->volumes.'V'.$template->itemInVolume;
+	}
+	$authors = 1;
+	$contributors = 1;
+	
+ 	// Einfügen der durch ";" unterteilten Felder
+	$arrayFields = array('languages', 'subjects', 'genres', 'copiesHAB');
+	foreach($arrayFields as $field) {
+		$string = implode(';', $item->$field);
+		$template->$field = $string;
+	}
+	
+	// Einfügen der assoziativen Arrays
+	$assocArrayFields = array('manifestation', 'originalItem', 'work');
+	foreach($assocArrayFields as $field) {
+		foreach($item->$field as $key => $value) {
+			$template->$key = $value;
+		}
+	}
+	
+	// Einfügen der Personendaten
+	foreach($item->persons as $person) {
+		if($person->role == 'author') {
+			if($authors <= 4) {
+				$persName = $person->persName;
+				if($person->gnd) {
+					$persName .= '#'.$person->gnd;
+					if($person->gender) {
+						$persName .= '#'.$person->gender;
+					}
 				}
+				$authorKey = 'author'.$authors;
+				$template->$authorKey = $persName;
 			}
-			else {
-				foreach($value as $subfieldContent) {
-					$row[] = $subfieldContent;
+			$authors++;
+		}
+		if($person->role == 'contributor') {
+			if($contributors <= 4) {
+				$persName = $person->persName;
+				if($person->gnd) {
+					$persName .= '#'.$person->gnd;
+					if($person->gender) {
+						$persName .= '#'.$person->gender;
+					}
 				}
+				$contributorKey = 'contributor'.$contributors;
+				$template->$contributorKey = $persName;
 			}
-		}
-		else {
-			$row[] = $value;
-		}
+			$contributors++;
+		}		
 	}
-	return($row);
-}
-
-function makePersonRowCSV($persList) {
-	$authors = array();
-	$contributors = array();
-	$count = 0;
-	foreach($persList as $person) {
-		if($person->role == 'author' or $person->role == 'creator' or $person->role == NULL) {
-			$authors[] = $person;
-		}
-		else {
-			$contributors[] = $person;
-		}
-	}
-	$row = insertFourPersons($authors);
-	$row = array_merge($row, insertFourPersons($contributors));
-	return($row);
-}
-
-function insertFourPersons($persons) {
-	$subRow = array();
-	$count = 0;
-	foreach($persons as $person) {
-		if($count < 4) {	
-			$gndString = '';
-			if($person->gnd) {
-				$gndString = '#'.$person->gnd;
-			}
-			$subRow[] = $person->persName.$gndString;
-			$count++;
-		}
-	}
-	while($count < 4) {
-		$subRow[] = '';
-		$count++;
-	}
-	return($subRow);
-}
-
-function makePlaceRowCSV($placeList) {
-	$row = array();
-	$count = 0;
-	foreach($placeList as $place) {
-		if($count < 2) {
-			$placeAuthority = '';
+	
+	//Einfügen der Ortsdaten
+	$places = 1;
+	foreach($item->places as $place) {
+		if($places <= 2) {
+			$keyPlace = 'place'.$places;
+			$string = $place->placeName;
 			if($place->geoNames) {
-				$placeAuthority = '#geoNames'.$place->geoNames;
+				$string .= '#geoNames'.$place->geoNames;
+			}
+			elseif($place->gnd) {
+				$string .= '#gnd'.$place->gnd;
 			}
 			elseif($place->getty) {
-				$placeAuthority = '#getty'.$place->getty;
+				$string .= '#getty'.$place->getty;
 			}
-			$row[] = $place->placeName.$placeAuthority;
-			$count++;
+			$template->$keyPlace = $string;
 		}
+		$places++;
 	}
-	while($count < 2) {
-		$row[] = '';
-		$count++;
-	}
-	return($row);
+	
+	return($template);
 }
 
 ?>
