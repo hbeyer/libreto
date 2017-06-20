@@ -1,5 +1,9 @@
 ﻿<?php
 
+function makeEntryNew($item, $catalogue) {
+	include 'entry.phtml';
+}
+
 function makeEntry($thisBook, $thisCatalogue, $id) {
 	$buffer = makeAuthors($thisBook->persons).makeTitle($thisBook->titleBib, $thisBook->titleCat, $thisBook->work).makeVolumes($thisBook->volumes).makePublished(makePlaces($thisBook->places), $thisBook->publisher, $thisBook->year).' <a id="linkid'.$id.'" href="javascript:toggle(\'id'.$id.'\')">Mehr</a>
 				<div id="id'.$id.'" style="display:none; padding-top:0px; padding-bottom:15px; padding-left:10px;">'.makeSourceLink($thisBook, $thisCatalogue->base).makeHistShelfmark($thisBook->histShelfmark).makeOriginalLink($thisBook->originalItem).makeWorkLink($thisBook->work).makeDigiLink($thisBook->digitalCopy).makeProof($thisBook).makeCopiesHAB($thisBook->copiesHAB).makeComment($thisBook->comment).'</div>';

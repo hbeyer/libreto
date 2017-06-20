@@ -63,9 +63,6 @@ function makeCSV($data, $folder, $fileName) {
 			$values[] = $value;
 		}
 		fputcsv($handle, $values);
-		foreach($template as $value) {
-			$value == '';
-		}
 	}
 }
 
@@ -83,8 +80,11 @@ function templateInsertItem($template, $item) {
 	if($item->volumes > 1) {
 		$template->itemInVolume = $item->volumes.'V'.$template->itemInVolume;
 	}
-	$authors = 1;
-	$contributors = 1;
+	
+	// Einfügen der Altsignatur
+	if($item->histShelfmark) {
+		$template->histSubject = $item->histSubject.'#'.$item->histShelfmark;
+	}
 	
  	// Einfügen der durch ";" unterteilten Felder
 	$arrayFields = array('languages', 'subjects', 'genres', 'copiesHAB');
@@ -102,6 +102,10 @@ function templateInsertItem($template, $item) {
 	}
 	
 	// Einfügen der Personendaten
+	
+	$authors = 1;
+	$contributors = 1;
+	
 	foreach($item->persons as $person) {
 		if($person->role == 'author') {
 			if($authors <= 4) {
@@ -109,7 +113,7 @@ function templateInsertItem($template, $item) {
 				if($person->gnd) {
 					$persName .= '#'.$person->gnd;
 					if($person->gender) {
-						$persName .= '#'.$person->gender;
+						$persName .= $person->gender;
 					}
 				}
 				$authorKey = 'author'.$authors;
@@ -123,7 +127,7 @@ function templateInsertItem($template, $item) {
 				if($person->gnd) {
 					$persName .= '#'.$person->gnd;
 					if($person->gender) {
-						$persName .= '#'.$person->gender;
+						$persName .= $person->gender;
 					}
 				}
 				$contributorKey = 'contributor'.$contributors;
@@ -134,7 +138,9 @@ function templateInsertItem($template, $item) {
 	}
 	
 	//Einfügen der Ortsdaten
+	
 	$places = 1;
+	
 	foreach($item->places as $place) {
 		if($places <= 2) {
 			$keyPlace = 'place'.$places;
