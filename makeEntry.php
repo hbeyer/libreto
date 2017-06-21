@@ -1,87 +1,60 @@
 ﻿<?php
 
-function makeEntryNew($item, $catalogue) {
+function makeEntry($item, $base) {
+	$persons = makePersons($item->persons);
+	$published = makePublicationString($item);
+	$originalLink = makeOriginalLink($item->originalItem);
+	$sourceLink = makeSourceLink($item, $base);
+	$workLink = makeWorkLink($item->work);
+	$digiLink = makeDigiLink($item->digitalCopy);
+	$proof = makeProof($item);
+	$copiesHAB = makeCopiesHAB($item->copiesHAB);
+	$comment = makeComment($item->comment);
+	ob_start();
 	include 'entry.phtml';
-}
-
-function makeEntry($thisBook, $thisCatalogue, $id) {
-	$buffer = makeAuthors($thisBook->persons).makeTitle($thisBook->titleBib, $thisBook->titleCat, $thisBook->work).makeVolumes($thisBook->volumes).makePublished(makePlaces($thisBook->places), $thisBook->publisher, $thisBook->year).' <a id="linkid'.$id.'" href="javascript:toggle(\'id'.$id.'\')">Mehr</a>
-				<div id="id'.$id.'" style="display:none; padding-top:0px; padding-bottom:15px; padding-left:10px;">'.makeSourceLink($thisBook, $thisCatalogue->base).makeHistShelfmark($thisBook->histShelfmark).makeOriginalLink($thisBook->originalItem).makeWorkLink($thisBook->work).makeDigiLink($thisBook->digitalCopy).makeProof($thisBook).makeCopiesHAB($thisBook->copiesHAB).makeComment($thisBook->comment).'</div>';
-	return($buffer);
-}
-
-function makeAuthors($personList) {
-	$result = '';
-	$separator = '</span>/<span class="authorName">';
-	$list = array();
-	if(isset($personList[0])) {
-		foreach($personList as $person) {
-			//if($person->role == 'author') {
-				$list[$person->gnd] = $person->persName;
-				//}
-		}
-		$result = '<span class="authorList"><span class="authorName">'.implode($separator, $list).': </span></span>';
-	}
-	return($result);
-}
-
-function makePlaces($placeList) {
-	$separator = '/';
-	$list = array();
-	foreach($placeList as $place) {
-			$list[] = $place->placeName;
-	}
-	$result = implode($separator, $list);
-	return($result);
-}
-
-function makeVolumes($volumes) {
-	$return = '';
-	if($volumes > 1) {
-		$return = ', '.$volumes;
-	}
+	$return = ob_get_contents();
+	ob_end_clean();
 	return($return);
 }
 
-function makePublished($places, $publisher, $year) {
-	$result = '';	
-	if($places and $publisher and $year) {
-		$result .= ', '.$places.': '.$publisher.', '.$year;
+function makePersons($persons) {
+	if($persons == array()) {
+		return;
 	}
-	elseif($places and $publisher) {
-		$result .= ', '.$places.': '.$publisher;
+	$persArray = array();
+	foreach($persons as $person) {
+		$persArray[] = $person->persName;
 	}
-	elseif($publisher and $year) {
-		$result .= ', '.$publisher.', '.$year;
-	}
-	elseif($places and $year) {
-		$result .= ', '.$places.', '.$year;
-	}
-	elseif($places) {
-		$result .= ', '.$places;
-	}
-	elseif($publisher) {
-		$result .= ', '.$publisher;
-	}
-	elseif($year) {
-		$result .= ', '.$year;
-	}
-	return('<span class="published">'.$result.'</span>');
-}
-	
-function makeSourceLink($item, $base)	{
-	$result = '';
-	if($item->imageCat != '') {
-		$result = 'Titel im Altkatalog:<span class="titleOriginal-single"> '.$item->titleCat.'</span> <a href="'.$base.$item->imageCat.'" title="Titel im Altkatalog" target="_blank">S. '.$item->pageCat.', Nr. '.$item->numberCat.'</a><br/>';
-	}
+	$result = implode('</span>/<span class="authorName">', $persArray);
+	$result = '<span class="authorName">'.$result.'</span>';
 	return($result);
 }
 
-function makeHistShelfmark($histShelfmark) {
-	if($histShelfmark) {
-		$text = 'Altsignatur: '.$histShelfmark.'<br/>';
-		return($text);
+function makePublicationString($item) {
+	$result = '';
+	$placeString = '';
+	if (isset($item->places[0])) {
+		$placeArray = array();
+		foreach ($item->places as $place) {
+			$placeArray[] = $place->placeName;
+		}
+		$result .= $placeString.': ';
 	}
+	$publisher = $item->publisher;
+	$date = $item->year;
+	$sep1 = '';
+	$sep2 = '';
+	if ($placeString and $publisher) {
+		$sep1 = ': ';
+	}
+	if ($publisher and $date) {
+		$sep2 = ', ';
+	}
+	elseif ($placeString and $date) {
+		$sep1 = ' ';
+	}
+	$result = $placeString.$sep1.$publisher.$sep2.$date;
+	return($result);
 }
 
 function makeOriginalLink($originalItem) {
@@ -110,11 +83,20 @@ function makeOriginalLink($originalItem) {
 	if($result and $digitalCopyOriginal) {
 		$result .= '; Digitalisat: '.makeDigiLink($digitalCopyOriginal);
 	}
-	if($result) { 
-		$result = $result.'<br/>';
-	}
 	return($result);
 }	
+
+function makeSourceLink($item, $base) {
+	$result = '';
+	$link = '';
+	if($base and $item->imageCat) {
+		$link = ' <a href="'.$base.$item->imageCat.'" title="Titel im Altkatalog" target="_blank">S. '.$item->pageCat.', Nr. '.$item->numberCat.'</a>';
+	}
+	if($item->titleCat) {
+		$result = '<span class="titleOriginal-single">Titel im Altkatalog: <i>'.$item->titleCat.'</i></span>'.$link;
+	}
+	return($result);
+}
 
 function makeWorkLink($work) {
 	if($work['systemWork'] and $work['idWork']) {
@@ -142,7 +124,7 @@ function makeDigiLink($digi) {
 			$digi = $urn;
 			$resolver = 'http://nbn-resolving.de/';
 		}
-		$result = '<span class="heading_info">'.$title.': </span><a href="'.$resolver.$digi.'" target="_blank">'.$digi.'</a><br />';
+		$result = '<span class="heading_info">'.$title.': </span><a href="'.$resolver.$digi.'" target="_blank">'.$digi.'</a>';
 	}
 	return($result);
 }
@@ -162,10 +144,10 @@ function makeProof($item) {
 	$systemClean = strtolower(str_replace(' ', '', $systemClean));
 	$hay = strtolower('#'.$system.$id);
 	if(strrpos($hay, 'bestimm') != 0 or ($system == '' and $id == '')) {
-		$result = 'Ausgabe nicht bestimmbar<br/>';
+		$result = 'Ausgabe nicht bestimmbar';
 	}
 	elseif(strrpos($hay, 'nach') != 0) {
-		$result = 'Ausgabe nicht nachgewiesen<br/>';
+		$result = 'Ausgabe nicht nachgewiesen';
 		}
 	elseif(array_key_exists($systemClean, $bases)) {
 		if($systemClean == 'parisbnf' and substr($id, 5, 0 == 'FRBNF')) {
@@ -176,31 +158,29 @@ function makeProof($item) {
 		}
 		$translateID = array('{ID}' => $id);
 		$link = strtr($bases[$systemClean], $translateID);
-		$result = '<span class="heading_info">Nachweis: </span><a href="'.$link.'" target="_blank">'.$system.'</a><br/>';
+		$result = '<span class="heading_info">Nachweis: </span><a href="'.$link.'" target="_blank">'.$system.'</a>';
 	}
 	else {
 		$page = '';
 		if($id != '') {
 			$page = ', '.$id;
 		}
-		$result = '<span class="heading_info">Nachweis: </span>'.$system.$page.'<br/>';
+		$result = '<span class="heading_info">Nachweis: </span>'.$system.$page;
 	}
 	return($result);
 }
 
 function makeCopiesHAB($copies) {
-	if($copies[0]) {
-		$base = 'http://opac.lbs-braunschweig.gbv.de/DB=2/SET=31/TTL=1/CMD?ACT=SRCHA&TRM=sgb+';
-		$links = array();
-		$translation = array('(' => '', ')' => '');
-		foreach($copies as $copy) {
-			$copyOPAC = strtr($copy, $translation);
-			$links[] = '<a href="'.$base.urlencode($copyOPAC).'" target="_blank">'.$copy.'</a>';
-		}
-		$result = implode('; ', $links);
-		$result = 'Exemplare der HAB: '.$result.'<br/>';
-		return($result);
+	$base = 'http://opac.lbs-braunschweig.gbv.de/DB=2/SET=31/TTL=1/CMD?ACT=SRCHA&TRM=sgb+';
+	$links = array();
+	$translation = array('(' => '', ')' => '');
+	foreach($copies as $copy) {
+		$copyOPAC = strtr($copy, $translation);
+		$links[] = '<a href="'.$base.urlencode($copyOPAC).'" target="_blank">'.$copy.'</a>';
 	}
+	$result = implode('; ', $links);
+	$result = 'Exemplare der HAB: '.$result;
+	return($result);
 }
 
 function makeComment($text) {
@@ -224,46 +204,6 @@ function insertLink($text, $pattern, $target) {
 	$replacement = '<a href="'.$base.'$1'.$end.'" target="_blank">$0</a>';
 	$text = preg_replace($pattern, $replacement, $text);
 	return($text);
-}
-
-
-function makeTitle($titleBib, $titleCat, $work) {
-	$titleWork = $work['titleWork'];
-	$result = '';
-	if($titleBib and $titleCat) {
-		$result = '<span class="titleBib">'.$titleBib.'</span><span class="titleOriginal" style="display:none">'.$titleCat.'</span>';
-	}
-	elseif($titleBib) {
-		$result = '<span class="titleBib">'.$titleBib.'</span><span class="titleOriginal" style="display:none">[Recherchierter Titel:] '.$titleBib.'</span>';
-	}
-	elseif($titleCat and $titleWork) {
-		$result = '<span class="titleBib">[Titel des Werkes:] '.$titleWork.'</span><span class="titleOriginal" style="display:none">'.$titleCat.'</span>';
-	}	
-	elseif($titleCat) {
-		$result = '<span class="titleBib">[Titel im Altkatalog:] '.$titleCat.'</span><span class="titleOriginal" style="display:none">'.$titleCat.'</span>';
-	}
-	return($result);
-}
-
-// The function produces a link to further information on persons. It is called by the function makeList, if GND data is submitted in $section->authority. To work, it needs serialized BEACON data in a file named beaconStore. Therefore you have to run the function storeBeacon previously.
-	
-function makeCollapseBeacon($gnd, $folderName) {
-	$beaconString = file_get_contents($folderName.'/beaconStore');
-	$beaconObject = unserialize($beaconString);
-	unset($beaconString);
-	$link = '';
-	$linkData = array('<a href="http://d-nb.info/gnd/'.$gnd.'" title="Deutsche Nationalbibliothek" target="_blank">Deutsche Nationalbibliothek</a>');
-	foreach($beaconObject->content as $beaconExtract) {
-		if(in_array($gnd, $beaconExtract->content)) {
-			$link = '<a href="'.makeBeaconLink($gnd, $beaconExtract->target).'" title="'.$beaconExtract->label.'" target="_blank">'.$beaconExtract->label.'</a>';
-			$linkData[] = $link;
-		}
-	}
-	$content = implode(' | ', $linkData);
-	$collapse = '
-		<a href="#'.$gnd.'" data-toggle="collapse"><span class="glyphicon glyphicon-info-sign" style="font-size:14px"></span></a>
-		<div id="'.$gnd.'" class="collapse"><span style="font-size:14px">'.$content.'</span></div>';
-	return($collapse);
 }
 	
 ?>	

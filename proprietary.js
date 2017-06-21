@@ -17,11 +17,14 @@ function plus(control) {
     document.getElementById("link" + control).innerHTML = "Mehr";
 }
 
+// Umschalten zwischen bibliographierten Daten und Transkription
+
 function switchToOriginal() {
 	var x = document.getElementsByClassName("titleBib");
-	var y = document.getElementsByClassName("titleOriginal");
+	var y = document.getElementsByClassName("titleCat");
 	var a = document.getElementsByClassName("authorList");
 	var p = document.getElementsByClassName("published");
+	var v = document.getElementsByClassName("volumes");
 	var c = document.getElementsByClassName("titleOriginal-single");
 	var countA = a.length;
 	for (i = 0; i < countA; i++) {
@@ -30,6 +33,10 @@ function switchToOriginal() {
 	var countP = p.length;
 	for (i = 0; i < countP; i++) {
 		p[i].style.display='none';
+	}
+	var countV = v.length;
+	for (i = 0; i < countV; i++) {
+		v[i].style.display='none';
 	}		
 	var count = x.length;
 	for (i = 0; i < count; i++) {
@@ -43,6 +50,39 @@ function switchToOriginal() {
 	z = document.getElementById("switchLink");
 	z.innerHTML = "<a href='javascript:switchToBibl()'>Bibliographierte Daten anzeigen</a>";
 }
+
+function switchToBibl() {
+	var x = document.getElementsByClassName("titleBib");
+	var y = document.getElementsByClassName("titleCat");
+	var a = document.getElementsByClassName("authorList");
+	var p = document.getElementsByClassName("published");
+	var v = document.getElementsByClassName("volumes");
+	var c = document.getElementsByClassName("titleOriginal-single");
+	var countA = a.length;
+	for (i = 0; i < countA; i++) {
+		a[i].style.display='inline';
+	}
+	var countP = p.length;
+	for (i = 0; i < countP; i++) {
+		p[i].style.display='inline';
+	}
+	var countV = v.length;
+	for (i = 0; i < countV; i++) {
+		v[i].style.display='inline';
+	}		
+	var count = x.length;
+	for (i = 0; i < count; i++) {
+		y[i].style.display='none';
+		x[i].style.display='inline';
+	}
+	var countC = c.length;
+	for (i = 0; i < countC; i++) {
+		c[i].style.display='inline';
+	}			
+	z = document.getElementById("switchLink");
+	z.innerHTML = "<a href='javascript:switchToOriginal()'>Anzeige in Vorlageform</a>";
+}
+
 
 /* 
 Die folgende Funktion scrollt die Seite beim Ansteuern interner Sprungmarken um die Breite der 
@@ -73,33 +113,6 @@ function scrollNav(x) {
 function getNavBarHeight() {
 	var x = document.getElementsByTagName('nav')[0].offsetHeight;
 	return(-x);
-}
-
-function switchToBibl() {
-	var x = document.getElementsByClassName("titleBib");
-	var y = document.getElementsByClassName("titleOriginal");
-	var a = document.getElementsByClassName("authorName");
-	var p = document.getElementsByClassName("published");
-	var c = document.getElementsByClassName("titleOriginal-single");
-	var countA = a.length;
-	for (i = 0; i < countA; i++) {
-		a[i].style.display='inline';
-	}
-	var countP = p.length;
-	for (i = 0; i < countP; i++) {
-		p[i].style.display='inline';
-	}		
-	var count = x.length;
-	for (i = 0; i < count; i++) {
-		y[i].style.display='none';
-		x[i].style.display='inline';
-	}
-	var countC = c.length;
-	for (i = 0; i < countC; i++) {
-		c[i].style.display='inline';
-	}			
-	z = document.getElementById("switchLink");
-	z.innerHTML = "<a href='javascript:switchToOriginal()'>Anzeige in Vorlageform</a>";
 }
 
 /* For generating and updating word clouds by jQCloud */

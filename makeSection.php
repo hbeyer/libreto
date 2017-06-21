@@ -154,8 +154,50 @@ function compareItemInVolume($a, $b) {
 }
 
 // This function converts an array of objects of the class section into a list in HTML format. The variable $thisCatalogue contains an object of the type catalogue and supplies information on the fileName ($thisCatalogue->key) and the URL base of the digitized version ($thisCatalogue->base). The function displays content either as text, for monographic entries, or as unordered list, for miscellanies.
-	
+
+
 function makeList($structuredData, $thisCatalogue, $folderName) {	
+	$count = 1;
+	$content = '';
+	foreach($structuredData as $section) {
+		$info = '';
+		$anchor = '';
+		if($section->authority['system'] == 'gnd') {
+			$info = makeCollapseBeacon($section->authority['id'], $folderName);
+			$anchor = 'person'.$section->authority['id'];
+		}
+		$content .= makeHeadline($section, $info, $anchor);
+		foreach($section->content as $item) {
+			if(get_class($item) == 'item') {
+					$content .= '
+			<div class="entry">'.makeEntry($item, $thisCatalogue->base).'
+			</div>';
+			}
+			elseif(get_class($item) == 'volume') {
+				$heading = 'Sammelband';
+				if($item->volumes > 1) {
+					$heading = 'Sammlung in '.$item->volumes.' B&auml;nden';
+				}
+				$content .= '
+			<div class="entry">'.$heading.'
+				<ul>';
+				foreach($item->content as $itemInVol) {
+					$content .= '
+					<li class="entry-list">'.makeEntry($itemInVol, $thisCatalogue->base).'
+					</li>';
+					$count++;
+				}
+				$content .= '
+				</ul>
+			</div>';
+			}
+			$count++;
+		}
+	}
+	return($content);	
+}
+	
+function makeListNew($structuredData, $thisCatalogue, $folderName) {
 	$count = 1;
 	$content = '';
 	foreach($structuredData as $section) {
@@ -216,5 +258,25 @@ function makeHeadline($section, $info, $anchor) {
 	return($result);
 }
 
+// The function produces a link to further information on persons. It is called by the function makeList, if GND data is submitted in $section->authority. To work, it needs serialized BEACON data in a file named beaconStore. Therefore you have to run the function storeBeacon() previously.
+	
+function makeCollapseBeacon($gnd, $folderName) {
+	$beaconString = file_get_contents($folderName.'/beaconStore');
+	$beaconObject = unserialize($beaconString);
+	unset($beaconString);
+	$link = '';
+	$linkData = array('<a href="http://d-nb.info/gnd/'.$gnd.'" title="Deutsche Nationalbibliothek" target="_blank">Deutsche Nationalbibliothek</a>');
+	foreach($beaconObject->content as $beaconExtract) {
+		if(in_array($gnd, $beaconExtract->content)) {
+			$link = '<a href="'.makeBeaconLink($gnd, $beaconExtract->target).'" title="'.$beaconExtract->label.'" target="_blank">'.$beaconExtract->label.'</a>';
+			$linkData[] = $link;
+		}
+	}
+	$content = implode(' | ', $linkData);
+	$collapse = '
+		<a href="#'.$gnd.'" data-toggle="collapse"><span class="glyphicon glyphicon-info-sign" style="font-size:14px"></span></a>
+		<div id="'.$gnd.'" class="collapse"><span style="font-size:14px">'.$content.'</span></div>';
+	return($collapse);
+}
 	
 ?>

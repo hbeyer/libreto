@@ -1,0 +1,43 @@
+<?php if ($persons): ?>
+<span class="authorList"><?php echo $persons; ?>:</span> 
+<?php endif; ?>
+<?php if ($item->titleBib and $item->titleCat): ?>
+<span class="titleBib"><?php echo $item->titleBib; ?>,</span><span class="titleCat"><?php echo $item->titleCat; ?></span> 
+<?php elseif ($item->titleBib): ?>
+<span class="titleBib"><?php echo $item->titleBib; ?>,</span><span class="titleCat">[Recherchierter Titel:] <?php echo $item->titleBib; ?></span> 
+<?php elseif ($item->titleCat): ?>
+<span class="titleBib">[Titel im Altkatalog:] <?php echo $item->titleCat; ?>,</span><span class="titleCat"><?php echo $item->titleCat; ?></span> 
+<?php endif; ?>
+<?php if ($item->volumes > 1): ?>
+<span class="volumes"><?php echo $item->volumes; ?> Bde., </span>
+<?php endif; ?>
+<?php if ($published): ?>
+<span class="published"><?php echo $published; ?></span>
+<?php endif; ?>
+<a id="linkid<?php echo $item->id; ?>" href="javascript:toggle('id<?php echo $item->id; ?>')">Mehr</a>
+<div id="id<?php echo $item->id; ?>" style="display:none; padding-top:0px; padding-bottom:15px; padding-left:10px;">
+<?php if ($sourceLink): ?>
+	<?php echo $sourceLink; ?><br />
+<?php endif; ?>
+<?php if ($item->histShelfmark): ?>
+	Altsignatur: <?php echo $item->histShelfmark; ?><br/>
+<?php endif; ?>		
+<?php if ($originalLink): ?>
+	<?php echo $originalLink; ?><br />
+<?php endif; ?>
+<?php if ($workLink): ?>
+	<?php echo $workLink; ?><br />
+<?php endif; ?>
+<?php if ($digiLink): ?>
+	<?php echo $digiLink; ?><br />
+<?php endif; ?>
+<?php if ($proof): ?>
+	<?php echo $proof; ?><br />
+<?php endif; ?>
+<?php if ($copiesHAB): ?>
+	<?php echo $copiesHAB; ?><br />
+<?php endif; ?>	
+<?php if ($comment): ?>
+	<?php echo $comment; ?><br />
+<?php endif; ?>			
+</div>

@@ -42,9 +42,9 @@ function makeItemFromCSVRow($row, $fieldNames) {
 		$item->itemInVolume = $row[$fieldNames['itemInVolume']];
 		$item->volumesMisc = 1;
 	}
-	$item->titleCat = $row[$fieldNames['titleCat']];
-	$item->titleBib = $row[$fieldNames['titleBib']];
-	$item->titleNormalized = $row[$fieldNames['titleNormalized']];
+	$item->titleCat = trim($row[$fieldNames['titleCat']], '. ');
+	$item->titleBib = trim($row[$fieldNames['titleBib']], '. ');
+	$item->titleNormalized = trim ($row[$fieldNames['titleNormalized']], '. ');
 	$item->publisher = $row[$fieldNames['publisher']];
 	$item->year = $row[$fieldNames['year']];
 	$item->format = $row[$fieldNames['format']];

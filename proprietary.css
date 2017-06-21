@@ -13,10 +13,6 @@ div.entry {
     overflow-y: auto;
 }
 	
-span.titleOriginal-single {
-	font-style: italic;
-}	
-	
 .affix {
       top: 0;
       width: auto;
@@ -44,7 +40,6 @@ ul.nav li.dropdown:hover ul.dropdown-menu {
 div.buttonsTop {
 	text-align:right
 }
-
 
 /* Formatierungen für WordClouds */	
 
