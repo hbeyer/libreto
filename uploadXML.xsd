@@ -145,6 +145,7 @@
         <xs:enumeration value="VD18"/>
         <xs:enumeration value="EDIT16"/>
         <xs:enumeration value="ESTC"/>
+        <xs:enumeration value="USTC"/>
         <xs:enumeration value="GBV"/>
         <xs:enumeration value="SWB"/>
         <xs:enumeration value="HBZ"/>
@@ -157,6 +158,7 @@
         <xs:enumeration value="Wien ÖNB"/>
         <xs:enumeration value="Kopenhagen KB"/>
         <xs:enumeration value="GW"/>
+        <xs:enumeration value="ISTC"/>
         <xs:enumeration value="INKA"/>
         <xs:enumeration value="ManuMed"/>
         <xs:enumeration value="SUDOC"/>
