@@ -172,6 +172,7 @@ session_start();
 				unset($dataString);
 				saveXML($data, $catalogue, $folderName);
 				makeCSV($data, $folderName, $catalogue->fileName);
+				makeTEI($data, $folderName, $catalogue);
 				echo '<p>Die Metadaten wurden gespeichert.<br />';
 				echo 'Weiter zur <a href="geodata.php">Geodatenanreicherung</a>.</p>';
 			}
