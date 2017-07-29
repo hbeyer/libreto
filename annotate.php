@@ -4,6 +4,9 @@ include('settings.php');
 include('encode.php');
 include('makeXML.php');
 include('makeCSV.php');
+include('makeIndex.php');
+include('makeSection.php');
+include('makeTEI.php');
 session_start();
 ?>
 <!DOCTYPE html>

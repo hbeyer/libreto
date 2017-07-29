@@ -41,6 +41,12 @@ div.buttonsTop {
 	text-align:right
 }
 
+/* Formatierungen für Textteile */
+
+span.titleCat { 
+	display:none; 
+}
+
 /* Formatierungen für WordClouds */	
 
 div#wordCloudButtons {

@@ -22,8 +22,12 @@ function makePersons($persons) {
 		return;
 	}
 	$persArray = array();
+	$gnds = array();
 	foreach($persons as $person) {
-		$persArray[] = $person->persName;
+		if($person->gnd and in_array($person->gnd, $gnds) == FALSE) {
+			$persArray[] = $person->persName;
+			$gnds[] = $person->gnd;
+		}
 	}
 	$result = implode('</span>/<span class="authorName">', $persArray);
 	$result = '<span class="authorName">'.$result.'</span>';

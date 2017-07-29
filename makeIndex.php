@@ -225,19 +225,23 @@ function collectIDsPersons($data) {
 	$collectName = array();
 	$count = 0;
 	foreach($data as $item) {
+		$gnds = array();
 		foreach($item->persons as $person) {
-		$key = $person->gnd;
-		$name = preprocessFields('persName', $person->persName, $item);
-		if($key == '') {
-				$key = $name;
+			$key = $person->gnd;
+			$name = preprocessFields('persName', $person->persName, $item);
+			if($key == '') {
+					$key = $name;
+			}
+			if(array_key_exists($key, $collectGND) == FALSE) {
+				$collectGND[$key] = array();
+				$collectName[$key] = $name;
+			}
+			if (in_array($key, $gnds) == FALSE) {
+				$collectGND[$key][] = $count;
+				$gnds[] = $key;
+			}
 		}
-		if(array_key_exists($key, $collectGND) == FALSE) {
-			$collectGND[$key] = array();
-			$collectName[$key] = $name;
-		}
-		$collectGND[$key][] = $count;
-	}
-	$count++;
+		$count++;
 	}
 	$return = array('collect' => $collectGND, 'concordanceGND' => $collectName);
 	return($return);
