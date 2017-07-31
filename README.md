@@ -29,7 +29,7 @@ Rufen Sie [load.php](load.php) im Browser auf und folgen Sie den Anweisungen des
 ### Ablauf
 
 #### Laden der Daten
-Die Datei [load.php](load.php) lädt die Daten im CSV-, XML oder MODS-Format. Die Daten werden als serialisierte Objekte in einer Datei unter upload/files zwischengespeichert.
+Das Skript [load.php](load.php) lädt die Daten im CSV-, XML oder MODS-Format. Die Daten werden als serialisierte Objekte in einer Datei unter `upload/files` zwischengespeichert.
 Verwendete Dateien und Funktionen:
 - Datei [loadCSV.php](loadCSV.php)
     - validateCSV\(\)
@@ -44,7 +44,7 @@ Verwendete Dateien und Funktionen:
     - makeUploadName\(\)
 
 #### Aufnahme von Metadaten
-Die Datei [annotate.php](annotate.php) enthält ein Formular zur Aufnahme von Metadaten zur Sammlung und zum Altkatalog. Diese werden in der Variable `$_SESSION['catalogueObject']` als Objekt der Klasse *catalogue* gespeichert. Dann wird unter user ein projektspezifischer Ordner angelegt und in diesem die Rohdaten in CSV, XML und TEI gespeichert. 
+Das Skript [annotate.php](annotate.php) enthält ein Formular zur Aufnahme von Metadaten zur Sammlung und zum Altkatalog. Diese werden in der Variable `$_SESSION['catalogueObject']` als Objekt der Klasse *catalogue* gespeichert. Dann wird unter user ein projektspezifischer Ordner angelegt und in diesem die Rohdaten in CSV, XML und TEI gespeichert. 
 Verwendete Dateien und Funktionen:
 - Datei [makeXML.php](makeXML.php)
     - saveXML\(\)
@@ -54,7 +54,7 @@ Verwendete Dateien und Funktionen:
     - makeTEI\(\)
 
 #### Anreichern mit Geodaten
-Die Datei [geodata.php](geodata.php) reichert die Ortsdaten (die in jedem *item* unter `$places` abgespeichert sind) mit Geodaten an. Bei Einträgen, die bereits einen Identifier (geoNames oder GND) haben, werden zunächst die bereits erhobenen Daten unter geoDataArchive durchsucht. Ist der Identifier dort nicht vorhanden, werden die Daten aus dem Netz geladen. Orte ohne Identifier werden in einem Formular angezeigt, in dem der Nutzer die Möglichkeit zum Nachtragen erhält.
+Das Skript [geodata.php](geodata.php) reichert die Ortsdaten (die in jedem *item* unter `$places` abgespeichert sind) mit Geodaten an. Bei Einträgen, die bereits einen Identifier (geoNames oder GND) haben, werden zunächst die bereits erhobenen Daten unter `geoDataArchive` durchsucht. Ist der Identifier dort nicht vorhanden, werden die Daten aus dem Netz geladen. Orte ohne Identifier werden in einem Formular angezeigt, in dem der Nutzer die Möglichkeit zum Nachtragen erhält.
 Verwendete Dateien und Funktionen:
 - Datei [geodata.php](geodata.php)
     - makeGeoDataForm\(\)
@@ -65,7 +65,7 @@ Verwendete Dateien und Funktionen:
     - *geoDataArchiveEntry*
 	
 #### Datenexport in den GeoBrowser
-Die Datei [geoBrowser.php](geoBrowser.php) erstellt die Dateien **printingPlaces.kml** und **printingPlaces.csv** im Projektordner, die sich für den Upload in den DARIAH GeoBrowser eignen. Nach erfolgtem manuellem Upload muss die Storage ID des Datensets eingegeben werden.
+Das Skript [geoBrowser.php](geoBrowser.php) erstellt die Dateien **printingPlaces.kml** und **printingPlaces.csv** im Projektordner, die sich für den Upload in den DARIAH GeoBrowser eignen. Nach erfolgtem manuellem Upload muss die Storage ID des Datensets eingegeben werden.
 Verwendete Dateien und Funktionen:
 - Datei [makeGeoDataSheet.php](makeGeoDataSheet.php)
     - makeGeoDataSheet\(\)
@@ -73,7 +73,7 @@ Verwendete Dateien und Funktionen:
     - makeGeoBrowserLink\(\)
 
 #### Anreicherung mit biographischen Links
-Die Datei [beacon.php](beacon.php) lädt und durchsucht BEACON-Dateien auf Vorkommen der erfassten GND-Nummern für Personen.
+Das Skript [beacon.php](beacon.php) lädt und durchsucht BEACON-Dateien auf Vorkommen der erfassten GND-Nummern für Personen.
 Verwendete Dateien und Funktionen:
 - Datei [storeBeacon.php](storeBeacon.php)
     - cacheBeacon\(\)
@@ -81,7 +81,7 @@ Verwendete Dateien und Funktionen:
     - addBeacon\(\)
 	
 #### Feldauswahl
-Die Datei [select.php](select.php) erlaubt es dem Benutzer, Felder für die Darstellung als eigene Seite, Wortwolke oder Kreisdiagramm auszuwählen. Anschließend werden sämtliche Dateien generiert und im Projektordner abgespeichert.
+Das Skript [select.php](select.php) erlaubt es dem Benutzer, Felder für die Darstellung als eigene Seite, Wortwolke oder Kreisdiagramm auszuwählen. Anschließend werden sämtliche Dateien generiert und im Projektordner abgespeichert.
 Verwendete Dateien und Funktionen:
 - Datei [select.php](select.php)
     - makeSelectForm\(\)
