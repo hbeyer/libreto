@@ -48,9 +48,9 @@ Die Datei **annotate.php** enthält ein Formular zur Aufnahme von Metadaten zur 
 Verwendete Dateien und Funktionen:
 - Datei **makeXML.php**
     - saveXML\(\)
-- Datei *makeCSV.php*
+- Datei **makeCSV.php**
     - makeCSV\(\)
-- Datei *makeTEI.php*
+- Datei **makeTEI.php**
     - makeTEI\(\)
 
 #### Anreichern mit Geodaten
@@ -65,17 +65,17 @@ Verwendete Dateien und Funktionen:
     - *geoDataArchiveEntry*
 	
 #### Datenexport in den GeoBrowser
-Die Datei *geoBrowser.php* erstellt die Dateien printingPlaces.kml und printingPlaces.csv im Projektordner, die sich für den Upload in den DARIAH GeoBrowser eignen. Nach erfolgtem manuellem Upload muss die Storage ID des Datensets eingegeben werden.
+Die Datei **geoBrowser.php** erstellt die Dateien **printingPlaces.kml** und **printingPlaces.csv** im Projektordner, die sich für den Upload in den DARIAH GeoBrowser eignen. Nach erfolgtem manuellem Upload muss die Storage ID des Datensets eingegeben werden.
 Verwendete Dateien und Funktionen:
-- Datei *makeGeoDataSheet.php*
+- Datei **makeGeoDataSheet.php**
     - makeGeoDataSheet\(\)
-- Datei *makeHead.php*
+- Datei **makeHead.php**
     - makeGeoBrowserLink\(\)
 
 #### Anreicherung mit biographischen Links
-Die Datei *beacon.php* lädt und durchsucht BEACON-Dateien auf Vorkommen der erfassten GND-Nummern für Personen.
+Die Datei **beacon.php** lädt und durchsucht BEACON-Dateien auf Vorkommen der erfassten GND-Nummern für Personen.
 Verwendete Dateien und Funktionen:
-- Datei *storeBeacon.php*
+- Datei **storeBeacon.php**
     - cacheBeacon\(\)
     - storeBeacon\(\)
     - addBeacon\(\)
@@ -83,26 +83,26 @@ Verwendete Dateien und Funktionen:
 #### Feldauswahl
 Die Datei *select.php* erlaubt es dem Benutzer, Felder für die Darstellung als eigene Seite, Wortwolke oder Kreisdiagramm auszuwählen. Anschließend werden sämtliche Dateien generiert und im Projektordner abgespeichert.
 Verwendete Dateien und Funktionen:
-- Datei *select.php*
+- Datei **select.php**
     - makeSelectForm\(\)
     - insertFacetsToCatalogue\(\)
     - makeStartPage\(\)
     - zipFolderContent\(\)
-- Datei *addToSolr.php*
+- Datei **addToSolr.php**
     - makeSOLRArray\(\)
     - addMetaDataSOLR\(\)
     - saveSOLRXML\(\)
-- Datei *makeSection.php*
+- Datei **makeSection.php**
     - makeSections\(\)
     - joinVolumes\(\)
     - makeList\(\)
-- Datei *makeNavigation.php*
+- Datei **makeNavigation.php**
     - makeToC\(\)
-- Datei *makeHead.php*
+- Datei **makeHead.php**
     - makeHead\(\)
-- Datei *encode.php*
+- Datei **encode.php**
     - fileNameTrans\(\)
-- Datei *makeCloudList.php*
+- Datei **makeCloudList.php**
     - makeCloudPageContent\(\)
-- Datei *makeDoughnutList.php*
+- Datei **makeDoughnutList.php**
     - makeDoughnutPageContent\(\)
