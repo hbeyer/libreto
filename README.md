@@ -44,7 +44,7 @@ Verwendete Dateien und Funktionen:
     - makeUploadName\(\)
 
 #### Aufnahme von Metadaten
-Die Datei **annotate.php** enthält ein Formular zur Aufnahme von Metadaten zur Sammlung und zum Altkatalog. Diese werden in der Variable $_SESSION['catalogueObject'] als Objekt der Klasse *catalogue* gespeichert. Dann wird unter user ein projektspezifischer Ordner angelegt und in diesem die Rohdaten in CSV, XML und TEI gespeichert. 
+Die Datei **annotate.php** enthält ein Formular zur Aufnahme von Metadaten zur Sammlung und zum Altkatalog. Diese werden in der Variable `$_SESSION['catalogueObject']` als Objekt der Klasse *catalogue* gespeichert. Dann wird unter user ein projektspezifischer Ordner angelegt und in diesem die Rohdaten in CSV, XML und TEI gespeichert. 
 Verwendete Dateien und Funktionen:
 - Datei **makeXML.php**
     - saveXML\(\)
