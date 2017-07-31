@@ -54,7 +54,7 @@ Verwendete Dateien und Funktionen:
     - makeTEI\(\)
 
 #### Anreichern mit Geodaten
-Die Datei **geodata.php** reichert die Ortsdaten (die in jedem *item* unter $places abgespeichert sind) mit Geodaten an. Bei Einträgen, die bereits einen Identifier (geoNames oder GND) haben, werden zunächst die bereits erhobenen Daten unter geoDataArchive durchsucht. Ist der Identifier dort nicht vorhanden, werden die Daten aus dem Netz geladen. Orte ohne Identifier werden in einem Formular angezeigt, in dem der Nutzer die Möglichkeit zum Nachtragen erhält.
+Die Datei **geodata.php** reichert die Ortsdaten (die in jedem *item* unter `$places` abgespeichert sind) mit Geodaten an. Bei Einträgen, die bereits einen Identifier (geoNames oder GND) haben, werden zunächst die bereits erhobenen Daten unter geoDataArchive durchsucht. Ist der Identifier dort nicht vorhanden, werden die Daten aus dem Netz geladen. Orte ohne Identifier werden in einem Formular angezeigt, in dem der Nutzer die Möglichkeit zum Nachtragen erhält.
 Verwendete Dateien und Funktionen:
 - Datei **geodata.php**
     - makeGeoDataForm\(\)
@@ -81,7 +81,7 @@ Verwendete Dateien und Funktionen:
     - addBeacon\(\)
 	
 #### Feldauswahl
-Die Datei *select.php* erlaubt es dem Benutzer, Felder für die Darstellung als eigene Seite, Wortwolke oder Kreisdiagramm auszuwählen. Anschließend werden sämtliche Dateien generiert und im Projektordner abgespeichert.
+Die Datei **select.php** erlaubt es dem Benutzer, Felder für die Darstellung als eigene Seite, Wortwolke oder Kreisdiagramm auszuwählen. Anschließend werden sämtliche Dateien generiert und im Projektordner abgespeichert.
 Verwendete Dateien und Funktionen:
 - Datei **select.php**
     - makeSelectForm\(\)
