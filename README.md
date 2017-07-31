@@ -32,8 +32,8 @@ Rufen Sie **load.php** im Browser auf und folgen Sie den Anweisungen des Program
 Die Datei **load.php** lädt die Daten im CSV-, XML oder MODS-Format. Die Daten werden als serialisierte Objekte in einer Datei unter upload/files zwischengespeichert.
 Verwendete Dateien und Funktionen:
 - Datei **loadCSV.php**
-    - validateCSV()
-	- loadCSV()
+    - validateCSV\(\)
+    - loadCSV\(\)
 - Datei **loadXML.php**
     - validateXML()
 	- loadXML()
