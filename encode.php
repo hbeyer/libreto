@@ -234,4 +234,12 @@ function translateRoleTEI($role) {
 	return($result);
 }
 
+function makeUploadName($string) {
+	$salt = '07zhsuioedfzha87';
+	$saltedString = $salt.$string.date('U');
+	$name = hash('sha256', $saltedString);
+	$name = substr($name, 0, 12);
+	return($name);
+}
+
 ?>

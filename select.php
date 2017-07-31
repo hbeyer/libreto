@@ -81,13 +81,6 @@ session_start();
 			if($data) {
 				echo 'Serialisierten Daten geladen.<br/>';
 			}
-					
-			makeGeoDataSheet($data, $_SESSION['folderName'], 'KML');
-			makeGeoDataSheet($data, $_SESSION['folderName'], 'CSV');
-			
-			if(file_exists($_SESSION['folderName'].'/printingPlaces.csv') and file_exists($_SESSION['folderName'].'/printingPlaces.kml')) {
-				echo 'Geodaten-Sheets gespeichert.<br/>';
-			}
 			
 			$fileNameSOLR = $_SESSION['folderName'].'/'.$catalogue->fileName;
 			$SOLRArray = makeSOLRArray($data);
