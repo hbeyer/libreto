@@ -35,74 +35,74 @@ Verwendete Dateien und Funktionen:
     - validateCSV\(\)
     - loadCSV\(\)
 - Datei **loadXML.php**
-    - validateXML()
-	- loadXML()
-	- transformMODS()
+    - validateXML\(\)
+    - loadXML\(\)
+    - transformMODS\(\)
 - Datei **makeCSV.php**
-    - makeCSV()
+    - makeCSV\(\)
 - Datei **encode.php**
-    - makeUploadName()
+    - makeUploadName\(\)
 
 #### Aufnahme von Metadaten
 Die Datei **annotate.php** enthält ein Formular zur Aufnahme von Metadaten zur Sammlung und zum Altkatalog. Diese werden in der Variable $_SESSION['catalogueObject'] als Objekt der Klasse *catalogue* gespeichert. Dann wird unter user ein projektspezifischer Ordner angelegt und in diesem die Rohdaten in CSV, XML und TEI gespeichert. 
 Verwendete Dateien und Funktionen:
 - Datei **makeXML.php**
-    - saveXML()
+    - saveXML\(\)
 - Datei *makeCSV.php*
-    - makeCSV()
+    - makeCSV\(\)
 - Datei *makeTEI.php*
-    - makeTEI()
+    - makeTEI\(\)
 
 #### Anreichern mit Geodaten
 Die Datei **geodata.php** reichert die Ortsdaten (die in jedem *item* unter $places abgespeichert sind) mit Geodaten an. Bei Einträgen, die bereits einen Identifier (geoNames oder GND) haben, werden zunächst die bereits erhobenen Daten unter geoDataArchive durchsucht. Ist der Identifier dort nicht vorhanden, werden die Daten aus dem Netz geladen. Orte ohne Identifier werden in einem Formular angezeigt, in dem der Nutzer die Möglichkeit zum Nachtragen erhält.
 Verwendete Dateien und Funktionen:
 - Datei **geodata.php**
-    - makeGeoDataForm()
-	- makeGeoDataFormRow()
-	- addPostedDataToArchive()
+    - makeGeoDataForm\(\)
+    - makeGeoDataFormRow\(\)
+    - addPostedDataToArchive\(\)
 - Datei **makeGeoDataArchive.php**
     - *geoDataArchive*
-	- *geoDataArchiveEntry*
+    - *geoDataArchiveEntry*
 	
 #### Datenexport in den GeoBrowser
 Die Datei *geoBrowser.php* erstellt die Dateien printingPlaces.kml und printingPlaces.csv im Projektordner, die sich für den Upload in den DARIAH GeoBrowser eignen. Nach erfolgtem manuellem Upload muss die Storage ID des Datensets eingegeben werden.
 Verwendete Dateien und Funktionen:
 - Datei *makeGeoDataSheet.php*
-    - makeGeoDataSheet()
+    - makeGeoDataSheet\(\)
 - Datei *makeHead.php*
-    - makeGeoBrowserLink()
+    - makeGeoBrowserLink\(\)
 
 #### Anreicherung mit biographischen Links
 Die Datei *beacon.php* lädt und durchsucht BEACON-Dateien auf Vorkommen der erfassten GND-Nummern für Personen.
 Verwendete Dateien und Funktionen:
 - Datei *storeBeacon.php*
-    - cacheBeacon()
-	- storeBeacon()
-	- addBeacon()
+    - cacheBeacon\(\)
+    - storeBeacon\(\)
+    - addBeacon\(\)
 	
 #### Feldauswahl
 Die Datei *select.php* erlaubt es dem Benutzer, Felder für die Darstellung als eigene Seite, Wortwolke oder Kreisdiagramm auszuwählen. Anschließend werden sämtliche Dateien generiert und im Projektordner abgespeichert.
 Verwendete Dateien und Funktionen:
 - Datei *select.php*
-    - makeSelectForm()
-	- insertFacetsToCatalogue()
-	- makeStartPage()
-	- zipFolderContent()
+    - makeSelectForm\(\)
+    - insertFacetsToCatalogue\(\)
+    - makeStartPage\(\)
+    - zipFolderContent\(\)
 - Datei *addToSolr.php*
-    - makeSOLRArray()
-	- addMetaDataSOLR()
-	- saveSOLRXML()
+    - makeSOLRArray\(\)
+    - addMetaDataSOLR\(\)
+    - saveSOLRXML\(\)
 - Datei *makeSection.php*
-    - makeSections()
-	- joinVolumes()
-	- makeList()
+    - makeSections\(\)
+    - joinVolumes\(\)
+    - makeList\(\)
 - Datei *makeNavigation.php*
-    - makeToC()
+    - makeToC\(\)
 - Datei *makeHead.php*
-    - makeHead()
+    - makeHead\(\)
 - Datei *encode.php*
-    - fileNameTrans()
+    - fileNameTrans\(\)
 - Datei *makeCloudList.php*
-    - makeCloudPageContent()
+    - makeCloudPageContent\(\)
 - Datei *makeDoughnutList.php*
-    - makeDoughnutPageContent()
+    - makeDoughnutPageContent\(\)
