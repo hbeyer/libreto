@@ -44,10 +44,8 @@ Verwendete Dateien und Funktionen:
     - makeUploadName\(\)
 
 #### Aufnahme von Metadaten
-Das Skript [annotate.php](annotate.php) enthält ein Formular zur Aufnahme von Metadaten zur Sammlung und zum Altkatalog. Diese werden in der Variable `$_SESSION['catalogueObject']` als Objekt der Klasse *catalogue* gespeichert. Dann wird unter user ein projektspezifischer Ordner angelegt und in diesem die Rohdaten in CSV, XML und TEI gespeichert. 
+Das Skript [annotate.php](annotate.php) enthält ein Formular zur Aufnahme von Metadaten zur Sammlung und zum Altkatalog. Diese werden in der Variable `$_SESSION['catalogueObject']` als Objekt der Klasse *catalogue* gespeichert. Dann wird unter user ein projektspezifischer Ordner angelegt und in diesem die Rohdaten in CSV und TEI gespeichert. 
 Verwendete Dateien und Funktionen:
-- Datei [makeXML.php](makeXML.php)
-    - saveXML\(\)
 - Datei [makeCSV.php](makeCSV.php)
     - makeCSV\(\)
 - Datei [makeTEI.php](makeTEI.php)
@@ -81,13 +79,15 @@ Verwendete Dateien und Funktionen:
     - addBeacon\(\)
 	
 #### Feldauswahl
-Das Skript [select.php](select.php) erlaubt es dem Benutzer, Felder für die Darstellung als eigene Seite, Wortwolke oder Kreisdiagramm auszuwählen. Anschließend werden sämtliche Dateien generiert und im Projektordner abgespeichert.
+Das Skript [select.php](select.php) erlaubt es dem Benutzer, Felder für die Darstellung als eigene Seite, Wortwolke oder Kreisdiagramm auszuwählen. Anschließend werden sämtliche HTML-Dateien sowie die XML- und SOLR-Datei generiert und im Projektordner abgespeichert.
 Verwendete Dateien und Funktionen:
 - Datei [select.php](select.php)
     - makeSelectForm\(\)
     - insertFacetsToCatalogue\(\)
     - makeStartPage\(\)
     - zipFolderContent\(\)
+- Datei [makeXML.php](makeXML.php)
+    - saveXML\(\)	
 - Datei [addToSolr.php](addToSolr.php)
     - makeSOLRArray\(\)
     - addMetaDataSOLR\(\)
