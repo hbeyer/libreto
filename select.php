@@ -2,6 +2,7 @@
 include('classDefinition.php');
 include('settings.php');
 include('makeGeoDataSheet.php');
+include('makeXML.php');
 include('addToSolr.php');
 include('encode.php');
 include('makeIndex.php');
@@ -81,6 +82,11 @@ session_start();
 			if($data) {
 				echo 'Serialisierten Daten geladen.<br/>';
 			}
+			
+			saveXML($data, $catalogue, $_SESSION['folderName']);
+			if(file_exists($_SESSION['folderName'].'/'.$catalogue->fileName.'.xml')) {
+				echo $_SESSION['folderName'].'/'.$catalogue->fileName.'.xml erstellt.<br/>';
+			}			
 			
 			$fileNameSOLR = $_SESSION['folderName'].'/'.$catalogue->fileName;
 			$SOLRArray = makeSOLRArray($data);

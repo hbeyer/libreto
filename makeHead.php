@@ -30,7 +30,7 @@ function makeHead($thisCatalogue, $navigation, $field) {
 		$doughnutEntry = '<li><a href="'.$fileName.'-doughnut.html" title="Kreisdiagramme">Kreisdiagramme</a></li>';
 	}
 	
-	$geoBrowserLink = makeGeoBrowserLink($thisCatalogue->GeoBrowserStorageID, $thisCatalogue->year);
+	$geoBrowserLink = makeGeoBrowserLink($thisCatalogue->geoBrowserStorageID, $thisCatalogue->year);
 	
 	$frontMatter = '<!DOCTYPE html>
 <html lang="en">

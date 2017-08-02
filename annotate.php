@@ -173,7 +173,7 @@ session_start();
 				$dataString = file_get_contents($folderName.'/dataPHP');
 				$data = unserialize($dataString);
 				unset($dataString);
-				saveXML($data, $catalogue, $folderName);
+				//saveXML($data, $catalogue, $folderName); Hier nicht sinnvoll wegen geoBrowserStorageID
 				makeCSV($data, $folderName, $catalogue->fileName);
 				makeTEI($data, $folderName, $catalogue);
 				echo '<p>Die Metadaten wurden gespeichert.<br />';

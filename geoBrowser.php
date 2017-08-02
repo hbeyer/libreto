@@ -80,7 +80,7 @@ include('makeHead.php');
 		}
 		elseif($test1 == 1 and $test2 == 1) {
 			$catalogue = unserialize($_SESSION['catalogueObject']);
-			$catalogue->GeoBrowserStorageID = $_POST['storageID'];
+			$catalogue->geoBrowserStorageID = $_POST['storageID'];
 			$geoBrowserLink = makeGeoBrowserLink($_POST['storageID'], $catalogue->year);
 			$_SESSION['catalogueObject'] = serialize($catalogue);
 			$_SESSION['storageID'] = 1;

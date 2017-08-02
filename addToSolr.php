@@ -239,8 +239,8 @@ function addMetaDataSOLR($catalogue, $flatData) {
 	if($catalogue->heading) {
 		$metaData['nameCollection'] = $catalogue->heading;
 	}
-	if($catalogue->GeoBrowserStorageID) {
-		$metaData['GeoBrowserLink'] = 'https://geobrowser.de.dariah.eu/?csv1=http://geobrowser.de.dariah.eu./storage/'.$catalogue->GeoBrowserStorageID;
+	if($catalogue->geoBrowserStorageID) {
+		$metaData['GeoBrowserLink'] = 'https://geobrowser.de.dariah.eu/?csv1=http://geobrowser.de.dariah.eu./storage/'.$catalogue->geoBrowserStorageID;
 	}
 	foreach($flatData as $item) {
 		foreach($metaData as $key => $value) {
