@@ -59,6 +59,8 @@
         <xs:element minOccurs="0" ref="mediaType"/>
         <xs:element minOccurs="0" ref="languages"/>
         <xs:element minOccurs="0" ref="manifestation"/>
+        <xs:element minOccurs="0" ref="originalItem"/>
+        <xs:element minOccurs="0" ref="work"/>        
         <xs:element minOccurs="0" ref="bound"/>
         <xs:element minOccurs="0" ref="comment"/>
         <xs:element minOccurs="0" ref="digitalCopy"/>
@@ -184,6 +186,42 @@
     </xs:simpleType>
   </xs:element>
   <xs:element name="idManifestation" type="xs:string"/>
+  
+  
+  <xs:element name="originalItem">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" ref="institutionOriginal"/>
+        <xs:element minOccurs="0" ref="shelfmarkOriginal"/>
+        <xs:element minOccurs="0" ref="provenanceAttribute"/>
+        <xs:element minOccurs="0" ref="digitalCopyOriginal"/>
+        <xs:element minOccurs="0" ref="targetOPAC"/>
+        <xs:element minOccurs="0" ref="searchID"/>                
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="institutionOriginal" type="xs:string"/>
+  <xs:element name="shelfmarkOriginal" type="xs:string"/>
+  <xs:element name="provenanceAttribute" type="xs:string"/>
+  <xs:element name="digitalCopyOriginal" type="xs:string"/>
+  <xs:element name="targetOPAC" type="xs:string"/>
+  <xs:element name="searchID" type="xs:string"/> 
+  
+  <xs:element name="work">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" ref="titleWork"/>
+        <xs:element minOccurs="0" ref="systemWork"/>
+        <xs:element minOccurs="0" ref="idWork"/>             
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="titleWork" type="xs:string"/> 
+  <xs:element name="systemWork" type="xs:string"/> 
+  <xs:element name="idWork" type="xs:string"/> 
+  
   <xs:element name="bound" type="xs:integer"/>
   <xs:element name="comment" type="xs:string"/>
   <xs:element name="digitalCopy" type="xs:anyURI"/>
