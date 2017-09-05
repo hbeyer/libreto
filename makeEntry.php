@@ -48,6 +48,7 @@ function makePublicationString($item) {
 		foreach ($item->places as $place) {
 			$placeArray[] = $place->placeName;
 		}
+		$placeString = implode($placeArray, '/');
 		$result .= $placeString.': ';
 	}
 	$publisher = $item->publisher;
