@@ -28,7 +28,7 @@
 <?php endif; ?>
 <?php if ($digiLink): ?>                    <?php echo $digiLink; ?><br />
 <?php endif; ?>
-<?php if ($item->manifestation['systemManifestation'] and $item->manifestation['idManifestation']): ?>                    Nachweis: <?php $proof = new reference($item->manifestation['systemManifestation'], $item->manifestation['idManifestation']); echo $proof->link; ?><?php else: ?> <?php echo 'Ausgabe nicht bestimmbar'; ?><br />
+<?php if ($item->manifestation['systemManifestation'] and $item->manifestation['idManifestation']): ?>                    Nachweis: <?php $proof = new reference($item->manifestation['systemManifestation'], $item->manifestation['idManifestation']); echo $proof->link; ?><br /><?php else: ?> <?php echo 'Ausgabe nicht bestimmbar'; ?><br />
 <?php endif; ?>
 <?php if ($copiesHAB): ?>                    <?php echo $copiesHAB; ?><br />
 <?php endif; ?>
