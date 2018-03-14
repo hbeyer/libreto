@@ -1,6 +1,17 @@
 ﻿<?php
 
-function makeHead($thisCatalogue, $navigation, $field) {
+function makePage($catalogue, $navigation, $pageContent, $facet) {
+	ob_start();
+	include 'templates/page.phtml';
+	$return = ob_get_contents();
+	ob_end_clean();
+    return($return);
+}
+
+
+
+
+/* function makeHead($thisCatalogue, $navigation, $field) {
 	$fileName = fileNameTrans($thisCatalogue->fileName);
 	if($thisCatalogue->year) {
 		$title = $thisCatalogue->heading.' ('.$thisCatalogue->year.')';
@@ -70,9 +81,9 @@ $foot = '
 			</div>
 		</div>
 	</body>
-</html>';
+</html>';*/
 
-function displayCatalogueMetadata($catalogue, $field) {
+/* function displayCatalogueMetadata($catalogue, $field) {
 	$return = '<p>';
 	if($catalogue->description) {
 		$return .= $catalogue->description.'</p><p>';
@@ -97,6 +108,8 @@ function displayCatalogueMetadata($catalogue, $field) {
 	$return .= '</p>';
 	return($return);
 }
+
+*/
 
 function makeGeoBrowserLink($storageID, $year) {
 	$mapDate = assignMapDate($year);

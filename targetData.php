@@ -22,6 +22,7 @@ $bases = array(
 	'oenb' => 'http://data.onb.ac.at/rec/{ID}',
 	'inka' => 'http://www.inka.uni-tuebingen.de/?inka={ID}',
 	'bvb' => 'http://gateway-bayern.de/{ID}',
+	'bsb' => 'http://gateway-bayern.de/{ID}',
 	'hbz' => 'http://lobid.org/resource/{ID}',
 	'hebis' => 'http://orsprod.rz.uni-frankfurt.de/DB=2.1/PPNSET?PPN={ID}',
 	'londonbl' => 'http://explore.bl.uk/primo_library/libweb/action/display.do?doc={ID}',
@@ -86,9 +87,56 @@ $patternSystems = array(
 	'buva' => '~BUvA ([0-9]+)~',
 	'manumed' => '~ManuMed obj[0-9]{6,10},?T?~'
 	);
+
+$namesSystems = array(
+	'vd16' => 'Verzeichnis der im deutschen Sprachbereich erschienenen Drucke des 16. Jahrhunderts', 
+	'vd17' => 'Verzeichnis der im deutschen Sprachraum erschienenen Drucke des 17. Jahrhunderts', 
+	'vd18' => 'Verzeichnis Deutscher Drucke des 18. Jahrhunderts', 
+	'edit16' => 'EDIT16 Censimento nazionale delle edizioni italiane del XVI secolo',
+	'edit' => 'EDIT16 Censimento nazionale delle edizioni italiane del XVI secolo',
+	'estc' => 'English Short Title Catalogue',
+	'ustc' => 'Universal Short Title Catalogue',
+	'swissbib' => 'swissbib',
+	'gw' => 'Gesamtkatalog der Wiegendrucke',
+	'istc' => 'Incunabula Short Title Catalogue',
+	'rero' => 'réro - Westschweizer Bibliotheksverbund',
+	'stcn' => 'Short Title Catalogue Netherlands',
+	'gbv' => 'Gemeinsamer Bibliotheksverbund (GBV)',
+	'ppn' => 'Gemeinsamer Bibliotheksverbund (GBV)',
+	'swb' => 'Online-Katalog des Südwestdeutschen Bibliotheksverbundes (SWB)',
+	'parisbnf' => 'Bibliothèque nationale de France (BnF)',
+	'loc' => 'Library of Congress (LoC)',
+	'oenb' => 'Österreichische Nationalbibliothek (ÖNK)',
+	'inka' => 'Inkunabelkatalog INKA',
+	'bvb' => 'Bibliotheksverbund Bayern (BVB)',
+	'bsb' => 'Bibliotheksverbund Bayern (BVB)',
+	'hbz' => 'Hochschulbibliothekszentrum NRW (HBZ)',
+	'hebis' => 'Hessisches BibliotheksInformationsSystem (HeBIS)',
+	'londonbl' => 'British Library',
+	'denhaagkb' => 'Koninklijke Bibliotheek | Nationale bibliotheek van Nederland',
+	'kopenhagenkb' => 'Det Kongelige Bibliotek - København',
+	'copac' => 'Copac (Verbundkatalog Großbritannien)',
+	'sudoc' => 'Catalogue du Système Universitaire de Documentation (Sudoc)',
+	'unicat' => 'Union Catalogue of Belgian Libraries (UniCat)',
+	'sbn' => 'Catalogo del Servizio Bibliotecario Nazionale (OPAC SBN)',
+	'sbb' => 'Staatsbibliothek zu Berlin – Preußischer Kulturbesitz (StaBiKat)',
+	'dnb' => 'Deutsche Nationalbibliothek (DNB)',
+	'lbvoe' => 'Landesbibliothekenverbund Österreich / Südtirol',
+	'ubantwerpen' => 'Universiteit Antwerpen – Bibliotheek',
+	'ubgent' => 'Universiteitsbibliotheek Gent',
+	'josiah' => 'Classic Josiah Brown University Library Catalogue',
+	'solo' => 'Search Oxford Libraries Online',
+	'uul' => 'Universiteit Utrecht – Universiteitsbibliotheek',
+	'nebis' => 'Netzwerk von Bibliotheken und Informationsstellen in der Schweiz (NEBIS)',
+	'buva' => 'Bibliotheek van de Universiteit van Amsterdam – Catalogus',
+	'manumed' => 'Manuscripta Mediaevalia',
+    'dnb' => 'Gemeinsame Normdatei (GND)',
+    'wikipedia' => 'Wikipedia'
+	);
 	
 $basesWorks = array(
 	'dnb' => 'http://d-nb.info/gnd/{ID}',
+	'gnd' => 'http://d-nb.info/gnd/{ID}',
 	'wikipedia' => 'https://de.wikipedia.org/wiki/{ID}'
 );	
 	

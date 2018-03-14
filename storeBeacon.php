@@ -3,6 +3,47 @@
 date_default_timezone_set('Europe/Amsterdam');
 
 function cacheBeacon($sources, $seconds, $user) {
+    ini_set('user_agent',$user);
+	//Get the current date
+	$date = date('U');
+	//Get the date saved in file changeDate, create this file if not existent
+	if (file_exists('beaconFiles/changeDate') == FALSE) {
+		file_put_contents('beaconFiles/changeDate', $date);
+	}
+	$changeDate = file_get_contents('beaconFiles/changeDate');
+	$age = $date - $changeDate;
+	$test = 0;
+	// Download new files if necessary
+	if($age > $seconds) {
+		foreach($sources as $key => $source) {
+			$beaconFile = file_get_contents($source['location']);
+			if($beaconFile) {
+				file_put_contents('beaconFiles/'.$key, $beaconFile);
+			}
+		}
+		//Set the change date file to the current date
+		file_put_contents('beaconFiles/changeDate', $date);
+	}
+    else {
+       	// Test whether all Beacon files are present in the folder beaconFiles
+        $missing = array();
+	    foreach($sources as $key => $source) {
+		    if(file_exists('beaconFiles/'.$key) == FALSE) {
+			    $missing[] = $key;
+		    }
+	    }
+        if($missing != array()) {
+            foreach($missing as $key) {
+			    $beaconFile = file_get_contents($sources[$key]['location']);
+			    if($beaconFile) {
+				    file_put_contents('beaconFiles/'.$key, $beaconFile);
+			    }        
+            }
+        }
+    }
+}
+
+/* function cacheBeacon($sources, $seconds, $user) {
 	//Get the current date
 	$date = date('U');
 	//Get the date saved in file changeDate, create this file if not existent
@@ -34,7 +75,7 @@ function cacheBeacon($sources, $seconds, $user) {
 		//Set the change date file to the current date
 		file_put_contents('beaconFiles/changeDate', $date);
 	}
-}
+} */
 
 function storeBeacon($data, $folderName, $selectedBeacon = 'all') {
 	include('beaconSources.php');

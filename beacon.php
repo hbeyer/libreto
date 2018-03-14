@@ -6,6 +6,7 @@ include('encode.php');
 include('makeGeoDataArchive.php');
 include('beaconSources.php');
 include('storeBeacon.php');
+include('makeRDF.php');
 ?>
 
 <!DOCTYPE html>
@@ -38,7 +39,7 @@ include('storeBeacon.php');
 
 		if($test1 == 1) {
 			if($test2 == 0) {
-				echo '<p>Auf der Seite &bdquo;Personen&rdquo; werden Links zu weiterf&uuml;renden Informationen soweit vorhanden angezeigt. Wenn Sie bestimmte Nachweissysteme ganz ausschlie&szlig;en wollen, k&ouml;nnen Sie sie hier abw&auml;hlen.</p>';
+				echo '<p>Auf der Seite &bdquo;Personen&rdquo; werden Links zu weiterf&uuml;hrenden Informationen soweit vorhanden angezeigt. Wenn Sie bestimmte Nachweissysteme ganz ausschlie&szlig;en wollen, k&ouml;nnen Sie sie hier abw&auml;hlen.</p>';
 				echo '<form action="beacon.php" method="post">';
 				foreach($beaconSources as $key => $value) {
 					echo '
@@ -68,9 +69,17 @@ include('storeBeacon.php');
 				
 				//Update of the stored Beacon files if they are older than one week, i. e. 604800 Seconds
 				cacheBeacon($beaconSources, 604800, $userAgentHTTP);
-				storeBeacon($data, $_SESSION['folderName'], $selectedBeacon);
+
+                // Write the beacon information into the collected data				
+                storeBeacon($data, $_SESSION['folderName'], $selectedBeacon);
 				$data = addBeacon($data, $_SESSION['folderName']);
+                
+                // Export the data to RDF (RdfXML and Turtle)
+                $catalogue = unserialize($_SESSION['catalogueObject']);
+                saveRDF($data, $catalogue, $_SESSION['folderName']);
+
 				$_SESSION['beacon'] = 1;
+
 				$serialize = serialize($data);
 				file_put_contents($_SESSION['folderName'].'/dataPHP', $serialize);
 				

@@ -9,8 +9,7 @@ function makeCloudPageContent($data, $facets, $folder) {
 					'.makeButtonBar($facets).'
 				</div>
 			</div>
-				<div id="wordcloud"></div>
-			</div>';
+		    <div id="wordcloud"></div>';
 	return($return);
 }
 
@@ -34,7 +33,7 @@ function makeButtonBar($facets) {
 }
 
 function makeCloudScript($data, $facets, $folder) {
-	$content = '<script type="text/javascript">
+	$content = '<script>
 	';
 	foreach($facets as $facet) {
 		$json = makeCloudJSON($data, $facet, 1000, $folder);

@@ -1,20 +1,13 @@
 ﻿<?php
 
-function makeEntry($item, $base) {
+function makeEntry($item, $base, $count) {
 	$persons = makePersons($item->persons);
 	$published = makePublicationString($item);
 	$originalLink = makeOriginalLink($item->originalItem);
 	$sourceLink = makeSourceLink($item, $base);
-	$workLink = makeWorkLink($item->work);
 	$digiLink = makeDigiLink($item->digitalCopy);
-	$proof = makeProof($item);
 	$copiesHAB = makeCopiesHAB($item->copiesHAB);
-	$comment = makeComment($item->comment);
-	ob_start();
-	include 'entry.phtml';
-	$return = ob_get_contents();
-	ob_end_clean();
-	return($return);
+	include 'templates/entry.phtml';
 }
 
 function makePersons($persons) {
@@ -109,7 +102,7 @@ function makeSourceLink($item, $base) {
 	return($result);
 }
 
-function makeWorkLink($work) {
+/*function makeWorkLink($work) {
 	if($work['systemWork'] and $work['idWork']) {
 	include('targetData.php');
 	$systemClean = translateAnchor($work['systemWork']);
@@ -119,7 +112,7 @@ function makeWorkLink($work) {
 	$link = makeBeaconLink($work['idWork'], $target);
 	$result = 'Werk: <a href="'.$link.'" title="Datensatz zum Werk aufrufen" target="_blank">'.$work['systemWork'].' '.$work['idWork'].'</a>';
 	}
-}
+} */
 	
 function makeDigiLink($digi) {
 	$title = 'Digitalisat';
@@ -140,48 +133,10 @@ function makeDigiLink($digi) {
 	return($result);
 }
 	
-function makeProof($item) {
-	include('targetData.php');
-	$system = '';
-	if(isset($item->manifestation['systemManifestation'])) {
-		$system = $item->manifestation['systemManifestation'];
-	}
-	$id = '';
-	if(isset($item->manifestation['idManifestation'])) {
-		$id = $item->manifestation['idManifestation'];
-	}
-	$result = '';
-	$systemClean = translateAnchor($system);
-	$systemClean = strtolower(str_replace(' ', '', $systemClean));
-	$hay = strtolower('#'.$system.$id);
-	if(strrpos($hay, 'bestimm') != 0 or ($system == '' and $id == '')) {
-		$result = 'Ausgabe nicht bestimmbar';
-	}
-	elseif(strrpos($hay, 'nach') != 0) {
-		$result = 'Ausgabe nicht nachgewiesen';
-		}
-	elseif(array_key_exists($systemClean, $bases)) {
-		if($systemClean == 'parisbnf' and substr($id, 5, 0 == 'FRBNF')) {
-			$id = substr($id, 5);
-		}
-		if($systemClean == 'buva') {
-			$id = str_pad($id, 9, '0');			
-		}
-		$translateID = array('{ID}' => $id);
-		$link = strtr($bases[$systemClean], $translateID);
-		$result = '<span class="heading_info">Nachweis: </span><a href="'.$link.'" target="_blank">'.$system.'</a>';
-	}
-	else {
-		$page = '';
-		if($id != '') {
-			$page = ', '.$id;
-		}
-		$result = '<span class="heading_info">Nachweis: </span>'.$system.$page;
-	}
-	return($result);
-}
-
 function makeCopiesHAB($copies) {
+    if (!$copies) {
+        return(NULL);
+    }
 	$base = 'http://opac.lbs-braunschweig.gbv.de/DB=2/SET=31/TTL=1/CMD?ACT=SRCHA&TRM=sgb+';
 	$links = array();
 	$translation = array('(' => '', ')' => '');
@@ -190,31 +145,20 @@ function makeCopiesHAB($copies) {
 		$links[] = '<a href="'.$base.urlencode($copyOPAC).'" target="_blank">'.$copy.'</a>';
 	}
 	$result = implode('; ', $links);
-	$result = 'Exemplare der HAB: '.$result;
-	return($result);
+    return('Exemplare der HAB: '.$result);
 }
 
 function makeComment($text) {
-	include('targetData.php');
-	$result = '';
-	if($text != '') {
-		foreach($patternSystems as $key => $pattern) {
-			$target = $bases[$key];
-			$text = insertLink($text, $pattern, $target);
-			}
-		$result = '<span class="comment">'.$text.'</span>';
-	}
-	return($result);
-}
-
-// The function automatically replaces the identifiers the patterns of which are listed in targetData.php by links to the respective database
-function insertLink($text, $pattern, $target) {
-	$targetArray = explode('{ID}', $target, 2);
-	$base = $targetArray[0];
-	$end = $targetArray[1];
-	$replacement = '<a href="'.$base.'$1'.$end.'" target="_blank">$0</a>';
-	$text = preg_replace($pattern, $replacement, $text);
-	return($text);
+    foreach(reference::PATTERNSYSTEMS as $key => $pattern) {
+        preg_match($pattern, $text, $match);
+        if (isset($match[1])) {
+            $base = reference::BASES[$key];
+            $link = strtr($base, array('{ID}' => $match[1]));
+            $replacement = '<a href="'.$link.'" target="_blank">'.$match[0].'</a>';
+            $text = preg_replace($pattern, $replacement, $text);
+        }
+    }
+    return($text);
 }
 	
 ?>	

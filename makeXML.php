@@ -135,7 +135,6 @@ function appendAssocArrayToDOM($parent, $array, $dom) {
 }
 
 function appendNumericArrayToDOM($parent, $array, $dom, $fieldName = 'subfield') {
-	var_dump($array);
 	foreach($array as $value) {
 		//$value = replaceAmp($value);
 		$node = $dom->createElement($fieldName);

@@ -5,13 +5,15 @@ include('makeGeoDataSheet.php');
 include('makeXML.php');
 include('addToSolr.php');
 include('encode.php');
+include('auxiliaryFunctions.php');
 include('makeIndex.php');
 include('makeSection.php');
 include('makeNavigation.php');
-include('makeHead.php');
+include('makePage.php');
 include('makeEntry.php');
 include('makeCloudList.php');
 include('makeDoughnutList.php');
+include('class_reference.php');
 session_start();
 
 ?>
@@ -25,8 +27,6 @@ session_start();
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-		
-		
 		
 	</head>
 		<body>
@@ -136,11 +136,13 @@ session_start();
 			$count = 0;
 			
 			foreach($structures as $structure) {
-				$facet = $facets[$count];
-				$navigation = makeNavigation($catalogue->fileName, $tocs, $facet);
-				$content = makeHead($catalogue, $navigation, $facet);
+				$facet = $facets[$count]; 
+				$navigation = makeNavigation($catalogue, $tocs, $facet);
+                $pageContent = makeList($structure, $catalogue);
+                $content = makePage($catalogue, $navigation, $pageContent, $facet);
+				/* $content = makeHead($catalogue, $navigation, $facet);
 				$content .= makeList($structure, $catalogue, $_SESSION['folderName']);
-				$content .= $foot;
+				$content .= $foot; */
 				$fileName = fileNameTrans($_SESSION['folderName'].'/'.$catalogue->fileName).'-'.$facet.'.html';
 				if($count == 0) {
 					$firstFileName = $fileName;
@@ -161,10 +163,12 @@ session_start();
 						
 			// Erzeugen der Seite mit den Word Clouds
 			if($catalogue->cloudFacets != array()) {
-				$navigation = makeNavigation($catalogue->fileName, $tocs, 'jqcloud');
-				$content = makeHead($catalogue, $navigation, 'jqcloud');
+				$navigation = makeNavigation($catalogue, $tocs, 'jqcloud');
+                $pageContent = makeCloudPageContent($data, $catalogue->cloudFacets, $catalogue->fileName);
+                $content = makePage($catalogue, $navigation, $pageContent, 'jqcloud');
+				/* $content = makeHead($catalogue, $navigation, 'jqcloud');
 				$content .= makeCloudPageContent($data, $catalogue->cloudFacets, $catalogue->fileName);
-				$content .= $foot;
+				$content .= $foot; */
 				$fileName = fileNameTrans($_SESSION['folderName'].'/'.$catalogue->fileName).'-wordCloud.html';
 				$datei = fopen($fileName,"w");
 				fwrite($datei, $content, 10000000);
@@ -176,10 +180,12 @@ session_start();
 
 			// Erzeugen der Seite mit den Doughnut Charts
 			if($catalogue->doughnutFacets != array()) {
-				$navigation = makeNavigation($catalogue->fileName, $tocs, 'doughnut');
-				$content = makeHead($catalogue, $navigation, 'doughnut');
+				$navigation = makeNavigation($catalogue, $tocs, 'doughnut');
+                $pageContent = makeDoughnutPageContent($data, $catalogue->doughnutFacets, $_SESSION['folderName']);
+                $content = makePage($catalogue, $navigation, $pageContent, 'doughnut');
+				/* $content = makeHead($catalogue, $navigation, 'doughnut');
 				$content .= makeDoughnutPageContent($data, $catalogue->doughnutFacets, $_SESSION['folderName']);
-				$content .= $foot;
+				$content .= $foot; */
 				$fileName = fileNameTrans($_SESSION['folderName'].'/'.$catalogue->fileName).'-doughnut.html';
 				$datei = fopen($fileName,"w");
 				fwrite($datei, $content, 10000000);
@@ -258,13 +264,22 @@ function insertFacetsToCatalogue($catalogue, $post) {
 }
 
 function zipFolderContent($folder, $fileName) {
-	$zip = new ZipArchive();
+	$zip = new ZipArchive;
 	$zipFile = $folder.'/'.$fileName.'.zip';
 	if ($zip->open($zipFile, ZipArchive::CREATE) !== TRUE) {
 		die('cannot open '.$fileName);
 	}	
 	$options = array('add_path' => $fileName.'/', 'remove_all_path' => TRUE);
-	$zip->addGlob($folder.'/*', 0, $options);
+	$zip->addGlob($folder.'/*.html', 0, $options);
+	$zip->addGlob($folder.'/*.x*', 0, $options);
+	$zip->addGlob($folder.'/*.js', 0, $options);
+	$zip->addGlob($folder.'/*.php', 0, $options);
+	$zip->addGlob($folder.'/*.c*', 0, $options);
+	$zip->addGlob($folder.'/*.ttl', 0, $options);
+	$zip->addGlob($folder.'/*.rdf', 0, $options);
+	$zip->addGlob($folder.'/*.kml', 0, $options);
+	$zip->addFile($folder.'/dataPHP', $fileName.'/dataPHP');
+
 	$zip->close();
 }
 

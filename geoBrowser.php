@@ -3,12 +3,13 @@ session_start();
 include('classDefinition.php');
 include('settings.php');
 include('encode.php');
-include('makeGeoDataArchive.php');
+include('class_geoDataArchive.php');
+include('class_geoDataArchiveEntry.php');
 include('makeGeoDataSheet.php');
 include('makeIndex.php');
 include('beaconSources.php');
 include('storeBeacon.php');
-include('makeHead.php');
+include('makePage.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">

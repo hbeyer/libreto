@@ -17,6 +17,12 @@ function replaceAmpChar($string) {
 	$string = strtr($string, $translate);
 	return($string);
 }
+
+function removeBlanks($string) {
+	$translate = array(' ' => '');
+	$string = strtr($string, $translate);
+	return($string);
+}
 	
 function translateAnchor($anchor) {
 	$translate = array('Ä' => 'ae', 'Ö' => 'oe', 'Ü' => 'ue', 'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'ß' => 'ss', ' ' => '', '&' => 'et');
@@ -140,6 +146,17 @@ function translateGenderAbbr($field) {
 	return($result);		
 }
 
+function translateGenderAbbrRDF($value) {
+    $value = strtolower($value);
+    $translation = array(
+		'm' => 'male',
+		'f' => 'female',
+		'*' => 'other'
+		);
+	$result = strtr($value, $translation);
+	return($result);		
+}
+
 
 function sortingFormat($format) {
 	$pattern = '~^([248])°$~';
@@ -240,6 +257,19 @@ function makeUploadName($string) {
 	$name = hash('sha256', $saltedString);
 	$name = substr($name, 0, 12);
 	return($name);
+}
+
+function resolveURN($urn) {
+    if (substr($urn, 0, 4) == 'urn:'){
+        $urn = 'http://nbn-resolving.de/'.$urn;
+    }
+    return($urn);
+}
+
+function resolveTarget($pattern, $id) {
+    $translation = array('{ID}' => $id);
+    $text = strtr($pattern, $translation);
+	return($text);
 }
 
 ?>

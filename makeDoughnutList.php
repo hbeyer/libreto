@@ -26,7 +26,7 @@ function makeDoughnutPageContent($data, $facets, $folder) {
 
 function makeDoughnutScript($data, $facets, $firstFacet, $folder) {
 	$content = '
-			<script type="text/javascript">
+			<script>
 ';
 	foreach($facets as $facet) {
 		$json = makeDoughnutJSON($data, $facet, $folder);

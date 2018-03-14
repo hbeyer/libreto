@@ -2,12 +2,14 @@
 include('classDefinition.php');
 include('settings.php');
 include('encode.php');
+include('auxiliaryFunctions.php');
 include('makeXML.php');
 include('makeCSV.php');
 include('makeIndex.php');
 include('makeSection.php');
 include('makeTEI.php');
 session_start();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -158,11 +160,13 @@ session_start();
 			}
 			
 			if($_SESSION['copiedToFolder'] == 0) {
-				copy ('proprietary.css', $folderName.'/proprietary.css');
+                
+                copyRecursively('assets', $folderName.'/assets');
+				/* copy ('proprietary.css', $folderName.'/proprietary.css');
 				copy ('proprietary.js', $folderName.'/proprietary.js');
 				copy ('chart.js', $folderName.'/chart.js');
-				copy ('upload/files/dataPHP-'.$_SESSION['fileNameInternal'], $folderName.'/dataPHP');
-			
+				*/
+			    copy ('upload/files/dataPHP-'.$_SESSION['fileNameInternal'], $folderName.'/dataPHP');
 				unlink('upload/files/dataPHP-'.$_SESSION['fileNameInternal']);
 				unlink('upload/files/'.$_SESSION['fileNameInternal'].'.'.$_SESSION['extension']);
 				$_SESSION['copiedToFolder'] = 1;
@@ -173,7 +177,6 @@ session_start();
 				$dataString = file_get_contents($folderName.'/dataPHP');
 				$data = unserialize($dataString);
 				unset($dataString);
-				//saveXML($data, $catalogue, $folderName); Hier nicht sinnvoll wegen geoBrowserStorageID
 				makeCSV($data, $folderName, $catalogue->fileName);
 				makeTEI($data, $folderName, $catalogue);
 				echo '<p>Die Metadaten wurden gespeichert.<br />';

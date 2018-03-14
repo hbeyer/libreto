@@ -45,7 +45,12 @@ $beaconSources = array(
 		'label' => 'Fabricius: Bibliotheca latina',
 		'location' => 'http://www.mgh-bibliothek.de/beacon/fabricius',
 		'target' => 'http://www.mgh.de/index.php?&wa72ci_url=%2Fcgi-bin%2Fmgh%2Fallegro.pl&db=opac&var5=IDN&TYP=&id=438&item5=fabricius_{ID}'
-	),			
+	),
+	'gspd' => array(
+		'label' => 'Germania Sacra Personendatenbank',
+		'location' => 'http://personendatenbank.germania-sacra.de/beacon.txt',
+		'target' => 'http://personendatenbank.germania-sacra.de/index/gnd/{ID}'
+	),	
 	'cph' => array(
 		'label' => 'Helmstedter Professorenkatalog',
 		'location' => 'http://uni-helmstedt.hab.de/beacon.php',

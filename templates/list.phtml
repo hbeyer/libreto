@@ -1,0 +1,19 @@
+<?php foreach ($structure as $section): ?>
+            <h<?php echo $section->level + 1; ?> id="<?php echo translateAnchor($section->label); ?>"><?php if ($section->quantifiedLabel): ?><?php echo $section->quantifiedLabel; ?><?php else: ?><?php echo $section->label; ?><?php endif; ?><?php if ($section->authority['system'] == 'gnd' and $section->authority['id']): ?> <a href="#<?php echo $section->authority['id'] ?>" data-toggle="collapse"><span class="glyphicon glyphicon-info-sign" style="font-size:14px"></span></a><div id="<?php echo $section->authority['id']; ?>" class="collapse"><span style="font-size:14px"><?php echo makeBeaconLinks($section->authority['id'], $catalogue->fileName); ?></div><?php endif; ?></h<?php echo $section->level + 1; ?>>
+<?php foreach ($section->content as $object): ?>
+<?php if (get_class($object) == 'item'): ?>
+            <div class="entry">
+<?php makeEntry($object, $catalogue->base, $count); $count++; ?>
+            </div>
+<?php endif; ?>
+<?php if (get_class($object) == 'volume'): ?>
+            <div class="entry"><?php if ($object->volumes > 1): ?>Sammlung in <?php echo $object->volumes; ?> B&auml;nden<?php endif; ?><?php if ($object->volumes == 1 or is_integer($object->volumes) == FALSE): ?>Sammelband<?php endif; ?>
+                <ul>
+<?php foreach($object->content as $item): ?>
+                    <li class="entry-list"><?php makeEntry($item, $catalogue->base, $count); $count++; ?></li>
+<?php endforeach; ?>
+                </ul>
+            </div>    
+<?php endif; ?>
+<?php endforeach; ?>
+<?php endforeach; ?>

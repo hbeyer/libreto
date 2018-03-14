@@ -156,111 +156,36 @@ function compareItemInVolume($a, $b) {
 // This function converts an array of objects of the class section into a list in HTML format. The variable $thisCatalogue contains an object of the type catalogue and supplies information on the fileName ($thisCatalogue->key) and the URL base of the digitized version ($thisCatalogue->base). The function displays content either as text, for monographic entries, or as unordered list, for miscellanies.
 
 
-function makeList($structuredData, $thisCatalogue, $folderName) {	
-	$count = 1;
-	$content = '';
-	foreach($structuredData as $section) {
-		$info = '';
-		$anchor = '';
-		if($section->authority['system'] == 'gnd') {
-			$info = makeCollapseBeacon($section->authority['id'], $folderName);
-			$anchor = 'person'.$section->authority['id'];
-		}
-		$content .= makeHeadline($section, $info, $anchor);
-		foreach($section->content as $item) {
-			if(get_class($item) == 'item') {
-					$content .= '
-			<div class="entry">'.makeEntry($item, $thisCatalogue->base).'
-			</div>';
-			}
-			elseif(get_class($item) == 'volume') {
-				$heading = 'Sammelband';
-				if($item->volumes > 1) {
-					$heading = 'Sammlung in '.$item->volumes.' B&auml;nden';
-				}
-				$content .= '
-			<div class="entry">'.$heading.'
-				<ul>';
-				foreach($item->content as $itemInVol) {
-					$content .= '
-					<li class="entry-list">'.makeEntry($itemInVol, $thisCatalogue->base).'
-					</li>';
-					$count++;
-				}
-				$content .= '
-				</ul>
-			</div>';
-			}
-			$count++;
-		}
-	}
-	return($content);	
-}
-	
-function makeListNew($structuredData, $thisCatalogue, $folderName) {
-	$count = 1;
-	$content = '';
-	foreach($structuredData as $section) {
-		$info = '';
-		$anchor = '';
-		if($section->authority['system'] == 'gnd') {
-			$info = makeCollapseBeacon($section->authority['id'], $folderName);
-			$anchor = 'person'.$section->authority['id'];
-		}
-		$content .= makeHeadline($section, $info, $anchor);
-		foreach($section->content as $item) {
-			if(get_class($item) == 'item') {
-					$content .= '
-			<div class="entry">'.makeEntry($item, $thisCatalogue, $count).'
-			</div>';
-			}
-			elseif(get_class($item) == 'volume') {
-				$heading = 'Sammelband';
-				if($item->volumes > 1) {
-					$heading = 'Sammlung in '.$item->volumes.' B&auml;nden';
-				}
-				$content .= '
-			<div class="entry">'.$heading.'
-				<ul>';
-				foreach($item->content as $itemInVol) {
-					$content .= '
-					<li class="entry-list">'.makeEntry($itemInVol, $thisCatalogue, $count).'
-					</li>';
-					$count++;
-				}
-				$content .= '
-				</ul>
-			</div>';
-			}
-			$count++;
-		}
-	}
-	return($content);	
-}
-
-// This is an auxiliary function for makeList, producing headlines or leaving them out (in case of facet id, 0 is assigned by function makeIndex)
-function makeHeadline($section, $info, $anchor) {
-	$level = $section->level;
-	$text = $section->quantifiedLabel;
-	if(preg_match('~.+\([123456]\)$~', $section->quantifiedLabel) or strlen($section->quantifiedLabel) < 4 or strlen($section->label) < 2) {
-			$text = $section->label;
-	}
-	$result = '';
-	if($anchor == '') {
-		$anchor = translateAnchor($section->label);
-	}
-	if($level == 2) {
-		$result = '<h3 id="'.$anchor.'">'.$text.$info.'</h3>';
-	}
-	elseif($level == 1) {
-		$result = '<h2 id="'.$anchor.'">'.$text.$info.'</h2>';
-	}
-	return($result);
+function makeList($structure, $catalogue) {
+    $count = 0;
+	ob_start();
+	include 'templates/list.phtml';
+	$return = ob_get_contents();
+	ob_end_clean();
+    return($return);
 }
 
 // The function produces a link to further information on persons. It is called by the function makeList, if GND data is submitted in $section->authority. To work, it needs serialized BEACON data in a file named beaconStore. Therefore you have to run the function storeBeacon() previously.
+
+function makeBeaconLinks($gnd, $fileName) {
+	$beaconString = file_get_contents('user/'.$fileName.'/beaconStore');
+	$beaconObject = unserialize($beaconString);
+	unset($beaconString);
+	$link = '';
+	$linkData = array('<a href="http://d-nb.info/gnd/'.$gnd.'" title="Deutsche Nationalbibliothek" target="_blank">Deutsche Nationalbibliothek</a>');
+	foreach($beaconObject->content as $beaconExtract) {
+		if(in_array($gnd, $beaconExtract->content)) {
+			$link = '<a href="'.makeBeaconLink($gnd, $beaconExtract->target).'" title="'.$beaconExtract->label.'" target="_blank">'.$beaconExtract->label.'</a>';
+			$linkData[] = $link;
+		}
+	}
+	$content = implode(' | ', $linkData);
+    return($content);
+}
 	
-function makeCollapseBeacon($gnd, $folderName) {
+
+
+/* function makeCollapseBeacon($gnd, $folderName) {
 	$beaconString = file_get_contents($folderName.'/beaconStore');
 	$beaconObject = unserialize($beaconString);
 	unset($beaconString);
@@ -277,6 +202,6 @@ function makeCollapseBeacon($gnd, $folderName) {
 		<a href="#'.$gnd.'" data-toggle="collapse"><span class="glyphicon glyphicon-info-sign" style="font-size:14px"></span></a>
 		<div id="'.$gnd.'" class="collapse"><span style="font-size:14px">'.$content.'</span></div>';
 	return($collapse);
-}
+} */
 	
 ?>
