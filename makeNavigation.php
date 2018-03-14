@@ -22,18 +22,5 @@ function makeToC($structure) {
 	}
 	return($ToC);
 }
-
-// Ist vermutlich obsolet
-function makeULContent($toc, $nameCat, $type) {
-	$result = '';
-	foreach($toc as $entry) {
-		$displayLabel = $entry['quantifiedLabel'];
-		if($type == 'persName') {
-			$displayLabel = $entry['label'];
-		}
-		$result .= '<li><a href="'.$nameCat.'-'.$type.'.html#'.translateAnchor($entry['label']).'">'.$displayLabel.'</a></li>';
-	}
-	return($result);
-}
 	
 ?>

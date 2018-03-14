@@ -140,9 +140,6 @@ session_start();
 				$navigation = makeNavigation($catalogue, $tocs, $facet);
                 $pageContent = makeList($structure, $catalogue);
                 $content = makePage($catalogue, $navigation, $pageContent, $facet);
-				/* $content = makeHead($catalogue, $navigation, $facet);
-				$content .= makeList($structure, $catalogue, $_SESSION['folderName']);
-				$content .= $foot; */
 				$fileName = fileNameTrans($_SESSION['folderName'].'/'.$catalogue->fileName).'-'.$facet.'.html';
 				if($count == 0) {
 					$firstFileName = $fileName;
@@ -166,9 +163,6 @@ session_start();
 				$navigation = makeNavigation($catalogue, $tocs, 'jqcloud');
                 $pageContent = makeCloudPageContent($data, $catalogue->cloudFacets, $catalogue->fileName);
                 $content = makePage($catalogue, $navigation, $pageContent, 'jqcloud');
-				/* $content = makeHead($catalogue, $navigation, 'jqcloud');
-				$content .= makeCloudPageContent($data, $catalogue->cloudFacets, $catalogue->fileName);
-				$content .= $foot; */
 				$fileName = fileNameTrans($_SESSION['folderName'].'/'.$catalogue->fileName).'-wordCloud.html';
 				$datei = fopen($fileName,"w");
 				fwrite($datei, $content, 10000000);
@@ -183,9 +177,6 @@ session_start();
 				$navigation = makeNavigation($catalogue, $tocs, 'doughnut');
                 $pageContent = makeDoughnutPageContent($data, $catalogue->doughnutFacets, $_SESSION['folderName']);
                 $content = makePage($catalogue, $navigation, $pageContent, 'doughnut');
-				/* $content = makeHead($catalogue, $navigation, 'doughnut');
-				$content .= makeDoughnutPageContent($data, $catalogue->doughnutFacets, $_SESSION['folderName']);
-				$content .= $foot; */
 				$fileName = fileNameTrans($_SESSION['folderName'].'/'.$catalogue->fileName).'-doughnut.html';
 				$datei = fopen($fileName,"w");
 				fwrite($datei, $content, 10000000);

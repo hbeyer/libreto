@@ -162,10 +162,6 @@ session_start();
 			if($_SESSION['copiedToFolder'] == 0) {
                 
                 copyRecursively('assets', $folderName.'/assets');
-				/* copy ('proprietary.css', $folderName.'/proprietary.css');
-				copy ('proprietary.js', $folderName.'/proprietary.js');
-				copy ('chart.js', $folderName.'/chart.js');
-				*/
 			    copy ('upload/files/dataPHP-'.$_SESSION['fileNameInternal'], $folderName.'/dataPHP');
 				unlink('upload/files/dataPHP-'.$_SESSION['fileNameInternal']);
 				unlink('upload/files/'.$_SESSION['fileNameInternal'].'.'.$_SESSION['extension']);

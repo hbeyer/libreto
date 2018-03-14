@@ -153,7 +153,7 @@ function compareItemInVolume($a, $b) {
 	}
 }
 
-// This function converts an array of objects of the class section into a list in HTML format. The variable $thisCatalogue contains an object of the type catalogue and supplies information on the fileName ($thisCatalogue->key) and the URL base of the digitized version ($thisCatalogue->base). The function displays content either as text, for monographic entries, or as unordered list, for miscellanies.
+// This function converts an array of objects of the class section into a list in HTML format. The variable $catalogue contains an object of the type catalogue. The function displays content either as text, for monographic entries, or as unordered list, for miscellanies.
 
 
 function makeList($structure, $catalogue) {
@@ -182,26 +182,5 @@ function makeBeaconLinks($gnd, $fileName) {
 	$content = implode(' | ', $linkData);
     return($content);
 }
-	
-
-
-/* function makeCollapseBeacon($gnd, $folderName) {
-	$beaconString = file_get_contents($folderName.'/beaconStore');
-	$beaconObject = unserialize($beaconString);
-	unset($beaconString);
-	$link = '';
-	$linkData = array('<a href="http://d-nb.info/gnd/'.$gnd.'" title="Deutsche Nationalbibliothek" target="_blank">Deutsche Nationalbibliothek</a>');
-	foreach($beaconObject->content as $beaconExtract) {
-		if(in_array($gnd, $beaconExtract->content)) {
-			$link = '<a href="'.makeBeaconLink($gnd, $beaconExtract->target).'" title="'.$beaconExtract->label.'" target="_blank">'.$beaconExtract->label.'</a>';
-			$linkData[] = $link;
-		}
-	}
-	$content = implode(' | ', $linkData);
-	$collapse = '
-		<a href="#'.$gnd.'" data-toggle="collapse"><span class="glyphicon glyphicon-info-sign" style="font-size:14px"></span></a>
-		<div id="'.$gnd.'" class="collapse"><span style="font-size:14px">'.$content.'</span></div>';
-	return($collapse);
-} */
 	
 ?>

@@ -101,18 +101,6 @@ function makeSourceLink($item, $base) {
 	}
 	return($result);
 }
-
-/*function makeWorkLink($work) {
-	if($work['systemWork'] and $work['idWork']) {
-	include('targetData.php');
-	$systemClean = translateAnchor($work['systemWork']);
-	$systemClean = trim($work['systemWork']);
-	$systemClean = strtolower($systemClean);
-	$target = $basesWorks($systemClean);
-	$link = makeBeaconLink($work['idWork'], $target);
-	$result = 'Werk: <a href="'.$link.'" title="Datensatz zum Werk aufrufen" target="_blank">'.$work['systemWork'].' '.$work['idWork'].'</a>';
-	}
-} */
 	
 function makeDigiLink($digi) {
 	$title = 'Digitalisat';

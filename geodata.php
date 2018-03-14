@@ -205,7 +205,6 @@ function addPostedDataToArchive() {
 			$geoNames = $_POST['geoNames_'.$count];
 			if($geoNames != '') {
 				$placeFromWeb = $archiveGeoNames->makeEntryFromGeoNames($geoNames, $userGeoNames);
-				//$placeFromWeb->label = $_SESSION['unidentifiedPlaces'][$count];
 				$placeFromWeb->label = $city;
 				$archiveGeoNames->insertEntry($placeFromWeb);
 			}
@@ -214,7 +213,6 @@ function addPostedDataToArchive() {
 			$gnd = $_POST['gnd_'.$count];
 			if($gnd != '') {
 				$placeFromWeb = $archiveGeoNames->makeEntryFromGNDTTL($gnd);
-				//$placeFromWeb->label = $_SESSION['unidentifiedPlaces'][$count];
 				$placeFromWeb->label = $city;
 				$archiveGND->insertEntry($placeFromWeb);
 			}
@@ -222,8 +220,7 @@ function addPostedDataToArchive() {
 		elseif(isset($_POST['getty_'.$count])) {
 			$getty = $_POST['getty_'.$count];
 			if($getty != '') {
-				$placeFromWeb = $archiveGetty->makeEntryFromGetty($getty);
-				//$placeFromWeb->label = $_SESSION['unidentifiedPlaces'][$count];				
+				$placeFromWeb = $archiveGetty->makeEntryFromGetty($getty);		
 				$placeFromWeb->label = $city;				
 				$archiveGetty->insertEntry($placeFromWeb);
 			}

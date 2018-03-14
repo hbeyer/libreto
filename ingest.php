@@ -116,7 +116,6 @@ function load_data_liddel($server, $user, $password, $database, $table) {
 			$rowBooks = array_map('trim', $rowBooks);
 			$thisBook = new item();
 			$thisBook->id = $rowBooks['system_no'];
-			//$thisBook->itemInVolume = getItemInVolume($rowBooks['nr']);
 			$thisBook->titleBib = htmlspecialchars($rowBooks['title']);
 			$thisBook->publisher = htmlspecialchars($rowBooks['printer']);
 			$thisBook->year = $rowBooks['date'];
