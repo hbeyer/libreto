@@ -2,6 +2,7 @@
 
 function makePage($catalogue, $navigation, $pageContent, $facet) {
 	ob_start();
+    include('settings.php');
 	include 'templates/page.phtml';
 	$return = ob_get_contents();
 	ob_end_clean();

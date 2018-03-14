@@ -43,6 +43,17 @@ div.buttonsTop {
 
 /* Formatierungen für Textteile */
 
+footer {
+    background-color: #555;
+    padding:15px;
+    text-align:center;
+    margin-top:2em;
+}
+
+a.link-footer {
+    color: white;
+}
+
 span.titleCat { 
 	display:none; 
 }

@@ -59,43 +59,53 @@
 
 <belongsTo> a owl:ObjectProperty ;
     rdfs:domain <Item> ;
-    rdfs:range <Collection> .
+    rdfs:range <Collection> ;
+	rdfs:comment "Zuordnung eines Sammlungsobjekts (Buch, Handschrift, Bild o. a.) zu einer Sammlung"@de .
 
 <collector> a owl:ObjectProperty ;
     rdfs:domain <Person> ;
-    rdfs:range <Collection> .
+    rdfs:range <Collection> ;
+	rdfs:comment "Zuordnung einer Person als Sammler/in zu einer Sammlung"@de .
 
 <containsWork> a owl:ObjectProperty ;
     rdfs:domain <Item> ;
-    rdfs:range <Work> .
+    rdfs:range <Work> ;
+	rdfs:comment "Angabe, dass ein Sammlungsobjekt ein Werk enthält"@de .
 
 <hasContext> a owl:ObjectProperty ;
     rdfs:range <Item> ;
-    rdfs:domain <PhysicalContext> .
+    rdfs:domain <PhysicalContext> ;
+	rdfs:comment "Angabe des physischen Kontextes eines Sammlungsobjekts"@de .
 
 <hasEntry> a owl:ObjectProperty ;
     rdfs:range <CatalogueEntry> ;
-    rdfs:domain <Catalogue> .
+    rdfs:domain <Catalogue> ;
+	rdfs:comment "Angabe, dass ein Katalog einer Sammlung einen Eintrag enthält, der über ein Sammlungsobjekt Auskunft gibt"@de .
 
 <hasManifestation> a owl:ObjectProperty ;
     rdfs:domain <Item> ;
-    rdfs:range <Manifestation> .
+    rdfs:range <Manifestation> ;
+	rdfs:comment "Angabe, dass ein Sammlungsobjekt eine bibliographisch nachgewiesene Ausgabe enthält"@de .
 
 <hasOriginalItem> a owl:ObjectProperty ;
     rdfs:domain <Item> ;
-    rdfs:range <OriginalItem> .
+    rdfs:range <OriginalItem> ;
+	rdfs:comment "Angabe, dass ein Sammlungsobjekt mit einem konkreten, mit Institution und Signatur/Inventarnummer identifizierbaren Objekt identisch ist"@de .
 
 <hasPlace> a owl:ObjectProperty ;
     rdfs:domain <Item> ;
-    rdfs:range <Place> .
+    rdfs:range <Place> ;
+	rdfs:comment "Zuordnung eines Publikationsortes zu einem Sammlungsobjekt"@de .
 
 <inMiscellany> a owl:ObjectProperty ;
     rdfs:range <PhysicalContext> ;
-    rdfs:domain <Miscellany> .
+    rdfs:domain <Miscellany> ;
+	rdfs:comment "Zuordnung eines Sammelbandes zum physischen Kontext eines Objekts"@de .
 
 <refersTo> a owl:ObjectProperty ;
     rdfs:domain <CatalogueEntry> ;
-    rdfs:range <Item> .
+    rdfs:range <Item> ;
+	rdfs:comment "Zuordnung eines Sammlungsobjekts zu einem Katalogeintrag"@de .
 
 # Object properties (imported)
 
@@ -110,36 +120,46 @@
 # Datatype properties (own)
 
 <bibliographicalFormat> a owl:DatatypeProperty;
- 	rdfs:domain <Item> .
+ 	rdfs:domain <Item> ;
+	rdfs:comment "Das bibliographische Format (Folio, Quart etc.) eines Buches"@de .
 
 <biographicalInformation> a owl:DatatypeProperty ;
-    rdfs:domain <Person> .
+    rdfs:domain <Person> ;
+	rdfs:comment "Ein Link zu einer Ressource, die biographische Informationen zu einer Person enthält"@de .
 
 <comment> a owl:DatatypeProperty ;
-    rdfs:domain <Item> .
+    rdfs:domain <Item> ;
+	rdfs:comment "Erklärungstext zu einem Sammlungsobjekt, der u. a. Probleme bei der Zuordnung von Ausgaben und Originalexemplaren thematisieren kann"@de .
 
 <database> a owl:DatatypeProperty ;
-    rdfs:domain <Manifestation> .
+    rdfs:domain <Manifestation> ;
+	rdfs:comment "Eine bibliographische Datenbank, in der eine Ausgabe verzeichnet ist"@de .
 
 <heading> a owl:DatatypeProperty ;
 	rdfs:domain <CatalogueEntry> ;
-	rdfs:comment "Rubrik des Altkatalogs, unter der der Eintrag gefÃ¼hrt wird"@de .
+	rdfs:comment "Rubrik des Altkatalogs, unter der der Eintrag geführt wird"@de .
 
 <historicalShelfmark> a owl:DatatypeProperty ;
-    rdfs:domain <Item> .
+    rdfs:domain <Item> ;
+	rdfs:comment "Eine Signatur, unter der das Sammlungsobjekt in der rekonstruierten Sammlung geführt wurde"@de .
+
+# Bis hierher Kommentare bearbeitet
 
 <imageURL> a owl:DatatypeProperty ;
-    rdfs:domain <CatalogueEntry> .
+    rdfs:domain <CatalogueEntry> ;
+	rdfs:comment ""@de .
 
 <number> a owl:DatatypeProperty ;
     rdfs:domain <CatalogueEntry> ;
 	rdfs:comment "Die Nummer des Eintrags im Altkatalog in Vorlageform"@de .
 
 <owner> a owl:DatatypeProperty ;
-    rdfs:domain <Catalogue>, <OriginalItem> .
+    rdfs:domain <Catalogue>, <OriginalItem> ;
+	rdfs:comment ""@de .
 
 <page> a owl:DatatypeProperty ;
-    rdfs:domain <CatalogueEntry> .
+    rdfs:domain <CatalogueEntry> ;
+	rdfs:comment ""@de .
 
 <physicalForm>  a owl:DatatypeProperty ;
 	rdfs:domain <Item> ;
@@ -149,13 +169,16 @@
 	rdfs:domain <PhysicalContext> .
 
 <provenanceAttribute> a owl:DatatypeProperty ;
-    rdfs:domain <OriginalItem> .
+    rdfs:domain <OriginalItem> ;
+	rdfs:comment ""@de .
 
 <shelfmark> a owl:DatatypeProperty ;
-    rdfs:domain <Catalogue>, <OriginalItem> .
+    rdfs:domain <Catalogue>, <OriginalItem> ;
+	rdfs:comment ""@de .
 
 <text> a owl:DatatypeProperty ;
-    rdfs:domain <CatalogueEntry> .
+    rdfs:domain <CatalogueEntry> ;
+	rdfs:comment ""@de .
 
 # Datatype properties (imported)
 
