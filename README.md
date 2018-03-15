@@ -1,9 +1,6 @@
-# Library Reconstruction Tool (LibReTo)
-A tool to create web pages visualizing historical collections of books and other items from standardized databases or metadata files.
+# LibReTo: Hinweise für Anwender und Entwickler
 
-# Hinweise für Anwender und Entwickler
-
-*Stand: 31.07.2017*
+*Stand: 14.03.2018*
 *Autor: Hartmut Beyer (beyer@hab.de)*
 
 ## Anforderungen
@@ -11,98 +8,103 @@ Die Anwendung erfordert einen Server mit PHP (getestet mit Version 7.1.1) und sc
 
 ## Installation
 Kopieren Sie alle Dateien in einen Ordner auf dem Server.
-Benennen Sie die Datei [settings.php.template](settings.php.template) um in `settings.php` und tragen Sie darin die folgenden Angaben ein:
+Benennen Sie die Datei **settings.php.template** um in **settings.php** und tragen Sie darin die folgenden Angaben ein:
 - Unter `$userGeoNames` der Login Ihres Accounts bei geoNames (http://www.geonames.org/login)
-- Unter `$userAgentHTTP` Ihren Namen in beliebiger Form.
-Rufen Sie [load.php](load.php) im Browser auf und folgen Sie den Anweisungen des Programms
+- Unter `$userAgentHTTP` Ihren Namen in beliebiger Form
+- Unter `$impressum` die URL des Impressums, das für die Publikation der Seite gültig ist
+Rufen Sie **load.php** im Browser auf und folgen Sie den Anweisungen des Programms
 
 ## Funktionsweise des Programms
 
 ### Allgemeine Ressourcen
 
-- [classDefinition.php](classDefinition.php): Enthält gebündelt alle Objektdefinitionen (ausgenommen die für Geodaten, vgl. [geoDataArchive.php](geoDataArchive.php)). Die Klasse *catalogue* enthält Metadaten zur Sammlung. Die Klasse *item* bündelt die Daten für die bibliographischen Metadaten, hinzu kommen *person* und *place* für die vorkommenden Personen und Orte. Die Klasse *section* definiert Listen von Einträgen mit Überschrift.
-- [encode.php](encode.php): Funktionen, die sich mit dem Übersetzen und Umformen von Texten und anderen Strings befassen.
-- [fieldList.php](fieldList.php): Verwaltung der Felder und Facetten, legt u. a. fest, welche Felder in welcher Form visualisiert werden können
-- [targetData.php](targetData.php): Die Zuordnung von URLs zu bestimmten Siglen, mit denen man automatisch Links auf bibliographische Nachweissysteme einfügen kann
-- [beaconSources.php](beaconSources.php): Die Liste der ausgewerteten BEACON-Dateien
+- **classDefinition.php**: Enthält gebündelt alle Objektdefinitionen (ausgenommen die für Geodaten und externe Referenzen, vgl. **class_geoDataArchive.php** und **class_reference.php**). Die Klasse *catalogue* enthält Metadaten zur Sammlung. Die Klasse *item* bündelt die Daten für die bibliographischen Metadaten, hinzu kommen *person* und *place* für die vorkommenden Personen und Orte. Die Klasse *section* definiert Listen von Einträgen mit Überschrift.
+- **encode.php**: Funktionen, die sich mit dem Übersetzen und Umformen von Texten und anderen Strings befassen.
+- **auxiliaryFunctions.php**: Allgemeine Hilfsfunktionen
+- **fieldList.php**: Verwaltung der Felder und Facetten, legt u. a. fest, welche Felder in welcher Form visualisiert werden können
+- **beaconSources.php**: Die Liste der ausgewerteten BEACON-Dateien
+- **class_geoDataArchive**  und **class_geoDataArchiveEntry**: Dienen der Sammlung und Zwischenspeicherung von Geodaten zu den verwendeten Publikationsorten.
+- **class_reference**: Zum Bilden von externen Links auf bibliographische Nachweissysteme, die auf Erfassungsebene mit einer Sigle wie "GND" und dem dazugehörigen Identifier bezeichnet sind
+
 
 ### Ablauf
 
 #### Laden der Daten
-Das Skript [load.php](load.php) lädt die Daten im CSV-, XML oder MODS-Format. Die Daten werden als serialisierte Objekte in einer Datei unter `upload/files` zwischengespeichert.
+Die Datei **load.php** lädt die Daten im CSV-, XML oder MODS-Format. Die Daten werden als serialisierte Objekte in einer Datei unter `upload/files` zwischengespeichert.
 Verwendete Dateien und Funktionen:
-- Datei [loadCSV.php](loadCSV.php)
-    - validateCSV\(\)
-    - loadCSV\(\)
-- Datei [loadXML.php](loadXML.php)
-    - validateXML\(\)
-    - loadXML\(\)
-    - transformMODS\(\)
-- Datei [makeCSV.php](makeCSV.php)
-    - makeCSV\(\)
-- Datei [encode.php](encode.php)
-    - makeUploadName\(\)
+- Datei **loadCSV.php**
+    - validateCSV()
+	- loadCSV()
+- Datei **loadXML.php**
+    - validateXML()
+	- loadXML()
+	- transformMODS()
+- Datei **makeCSV.php**
+    - makeCSV()
+- Datei **encode.php**
+    - makeUploadName()
 
 #### Aufnahme von Metadaten
-Das Skript [annotate.php](annotate.php) enthält ein Formular zur Aufnahme von Metadaten zur Sammlung und zum Altkatalog. Diese werden in der Variable `$_SESSION['catalogueObject']` als Objekt der Klasse *catalogue* gespeichert. Dann wird unter user ein projektspezifischer Ordner angelegt und in diesem die Rohdaten in CSV und TEI gespeichert. 
+Die Datei **annotate.php** enthält ein Formular zur Aufnahme von Metadaten zur Sammlung und zum Altkatalog. Diese werden in der Variable `$_SESSION` als Objekt der Klasse *catalogue* gespeichert. Dann wird unter user ein projektspezifischer Ordner angelegt und in diesem die Rohdaten in CSV, XML und TEI gespeichert. 
 Verwendete Dateien und Funktionen:
-- Datei [makeCSV.php](makeCSV.php)
-    - makeCSV\(\)
-- Datei [makeTEI.php](makeTEI.php)
-    - makeTEI\(\)
+- Datei **makeXML.php**
+    - saveXML()
+- Datei **makeCSV.php**
+    - makeCSV()
+- Datei **makeTEI.php**
+    - makeTEI()
 
 #### Anreichern mit Geodaten
-Das Skript [geodata.php](geodata.php) reichert die Ortsdaten (die in jedem *item* unter `$places` abgespeichert sind) mit Geodaten an. Bei Einträgen, die bereits einen Identifier (geoNames oder GND) haben, werden zunächst die bereits erhobenen Daten unter `geoDataArchive` durchsucht. Ist der Identifier dort nicht vorhanden, werden die Daten aus dem Netz geladen. Orte ohne Identifier werden in einem Formular angezeigt, in dem der Nutzer die Möglichkeit zum Nachtragen erhält.
+Die Datei **geodata.php** reichert die Ortsdaten (die in jedem *item* unter `$places` abgespeichert sind) mit Geodaten an. Bei Einträgen, die bereits einen Identifier (geoNames oder GND) haben, werden zunächst die bereits erhobenen Daten unter `geoDataArchive` durchsucht. Ist der Identifier dort nicht vorhanden, werden die Daten aus dem Netz geladen. Orte ohne Identifier werden in einem Formular angezeigt, wo diese nachgetragen werden können.
 Verwendete Dateien und Funktionen:
-- Datei [geodata.php](geodata.php)
-    - makeGeoDataForm\(\)
-    - makeGeoDataFormRow\(\)
-    - addPostedDataToArchive\(\)
-- Datei [makeGeoDataArchive.php](makeGeoDataArchive.php)
-    - *geoDataArchive*
-    - *geoDataArchiveEntry*
+- Datei **geodata.php**
+    - makeGeoDataForm()
+	- makeGeoDataFormRow()
+	- addPostedDataToArchive()
+- Datei **class_GeoDataArchive.php**
+- Datei **class_geoDataArchiveEntry**
 	
 #### Datenexport in den GeoBrowser
-Das Skript [geoBrowser.php](geoBrowser.php) erstellt die Dateien **printingPlaces.kml** und **printingPlaces.csv** im Projektordner, die sich für den Upload in den DARIAH GeoBrowser eignen. Nach erfolgtem manuellem Upload muss die Storage ID des Datensets eingegeben werden.
+Die Datei **geoBrowser.php** erstellt die Dateien **printingPlaces.kml** und **printingPlaces.csv** im Projektordner, die sich für den Upload in den DARIAH GeoBrowser eignen. Nach erfolgtem manuellem Upload muss die Storage ID des Datensets eingegeben werden.
 Verwendete Dateien und Funktionen:
-- Datei [makeGeoDataSheet.php](makeGeoDataSheet.php)
-    - makeGeoDataSheet\(\)
-- Datei [makeHead.php](makeHead.php)
-    - makeGeoBrowserLink\(\)
+- Datei **makeGeoDataSheet.php**
+    - makeGeoDataSheet()
+- Datei **makePage.php**
+    - makeGeoBrowserLink()
 
-#### Anreicherung mit biographischen Links
-Das Skript [beacon.php](beacon.php) lädt und durchsucht BEACON-Dateien auf Vorkommen der erfassten GND-Nummern für Personen.
+#### Anreicherung mit biographischen Links, RDF-Export
+Die Datei **beacon.php** lädt und durchsucht BEACON-Dateien auf Vorkommen der erfassten GND-Nummern für Personen. Danach werden die Daten nach RDF exportiert und in RDF/XML und Turtle im Projektordner abgespeichert
 Verwendete Dateien und Funktionen:
-- Datei [storeBeacon.php](storeBeacon.php)
-    - cacheBeacon\(\)
-    - storeBeacon\(\)
-    - addBeacon\(\)
+- Datei **storeBeacon.php**
+    - cacheBeacon()
+	- storeBeacon()
+	- addBeacon()
+- Datei **makeRDF.php**
+    - saveRDF()
 	
 #### Feldauswahl
-Das Skript [select.php](select.php) erlaubt es dem Benutzer, Felder für die Darstellung als eigene Seite, Wortwolke oder Kreisdiagramm auszuwählen. Anschließend werden sämtliche HTML-Dateien sowie die XML- und SOLR-Datei generiert und im Projektordner abgespeichert.
+Die Datei **select.php** erlaubt es dem Benutzer, Felder für die Darstellung als eigene Seite, Wortwolke oder Kreisdiagramm auszuwählen. Anschließend werden sämtliche Dateien generiert und im Projektordner abgespeichert.
 Verwendete Dateien und Funktionen:
-- Datei [select.php](select.php)
-    - makeSelectForm\(\)
-    - insertFacetsToCatalogue\(\)
-    - makeStartPage\(\)
-    - zipFolderContent\(\)
-- Datei [makeXML.php](makeXML.php)
-    - saveXML\(\)	
-- Datei [addToSolr.php](addToSolr.php)
-    - makeSOLRArray\(\)
-    - addMetaDataSOLR\(\)
-    - saveSOLRXML\(\)
-- Datei [makeSection.php](makeSection.php)
-    - makeSections\(\)
-    - joinVolumes\(\)
-    - makeList\(\)
-- Datei [makeNavigation.php](makeNavigation.php)
-    - makeToC\(\)
-- Datei [makeHead.php](makeHead.php)
-    - makeHead\(\)
-- Datei [encode.php](encode.php)
-    - fileNameTrans\(\)
-- Datei [makeCloudList.php](makeCloudList.php)
-    - makeCloudPageContent\(\)
-- Datei [makeDoughnutList.php](makeDoughnutList.php)
-    - makeDoughnutPageContent\(\)
+- Datei **select.php**
+    - makeSelectForm()
+	- insertFacetsToCatalogue()
+	- makeStartPage()
+	- zipFolderContent()
+- Datei **addToSolr.php**
+    - makeSOLRArray()
+	- addMetaDataSOLR()
+	- saveSOLRXML()
+- Datei **makeSection.php**
+    - makeSections()
+	- joinVolumes()
+	- makeList() - ruft **templates/list.phtml** auf
+- Datei **makeNavigation.php**
+    - makeToC()
+- Datei **makePage.php**
+    - makePage() - ruft **templates/page.phtml** auf
+- Datei **encode.php**
+    - fileNameTrans()
+- Datei **makeCloudList.php**
+    - makeCloudPageContent()
+- Datei **makeDoughnutList.php**
+    - makeDoughnutPageContent()
