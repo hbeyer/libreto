@@ -11,7 +11,7 @@ function makeDoughnutPageContent($data, $facets, $folder) {
 					'.makeDoughnutButtons($facets, $firstFacet).'
 				</div>
 			</div>
-			<div class="row">
+			<div class="row" style="margin-top:2em;">
 				<div class="col-sm-6">
 					<canvas id="myDoughnutChart" width="400" height="400"></canvas>
 				</div>
