@@ -20,7 +20,7 @@ function insertMetadataFromCatalogue($dom, $root, $catalogue) {
 	$metadata = $dom->createElement('metadata');
 	$metadataFields = array('heading', 'owner', 'ownerGND', 'fileName', 'title', 'base', 'place', 'year', 'institution', 'shelfmark', 'description', 'geoBrowserStorageID');
 	foreach($catalogue as $key => $value) {
-		if(in_array($key, $metadataFields)) {
+		if(in_array($key, $metadataFields) and $value) {
 			$element = $dom->createElement($key);
 			$text = $dom->createTextNode($value);
 			$element->appendChild($text);
@@ -146,11 +146,16 @@ function appendNumericArrayToDOM($parent, $array, $dom, $fieldName = 'subfield')
 }
 
 function makeSubfieldName($fieldName) {
-	$result = preg_replace('~s$~', '', $fieldName);
-	if($result == '') {
-		$result = 'subfield';
-	}
-	return($result);
+    if ($fieldName == 'copiesHAB') {
+        return('copyHAB');
+    }
+    elseif (substr($fieldName, -1) == 's') {
+        return(substr($fieldName, 0, -1));
+    }
+    elseif ($fieldName == '') {
+        return('subfield');
+    }
+    return($fieldName);
 }
 
 function expandBeaconKeys($data) {

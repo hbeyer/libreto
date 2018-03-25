@@ -70,7 +70,7 @@
 <containsWork> a owl:ObjectProperty ;
     rdfs:domain <Item> ;
     rdfs:range <Work> ;
-	rdfs:comment "Angabe, dass ein Sammlungsobjekt ein Werk enthält"@de .
+    rdfs:comment "Angabe, dass ein Sammlungsobjekt ein Werk enth&auml;lt"@de .
 
 <hasContext> a owl:ObjectProperty ;
     rdfs:range <Item> ;
@@ -80,12 +80,12 @@
 <hasEntry> a owl:ObjectProperty ;
     rdfs:range <CatalogueEntry> ;
     rdfs:domain <Catalogue> ;
-	rdfs:comment "Angabe, dass ein Katalog einer Sammlung einen Eintrag enthält, der über ein Sammlungsobjekt Auskunft gibt"@de .
+	rdfs:comment "Angabe, dass ein Katalog einer Sammlung einen Eintrag enth&auml;lt, der &uuml;ber ein Sammlungsobjekt Auskunft gibt"@de .
 
 <hasManifestation> a owl:ObjectProperty ;
     rdfs:domain <Item> ;
     rdfs:range <Manifestation> ;
-	rdfs:comment "Angabe, dass ein Sammlungsobjekt eine bibliographisch nachgewiesene Ausgabe enthält"@de .
+	rdfs:comment "Angabe, dass ein Sammlungsobjekt eine bibliographisch nachgewiesene Ausgabe enth&auml;lt"@de .
 
 <hasOriginalItem> a owl:ObjectProperty ;
     rdfs:domain <Item> ;
@@ -125,11 +125,11 @@
 
 <biographicalInformation> a owl:DatatypeProperty ;
     rdfs:domain <Person> ;
-	rdfs:comment "Ein Link zu einer Ressource, die biographische Informationen zu einer Person enthält"@de .
+	rdfs:comment "Ein Link zu einer Ressource, die biographische Informationen zu einer Person enth&auml;lt"@de .
 
 <comment> a owl:DatatypeProperty ;
     rdfs:domain <Item> ;
-	rdfs:comment "Erklärungstext zu einem Sammlungsobjekt, der u. a. Probleme bei der Zuordnung von Ausgaben und Originalexemplaren thematisieren kann"@de .
+	rdfs:comment "Erkl&auml;rungstext zu einem Sammlungsobjekt, der u. a. Probleme bei der Zuordnung von Ausgaben und Originalexemplaren thematisieren kann"@de .
 
 <database> a owl:DatatypeProperty ;
     rdfs:domain <Manifestation> ;
@@ -137,48 +137,47 @@
 
 <heading> a owl:DatatypeProperty ;
 	rdfs:domain <CatalogueEntry> ;
-	rdfs:comment "Rubrik des Altkatalogs, unter der der Eintrag geführt wird"@de .
+	rdfs:comment "Rubrik des Altkatalogs, unter der der Eintrag gef&uuml;hrt wird"@de .
 
 <historicalShelfmark> a owl:DatatypeProperty ;
     rdfs:domain <Item> ;
-	rdfs:comment "Eine Signatur, unter der das Sammlungsobjekt in der rekonstruierten Sammlung geführt wurde"@de .
-
-# Bis hierher Kommentare bearbeitet
+	rdfs:comment "Eine Signatur, unter der das Sammlungsobjekt in der rekonstruierten Sammlung gef&uuml;hrt wurde"@de .
 
 <imageURL> a owl:DatatypeProperty ;
     rdfs:domain <CatalogueEntry> ;
-	rdfs:comment ""@de .
+	rdfs:comment "Link zu einem Digitalisat der Seite, auf der der Katalogeintrag steht"@de .
 
 <number> a owl:DatatypeProperty ;
     rdfs:domain <CatalogueEntry> ;
-	rdfs:comment "Die Nummer des Eintrags im Altkatalog in Vorlageform"@de .
+	rdfs:comment "Die Nummer eines Katalogeintrags in Vorlageform"@de .
 
 <owner> a owl:DatatypeProperty ;
     rdfs:domain <Catalogue>, <OriginalItem> ;
-	rdfs:comment ""@de .
+	rdfs:comment "Institution oder Person, die ein mit Signatur identifizierbares Sammlungsobjekt besitzt"@de .
 
 <page> a owl:DatatypeProperty ;
     rdfs:domain <CatalogueEntry> ;
-	rdfs:comment ""@de .
+	rdfs:comment "Die Seite, auf der sich ein bestimmter Textabschnitt befindet"@de .
 
 <physicalForm>  a owl:DatatypeProperty ;
 	rdfs:domain <Item> ;
-	rdfs:comment "Angabe ob gebunden oder ungebunden"@de.
+	rdfs:comment "Angabe ob gebunden oder ungebunden"@de .
 
 <position>a owl:DatatypeProperty ;
-	rdfs:domain <PhysicalContext> .
+	rdfs:domain <PhysicalContext> ;
+	rdfs:comment "Die numerische Position eines Sammlungsobjektes in einem gr&ouml;&szlig;eren Verbund, insbesondere einem Sammelband"@de .
 
 <provenanceAttribute> a owl:DatatypeProperty ;
     rdfs:domain <OriginalItem> ;
-	rdfs:comment ""@de .
+	rdfs:comment "Merkmale eines erhaltenen Objekts, die auf die Zugeh&ouml;rigkeit zu einer historischen Sammlung hindeuten"@de .
 
 <shelfmark> a owl:DatatypeProperty ;
     rdfs:domain <Catalogue>, <OriginalItem> ;
-	rdfs:comment ""@de .
+	rdfs:comment "Die Signatur eines mit Signatur identifizierbaren Objekts im Bestand der besitzenden Person oder Institution"@de .
 
 <text> a owl:DatatypeProperty ;
     rdfs:domain <CatalogueEntry> ;
-	rdfs:comment ""@de .
+	rdfs:comment "W&ouml;rtliche Wiedergabe eines Katalogeintrags, der neben bibliographischen Angaben auch weitere Informationen zum Sammlungsobjekt (Bindung, Zustand, Herkunft) enthalten kann"@de .
 
 # Datatype properties (imported)
 

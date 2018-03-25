@@ -84,16 +84,16 @@ class reference {
     );
 
     const NAMESSYSTEMS = array(
-	    'vd16' => 'Verzeichnis der im deutschen Sprachbereich erschienenen Drucke des 16. Jahrhunderts', 
-	    'vd17' => 'Verzeichnis der im deutschen Sprachraum erschienenen Drucke des 17. Jahrhunderts', 
-	    'vd18' => 'Verzeichnis Deutscher Drucke des 18. Jahrhunderts', 
+	    'vd16' => 'Verzeichnis der im deutschen Sprachbereich erschienenen Drucke des 16. Jahrhunderts (VD 16)', 
+	    'vd17' => 'Verzeichnis der im deutschen Sprachraum erschienenen Drucke des 17. Jahrhunderts (VD 17)', 
+	    'vd18' => 'Verzeichnis Deutscher Drucke des 18. Jahrhunderts (VD 18)', 
 	    'edit16' => 'EDIT16 Censimento nazionale delle edizioni italiane del XVI secolo',
 	    'edit' => 'EDIT16 Censimento nazionale delle edizioni italiane del XVI secolo',
 	    'estc' => 'English Short Title Catalogue',
-	    'ustc' => 'Universal Short Title Catalogue',
-	    'swissbib' => 'swissbib',
+	    'ustc' => 'Universal Short Title Catalogue (USTC)',
+	    'swissbib' => 'Swissbib',
 	    'gw' => 'Gesamtkatalog der Wiegendrucke',
-	    'istc' => 'Incunabula Short Title Catalogue',
+	    'istc' => 'Incunabula Short Title Catalogue (ISTC)',
 	    'rero' => 'réro - Westschweizer Bibliotheksverbund',
 	    'stcn' => 'Short Title Catalogue Netherlands',
 	    'gbv' => 'Gemeinsamer Bibliotheksverbund (GBV)',
