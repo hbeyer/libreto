@@ -1,272 +1,292 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-         xmlns:owl="http://www.w3.org/2002/07/owl#"
-         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
 
-  <owl:Class rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Catalogue">
+  <owl:Class rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Catalogue">
     <rdfs:label xml:lang="en">Catalogue</rdfs:label>
     <rdfs:label xml:lang="de">Altkatalog</rdfs:label>
     <rdfs:comment xml:lang="de">Ein Katalog, der zur Zusammensetzung einer Sammlung zu einem bestimmten Zeitpunkt Auskunft gibt</rdfs:comment>
   </owl:Class>
 
-  <owl:Class rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/CatalogueEntry">
+  <owl:Class rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#CatalogueEntry">
     <rdfs:label xml:lang="en">Entry</rdfs:label>
     <rdfs:label xml:lang="de">Eintrag</rdfs:label>
     <rdfs:comment xml:lang="de">Ein Eintrag im Katalog, der ein Sammlungsobjekt der Sammlung zuordnet</rdfs:comment>
   </owl:Class>
 
-  <owl:Class rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Collection">
-    <rdfs:label xml:lang="de">Collection</rdfs:label>
-    <rdfs:label xml:lang="en">Sammlung</rdfs:label>
+  <owl:Class rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Collection">
+    <rdfs:label xml:lang="en">Collection</rdfs:label>
+    <rdfs:label xml:lang="de">Sammlung</rdfs:label>
     <rdfs:comment xml:lang="de">Eine erhaltene oder zu einem bestimmten Zeitpunkt in der Vergangenheit existente Bibliothek oder ähnliche Sammlung</rdfs:comment>
   </owl:Class>
 
-  <owl:Class rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Item">
+  <owl:Class rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Item">
     <rdfs:label xml:lang="en">Item</rdfs:label>
     <rdfs:label xml:lang="de">Sammlungsobjekt</rdfs:label>
     <rdfs:comment xml:lang="de">Ein Sammlungsobjekt wie Druck, Handschrift, Kunstwerk etc.</rdfs:comment>
   </owl:Class>
 
-  <owl:Class rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Manifestation">
+  <owl:Class rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Manifestation">
     <rdfs:label xml:lang="en">Manifestation</rdfs:label>
     <rdfs:label xml:lang="de">Ausgabe</rdfs:label>
     <rdfs:comment xml:lang="de">Ausgabe eines gedruckten Werkes, die in einer Bibliographie nachgewiesen ist</rdfs:comment>
   </owl:Class>
 
-  <owl:Class rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Miscellany">
+  <owl:Class rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Miscellany">
     <rdfs:label xml:lang="en">Miscellany</rdfs:label>
     <rdfs:label xml:lang="de">Sammelband</rdfs:label>
     <rdfs:comment xml:lang="de">Ein Band, in dem mehrere Sammlungsobjekte physisch verbunden sind</rdfs:comment>
   </owl:Class>
 
-  <owl:Class rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/OriginalItem">
+  <owl:Class rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#OriginalItem">
     <rdfs:label xml:lang="en">Copy</rdfs:label>
     <rdfs:label xml:lang="de">Exemplar</rdfs:label>
     <rdfs:comment xml:lang="de">Das konkrete Sammlungsobjekt, wenn es erhalten und identifizierbar ist</rdfs:comment>
   </owl:Class>
 
-  <owl:Class rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Person">
+  <owl:Class rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Person">
     <rdfs:label xml:lang="en">Person</rdfs:label>
     <rdfs:label xml:lang="de">Person</rdfs:label>
     <owl:sameAs rdf:resource="http://d-nb.info/standards/elementset/gnd#DifferentiatedPerson"/>
     <owl:sameAs rdf:resource="http://xmlns.com/foaf/spec/#term_Person"/>
   </owl:Class>
 
-  <owl:Class rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/PhysicalContext">
+  <owl:Class rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#PhysicalContext">
     <rdfs:label xml:lang="en">Physical Context</rdfs:label>
     <rdfs:label xml:lang="de">Materieller Kontext</rdfs:label>
-    <rdfs:comment xml:lang="de">Zugehörigkeit des Sammlungsobjekts zu einem Sammelband</rdfs:comment>
+    <rdfs:comment xml:lang="de">Zugehörigkeit des Sammlungsobjekts zu einem materiellen Verbund, insbesondere einem Sammelband</rdfs:comment>
   </owl:Class>
 
-  <owl:Class rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Place">
+  <owl:Class rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Place">
     <rdfs:label xml:lang="en">Place</rdfs:label>
     <rdfs:label xml:lang="de">Ort</rdfs:label>
     <owl:sameAs rdf:resource="http://www.geonames.org/ontology#Feature"/>
     <owl:sameAs rdf:resource="http://d-nb.info/standards/elementset/gnd#TerritorialCorporateBodyOrAdministrativeUnit"/>
   </owl:Class>
 
-  <owl:Class rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Work">
+  <owl:Class rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Work">
     <rdfs:label xml:lang="en">Work</rdfs:label>
     <rdfs:label xml:lang="de">Werk</rdfs:label>
-    <rdfs:comment xml:lang="de">Ein Werk, das in einem Item der Sammlung vorhanden war</rdfs:comment>
+    <rdfs:comment xml:lang="de">Ein Werk als geistige Schöpfung, das in einem Sammlungsobjekt vorliegen kann</rdfs:comment>
   </owl:Class>
 
-  <owl:ObjectProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/belongsTo">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Item"/>
-    <rdfs:range rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Collection"/>
+  <owl:ObjectProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#belongsTo">
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Item"/>
+    <rdfs:range rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Collection"/>
+    <rdfs:comment xml:lang="de">Zuordnung eines Sammlungsobjekts (Buch, Handschrift, Bild o. a.) zu einer Sammlung</rdfs:comment>
   </owl:ObjectProperty>
 
-  <owl:ObjectProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/collector">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Person"/>
-    <rdfs:range rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Collection"/>
+  <owl:ObjectProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#collector">
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Person"/>
+    <rdfs:range rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Collection"/>
+    <rdfs:comment xml:lang="de">Zuordnung einer Person als Sammler/in zu einer Sammlung</rdfs:comment>
   </owl:ObjectProperty>
 
-  <owl:ObjectProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/containsWork">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Item"/>
-    <rdfs:range rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Work"/>
+  <owl:ObjectProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#containsWork">
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Item"/>
+    <rdfs:range rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Work"/>
+    <rdfs:comment xml:lang="de">Angabe, dass ein Sammlungsobjekt ein Werk enthält</rdfs:comment>
   </owl:ObjectProperty>
 
-  <owl:ObjectProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/hasContext">
-    <rdfs:range rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Item"/>
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/PhysicalContext"/>
+  <owl:ObjectProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#hasContext">
+    <rdfs:range rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Item"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#PhysicalContext"/>
+    <rdfs:comment xml:lang="de">Angabe des physischen Kontextes eines Sammlungsobjekts</rdfs:comment>
   </owl:ObjectProperty>
 
-  <owl:ObjectProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/hasEntry">
-    <rdfs:range rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/CatalogueEntry"/>
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Catalogue"/>
+  <owl:ObjectProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#hasEntry">
+    <rdfs:range rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#CatalogueEntry"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Catalogue"/>
+    <rdfs:comment xml:lang="de">Angabe, dass ein Katalog einer Sammlung einen Eintrag enthält, der über ein Sammlungsobjekt Auskunft gibt</rdfs:comment>
   </owl:ObjectProperty>
 
-  <owl:ObjectProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/hasManifestation">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Item"/>
-    <rdfs:range rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Manifestation"/>
+  <owl:ObjectProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#hasManifestation">
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Item"/>
+    <rdfs:range rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Manifestation"/>
+    <rdfs:comment xml:lang="de">Angabe, dass ein Sammlungsobjekt eine bibliographisch nachgewiesene Ausgabe enthält</rdfs:comment>
   </owl:ObjectProperty>
 
-  <owl:ObjectProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/hasOriginalItem">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Item"/>
-    <rdfs:range rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/OriginalItem"/>
+  <owl:ObjectProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#hasOriginalItem">
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Item"/>
+    <rdfs:range rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#OriginalItem"/>
+    <rdfs:comment xml:lang="de">Angabe, dass ein Sammlungsobjekt mit einem konkreten, mit Institution und Signatur/Inventarnummer identifizierbaren Objekt identisch ist</rdfs:comment>
   </owl:ObjectProperty>
 
-  <owl:ObjectProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/hasPlace">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Item"/>
-    <rdfs:range rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Place"/>
+  <owl:ObjectProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#hasPlace">
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Item"/>
+    <rdfs:range rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Place"/>
+    <rdfs:comment xml:lang="de">Zuordnung eines Publikationsortes zu einem Sammlungsobjekt</rdfs:comment>
   </owl:ObjectProperty>
 
-  <owl:ObjectProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/inMiscellany">
-    <rdfs:range rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/PhysicalContext"/>
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Miscellany"/>
+  <owl:ObjectProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#inMiscellany">
+    <rdfs:range rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#PhysicalContext"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Miscellany"/>
+    <rdfs:comment xml:lang="de">Zuordnung eines Sammelbandes zum physischen Kontext eines Objekts</rdfs:comment>
   </owl:ObjectProperty>
 
-  <owl:ObjectProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/refersTo">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/CatalogueEntry"/>
-    <rdfs:range rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Item"/>
+  <owl:ObjectProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#refersTo">
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#CatalogueEntry"/>
+    <rdfs:range rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Item"/>
+    <rdfs:comment xml:lang="de">Zuordnung eines Sammlungsobjekts zu einem Katalogeintrag</rdfs:comment>
   </owl:ObjectProperty>
 
   <owl:ObjectProperty rdf:about="http://purl.org/dc/terms/creator">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Person"/>
-    <rdfs:range rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Item"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Person"/>
+    <rdfs:range rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Item"/>
   </owl:ObjectProperty>
 
   <owl:ObjectProperty rdf:about="http://purl.org/dc/terms/contributor">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Person"/>
-    <rdfs:range rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Item"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Person"/>
+    <rdfs:range rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Item"/>
   </owl:ObjectProperty>
 
-  <owl:DatatypeProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/bibliographicalFormat">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Item"/>
+  <owl:DatatypeProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#bibliographicalFormat">
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Item"/>
+    <rdfs:comment xml:lang="de">Das bibliographische Format (Folio, Quart etc.) eines Buches</rdfs:comment>
   </owl:DatatypeProperty>
 
-  <owl:DatatypeProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/biographicalInformation">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Person"/>
+  <owl:DatatypeProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#biographicalInformation">
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Person"/>
+    <rdfs:comment xml:lang="de">Ein Link zu einer Ressource, die biographische Informationen zu einer Person enthält</rdfs:comment>
   </owl:DatatypeProperty>
 
-  <owl:DatatypeProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/comment">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Item"/>
+  <owl:DatatypeProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#comment">
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Item"/>
+    <rdfs:comment xml:lang="de">Erklärungstext zu einem Sammlungsobjekt, der u. a. Probleme bei der Zuordnung von Ausgaben und Originalexemplaren thematisieren kann</rdfs:comment>
   </owl:DatatypeProperty>
 
-  <owl:DatatypeProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/database">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Manifestation"/>
+  <owl:DatatypeProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#database">
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Manifestation"/>
+    <rdfs:comment xml:lang="de">Eine bibliographische Datenbank, in der eine Ausgabe verzeichnet ist</rdfs:comment>
   </owl:DatatypeProperty>
 
-  <owl:DatatypeProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/heading">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/CatalogueEntry"/>
+  <owl:DatatypeProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#heading">
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#CatalogueEntry"/>
     <rdfs:comment xml:lang="de">Rubrik des Altkatalogs, unter der der Eintrag geführt wird</rdfs:comment>
   </owl:DatatypeProperty>
 
-  <owl:DatatypeProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/historicalShelfmark">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Item"/>
+  <owl:DatatypeProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#historicalShelfmark">
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Item"/>
+    <rdfs:comment xml:lang="de">Eine Signatur, unter der das Sammlungsobjekt in der rekonstruierten Sammlung geführt wurde</rdfs:comment>
   </owl:DatatypeProperty>
 
-  <owl:DatatypeProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/imageURL">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/CatalogueEntry"/>
+  <owl:DatatypeProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#imageURL">
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#CatalogueEntry"/>
+    <rdfs:comment xml:lang="de">Link zu einem Digitalisat der Seite, auf der der Katalogeintrag steht</rdfs:comment>
   </owl:DatatypeProperty>
 
-  <owl:DatatypeProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/number">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/CatalogueEntry"/>
-    <rdfs:comment xml:lang="de">Die Nummer des Eintrags im Altkatalog in Vorlageform</rdfs:comment>
+  <owl:DatatypeProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#number">
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#CatalogueEntry"/>
+    <rdfs:comment xml:lang="de">Die Nummer eines Katalogeintrags in Vorlageform</rdfs:comment>
   </owl:DatatypeProperty>
 
-  <owl:DatatypeProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/owner">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Catalogue"/>
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/OriginalItem"/>
+  <owl:DatatypeProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#owner">
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Catalogue"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#OriginalItem"/>
+    <rdfs:comment xml:lang="de">Institution oder Person, die ein mit Signatur identifizierbares Sammlungsobjekt besitzt</rdfs:comment>
   </owl:DatatypeProperty>
 
-  <owl:DatatypeProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/page">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/CatalogueEntry"/>
+  <owl:DatatypeProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#page">
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#CatalogueEntry"/>
+    <rdfs:comment xml:lang="de">Die Seite, auf der sich ein bestimmter Textabschnitt befindet</rdfs:comment>
   </owl:DatatypeProperty>
 
-  <owl:DatatypeProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/physicalForm">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Item"/>
+  <owl:DatatypeProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#physicalForm">
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Item"/>
     <rdfs:comment xml:lang="de">Angabe ob gebunden oder ungebunden</rdfs:comment>
   </owl:DatatypeProperty>
 
-  <owl:DatatypeProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/position">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/PhysicalContext"/>
+  <owl:DatatypeProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#position">
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#PhysicalContext"/>
+    <rdfs:comment xml:lang="de">Die numerische Position eines Sammlungsobjektes in einem größeren Verbund, insbesondere einem Sammelband</rdfs:comment>
   </owl:DatatypeProperty>
 
-  <owl:DatatypeProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/provenanceAttribute">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/OriginalItem"/>
+  <owl:DatatypeProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#provenanceAttribute">
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#OriginalItem"/>
+    <rdfs:comment xml:lang="de">Merkmale eines erhaltenen Objekts, die auf die Zugehörigkeit zu einer historischen Sammlung hindeuten</rdfs:comment>
   </owl:DatatypeProperty>
 
-  <owl:DatatypeProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/shelfmark">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Catalogue"/>
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/OriginalItem"/>
+  <owl:DatatypeProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#shelfmark">
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Catalogue"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#OriginalItem"/>
+    <rdfs:comment xml:lang="de">Die Signatur eines mit Signatur identifizierbaren Objekts im Bestand der besitzenden Person oder Institution</rdfs:comment>
   </owl:DatatypeProperty>
 
-  <owl:DatatypeProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology/text">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/CatalogueEntry"/>
+  <owl:DatatypeProperty rdf:about="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#text">
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#CatalogueEntry"/>
+    <rdfs:comment xml:lang="de">Wörtliche Wiedergabe eines Katalogeintrags, der neben bibliographischen Angaben auch weitere Informationen zum Sammlungsobjekt (Bindung, Zustand, Herkunft) enthalten kann</rdfs:comment>
   </owl:DatatypeProperty>
 
   <owl:DatatypeProperty rdf:about="http://dbpedia.org/ontology/genre">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Item"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Item"/>
   </owl:DatatypeProperty>
 
   <owl:DatatypeProperty rdf:about="http://dbpedia.org/ontology/numberOfVolumes">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Item"/>
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Miscellany"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Item"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Miscellany"/>
   </owl:DatatypeProperty>
 
   <owl:DatatypeProperty rdf:about="http://purl.org/dc/terms/date">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Collection"/>
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Catalogue"/>
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Item"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Collection"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Catalogue"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Item"/>
   </owl:DatatypeProperty>
 
   <owl:DatatypeProperty rdf:about="http://purl.org/dc/terms/description">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Collection"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Collection"/>
   </owl:DatatypeProperty>
 
   <owl:DatatypeProperty rdf:about="http://purl.org/dc/terms/hasFormat">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Item"/>
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/OriginalItem"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Item"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#OriginalItem"/>
     <rdfs:comment xml:lang="de">Link zum Digitalisat</rdfs:comment>
   </owl:DatatypeProperty>
 
   <owl:DatatypeProperty rdf:about="http://purl.org/dc/terms/identifier">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Place"/>
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Manifestation"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Place"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Manifestation"/>
   </owl:DatatypeProperty>
 
   <owl:DatatypeProperty rdf:about="http://purl.org/dc/terms/language">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Item"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Item"/>
   </owl:DatatypeProperty>
 
   <owl:DatatypeProperty rdf:about="http://purl.org/dc/terms/publisher">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Item"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Item"/>
   </owl:DatatypeProperty>
 
   <owl:DatatypeProperty rdf:about="http://purl.org/dc/terms/subject">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Item"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Item"/>
   </owl:DatatypeProperty>
 
   <owl:DatatypeProperty rdf:about="http://purl.org/dc/terms/title">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Collection"/>
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Item"/>
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Catalogue"/>
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Work"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Collection"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Item"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Catalogue"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Work"/>
   </owl:DatatypeProperty>
 
   <owl:DatatypeProperty rdf:about="http://purl.org/dc/terms/type">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Item"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Item"/>
   </owl:DatatypeProperty>
 
   <owl:DatatypeProperty rdf:about="http://xmlns.com/foaf/spec/#term_name">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Person"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Person"/>
   </owl:DatatypeProperty>
 
   <owl:DatatypeProperty rdf:about="http://xmlns.com/foaf/spec/#term_gender">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Person"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Person"/>
   </owl:DatatypeProperty>
 
   <owl:DatatypeProperty rdf:about="http://www.geonames.org/ontology#name">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Place"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Place"/>
   </owl:DatatypeProperty>
 
   <owl:DatatypeProperty rdf:about="http://www.w3.org/2003/01/geo/wgs84_pos#lat">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Place"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Place"/>
   </owl:DatatypeProperty>
 
   <owl:DatatypeProperty rdf:about="http://www.w3.org/2003/01/geo/wgs84_pos#long">
-    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology/Place"/>
+    <rdfs:domain rdf:resource="http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#Place"/>
   </owl:DatatypeProperty>
 
 </rdf:RDF>

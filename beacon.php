@@ -76,7 +76,7 @@ include('makeRDF.php');
                 
                 // Export the data to RDF (RdfXML and Turtle)
                 $catalogue = unserialize($_SESSION['catalogueObject']);
-                saveRDF($data, $catalogue, $_SESSION['folderName']);
+                saveRDF($data, $catalogue);
 
 				$_SESSION['beacon'] = 1;
 

@@ -8,7 +8,7 @@ function saveRDF($data, $catalogue, $base = 'http://dev.hab.de/bibliotheksrekons
     EasyRdf_Namespace::set('dcmt', 'http://purl.org/dc/terms/');
     EasyRdf_Namespace::set('foaf', 'http://xmlns.com/foaf/spec/#term_');
     EasyRdf_Namespace::set('gn', 'http://www.geonames.org/ontology#');
-    EasyRdf_Namespace::set('libreto', 'http://dev.hab.de/bibliotheksrekonstruktion/ontology/');
+    EasyRdf_Namespace::set('libreto', 'http://dev.hab.de/bibliotheksrekonstruktion/ontology.html#');
     EasyRdf_Namespace::set('br', $base);
     EasyRdf_Namespace::set('gnd', 'http://d-nb.info/gnd/');
     EasyRdf_Namespace::set('dbo', 'http://dbpedia.org/ontology/');

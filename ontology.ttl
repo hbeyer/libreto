@@ -1,231 +1,275 @@
-@base <http://dev.hab.de/bibliotheksrekonstruktion/ontology/> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix br: <http://dev.hab.de/bibliotheksrekonstruktion/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix dcmt: <http://purl.org/dc/terms/> .
+@prefix gndo: <http://d-nb.info/standards/elementset/gnd#> .
 @prefix foaf: <http://xmlns.com/foaf/spec/#term_> .
 @prefix gn: <http://www.geonames.org/ontology#> .
+@prefix dc: <http://purl.org/dc/terms/> .
 @prefix dbo: <http://dbpedia.org/ontology/> .
-@prefix gndo: <http://d-nb.info/standards/elementset/gnd#> .
-@prefix wgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
 
-# Classes
+br:ontology.html#Catalogue
+  a owl:Class ;
+  rdfs:label "Catalogue"@en, "Altkatalog"@de ;
+  rdfs:comment "Ein Katalog, der zur Zusammensetzung einer Sammlung zu einem bestimmten Zeitpunkt Auskunft gibt"@de .
 
-<Catalogue> a owl:Class ;
-    rdfs:label "Catalogue"@en, "Altkatalog"@de ;
-	rdfs:comment "Ein Katalog, der zur Zusammensetzung einer Sammlung zu einem bestimmten Zeitpunkt Auskunft gibt"@de .
+br:ontology.html#CatalogueEntry
+  a owl:Class ;
+  rdfs:label "Entry"@en, "Eintrag"@de ;
+  rdfs:comment "Ein Eintrag im Katalog, der ein Sammlungsobjekt der Sammlung zuordnet"@de .
 
-<CatalogueEntry> a owl:Class ;
-    rdfs:label "Entry"@en, "Eintrag"@de ;
-	rdfs:comment "Ein Eintrag im Katalog, der ein Sammlungsobjekt der Sammlung zuordnet"@de .
+br:ontology.html#Collection
+  a owl:Class ;
+  rdfs:label "Collection"@en, "Sammlung"@de ;
+  rdfs:comment "Eine erhaltene oder zu einem bestimmten Zeitpunkt in der Vergangenheit existente Bibliothek oder ähnliche Sammlung"@de .
 
-<Collection> a owl:Class ;
-    rdfs:label "Collection"@de, "Sammlung"@en ;
-	rdfs:comment "Eine erhaltene oder zu einem bestimmten Zeitpunkt in der Vergangenheit existente Bibliothek oder ähnliche Sammlung"@de .
+br:ontology.html#Item
+  a owl:Class ;
+  rdfs:label "Item"@en, "Sammlungsobjekt"@de ;
+  rdfs:comment "Ein Sammlungsobjekt wie Druck, Handschrift, Kunstwerk etc."@de .
 
-<Item> a owl:Class ;
-    rdfs:label "Item"@en, "Sammlungsobjekt"@de ;
-	rdfs:comment "Ein Sammlungsobjekt wie Druck, Handschrift, Kunstwerk etc."@de .
+br:ontology.html#Manifestation
+  a owl:Class ;
+  rdfs:label "Manifestation"@en, "Ausgabe"@de ;
+  rdfs:comment "Ausgabe eines gedruckten Werkes, die in einer Bibliographie nachgewiesen ist"@de .
 
-<Manifestation> a owl:Class ;
-    rdfs:label "Manifestation"@en, "Ausgabe"@de ;
-	rdfs:comment "Ausgabe eines gedruckten Werkes, die in einer Bibliographie nachgewiesen ist"@de.
+br:ontology.html#Miscellany
+  a owl:Class ;
+  rdfs:label "Miscellany"@en, "Sammelband"@de ;
+  rdfs:comment "Ein Band, in dem mehrere Sammlungsobjekte physisch verbunden sind"@de .
 
-<Miscellany> a owl:Class ;
-	rdfs:label "Miscellany"@en, "Sammelband"@de ;
-	rdfs:comment "Ein Band, in dem mehrere Sammlungsobjekte physisch verbunden sind"@de .
+br:ontology.html#OriginalItem
+  a owl:Class ;
+  rdfs:label "Copy"@en, "Exemplar"@de ;
+  rdfs:comment "Das konkrete Sammlungsobjekt, wenn es erhalten und identifizierbar ist"@de .
 
-<OriginalItem> a owl:Class ;
-    rdfs:label "Copy"@en, "Exemplar"@de ;
-	rdfs:comment "Das konkrete Sammlungsobjekt, wenn es erhalten und identifizierbar ist"@de.
+br:ontology.html#Person
+  a owl:Class ;
+  rdfs:label "Person"@en, "Person"@de ;
+  owl:sameAs gndo:DifferentiatedPerson, foaf:Person .
 
-<Person> a owl:Class ;
-    rdfs:label "Person"@en, "Person"@de ;
-	owl:sameAs <gndo:DifferentiatedPerson>, <foaf:Person> .
+br:ontology.html#PhysicalContext
+  a owl:Class ;
+  rdfs:label "Physical Context"@en, "Materieller Kontext"@de ;
+  rdfs:comment "Zugehörigkeit des Sammlungsobjekts zu einem materiellen Verbund, insbesondere einem Sammelband"@de .
 
-<PhysicalContext> a owl:Class ;
-	rdfs:label "Physical Context"@en, "Materieller Kontext"@de ;
-	rdfs:comment "Zugehörigkeit des Sammlungsobjekts zu einem Sammelband"@de .
+br:ontology.html#Place
+  a owl:Class ;
+  rdfs:label "Place"@en, "Ort"@de ;
+  owl:sameAs gn:Feature, gndo:TerritorialCorporateBodyOrAdministrativeUnit .
 
-<Place> a owl:Class ;
-    rdfs:label "Place"@en, "Ort"@de ;
-	owl:sameAs <gn:Feature>, <gndo:TerritorialCorporateBodyOrAdministrativeUnit> .
+br:ontology.html#Work
+  a owl:Class ;
+  rdfs:label "Work"@en, "Werk"@de ;
+  rdfs:comment "Ein Werk als geistige Schöpfung, das in einem Sammlungsobjekt vorliegen kann"@de .
 
-<Work> a owl:Class ;
-    rdfs:label "Work"@en, "Werk"@de ;
-	rdfs:comment "Ein Werk, das in einem Item der Sammlung vorhanden war"@de .
+br:ontology.html#belongsTo
+  a owl:ObjectProperty ;
+  rdfs:domain br:ontology.html#Item ;
+  rdfs:range br:ontology.html#Collection ;
+  rdfs:comment "Zuordnung eines Sammlungsobjekts (Buch, Handschrift, Bild o. a.) zu einer Sammlung"@de .
 
-# Object properties (own)
+br:ontology.html#collector
+  a owl:ObjectProperty ;
+  rdfs:domain br:ontology.html#Person ;
+  rdfs:range br:ontology.html#Collection ;
+  rdfs:comment "Zuordnung einer Person als Sammler/in zu einer Sammlung"@de .
 
-<belongsTo> a owl:ObjectProperty ;
-    rdfs:domain <Item> ;
-    rdfs:range <Collection> ;
-	rdfs:comment "Zuordnung eines Sammlungsobjekts (Buch, Handschrift, Bild o. a.) zu einer Sammlung"@de .
+br:ontology.html#containsWork
+  a owl:ObjectProperty ;
+  rdfs:domain br:ontology.html#Item ;
+  rdfs:range br:ontology.html#Work ;
+  rdfs:comment "Angabe, dass ein Sammlungsobjekt ein Werk enthält"@de .
 
-<collector> a owl:ObjectProperty ;
-    rdfs:domain <Person> ;
-    rdfs:range <Collection> ;
-	rdfs:comment "Zuordnung einer Person als Sammler/in zu einer Sammlung"@de .
+br:ontology.html#hasContext
+  a owl:ObjectProperty ;
+  rdfs:range br:ontology.html#Item ;
+  rdfs:domain br:ontology.html#PhysicalContext ;
+  rdfs:comment "Angabe des physischen Kontextes eines Sammlungsobjekts"@de .
 
-<containsWork> a owl:ObjectProperty ;
-    rdfs:domain <Item> ;
-    rdfs:range <Work> ;
-    rdfs:comment "Angabe, dass ein Sammlungsobjekt ein Werk enth&auml;lt"@de .
+br:ontology.html#hasEntry
+  a owl:ObjectProperty ;
+  rdfs:range br:ontology.html#CatalogueEntry ;
+  rdfs:domain br:ontology.html#Catalogue ;
+  rdfs:comment "Angabe, dass ein Katalog einer Sammlung einen Eintrag enthält, der über ein Sammlungsobjekt Auskunft gibt"@de .
 
-<hasContext> a owl:ObjectProperty ;
-    rdfs:range <Item> ;
-    rdfs:domain <PhysicalContext> ;
-	rdfs:comment "Angabe des physischen Kontextes eines Sammlungsobjekts"@de .
+br:ontology.html#hasManifestation
+  a owl:ObjectProperty ;
+  rdfs:domain br:ontology.html#Item ;
+  rdfs:range br:ontology.html#Manifestation ;
+  rdfs:comment "Angabe, dass ein Sammlungsobjekt eine bibliographisch nachgewiesene Ausgabe enthält"@de .
 
-<hasEntry> a owl:ObjectProperty ;
-    rdfs:range <CatalogueEntry> ;
-    rdfs:domain <Catalogue> ;
-	rdfs:comment "Angabe, dass ein Katalog einer Sammlung einen Eintrag enth&auml;lt, der &uuml;ber ein Sammlungsobjekt Auskunft gibt"@de .
+br:ontology.html#hasOriginalItem
+  a owl:ObjectProperty ;
+  rdfs:domain br:ontology.html#Item ;
+  rdfs:range br:ontology.html#OriginalItem ;
+  rdfs:comment "Angabe, dass ein Sammlungsobjekt mit einem konkreten, mit Institution und Signatur/Inventarnummer identifizierbaren Objekt identisch ist"@de .
 
-<hasManifestation> a owl:ObjectProperty ;
-    rdfs:domain <Item> ;
-    rdfs:range <Manifestation> ;
-	rdfs:comment "Angabe, dass ein Sammlungsobjekt eine bibliographisch nachgewiesene Ausgabe enth&auml;lt"@de .
+br:ontology.html#hasPlace
+  a owl:ObjectProperty ;
+  rdfs:domain br:ontology.html#Item ;
+  rdfs:range br:ontology.html#Place ;
+  rdfs:comment "Zuordnung eines Publikationsortes zu einem Sammlungsobjekt"@de .
 
-<hasOriginalItem> a owl:ObjectProperty ;
-    rdfs:domain <Item> ;
-    rdfs:range <OriginalItem> ;
-	rdfs:comment "Angabe, dass ein Sammlungsobjekt mit einem konkreten, mit Institution und Signatur/Inventarnummer identifizierbaren Objekt identisch ist"@de .
+br:ontology.html#inMiscellany
+  a owl:ObjectProperty ;
+  rdfs:range br:ontology.html#PhysicalContext ;
+  rdfs:domain br:ontology.html#Miscellany ;
+  rdfs:comment "Zuordnung eines Sammelbandes zum physischen Kontext eines Objekts"@de .
 
-<hasPlace> a owl:ObjectProperty ;
-    rdfs:domain <Item> ;
-    rdfs:range <Place> ;
-	rdfs:comment "Zuordnung eines Publikationsortes zu einem Sammlungsobjekt"@de .
+br:ontology.html#refersTo
+  a owl:ObjectProperty ;
+  rdfs:domain br:ontology.html#CatalogueEntry ;
+  rdfs:range br:ontology.html#Item ;
+  rdfs:comment "Zuordnung eines Sammlungsobjekts zu einem Katalogeintrag"@de .
 
-<inMiscellany> a owl:ObjectProperty ;
-    rdfs:range <PhysicalContext> ;
-    rdfs:domain <Miscellany> ;
-	rdfs:comment "Zuordnung eines Sammelbandes zum physischen Kontext eines Objekts"@de .
+dc:creator
+  a owl:ObjectProperty ;
+  rdfs:domain br:ontology.html#Person ;
+  rdfs:range br:ontology.html#Item .
 
-<refersTo> a owl:ObjectProperty ;
-    rdfs:domain <CatalogueEntry> ;
-    rdfs:range <Item> ;
-	rdfs:comment "Zuordnung eines Sammlungsobjekts zu einem Katalogeintrag"@de .
+dc:contributor
+  a owl:ObjectProperty ;
+  rdfs:domain br:ontology.html#Person ;
+  rdfs:range br:ontology.html#Item .
 
-# Object properties (imported)
+br:ontology.html#bibliographicalFormat
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#Item ;
+  rdfs:comment "Das bibliographische Format (Folio, Quart etc.) eines Buches"@de .
 
-<dcmt:creator> a owl:ObjectProperty ;
-    rdfs:domain <Person> ;
-    rdfs:range <Item> .
+br:ontology.html#biographicalInformation
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#Person ;
+  rdfs:comment "Ein Link zu einer Ressource, die biographische Informationen zu einer Person enthält"@de .
 
-<dcmt:contributor> a owl:ObjectProperty ;
-    rdfs:domain <Person> ;
-    rdfs:range <Item> .
+br:ontology.html#comment
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#Item ;
+  rdfs:comment "Erklärungstext zu einem Sammlungsobjekt, der u. a. Probleme bei der Zuordnung von Ausgaben und Originalexemplaren thematisieren kann"@de .
 
-# Datatype properties (own)
+br:ontology.html#database
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#Manifestation ;
+  rdfs:comment "Eine bibliographische Datenbank, in der eine Ausgabe verzeichnet ist"@de .
 
-<bibliographicalFormat> a owl:DatatypeProperty;
- 	rdfs:domain <Item> ;
-	rdfs:comment "Das bibliographische Format (Folio, Quart etc.) eines Buches"@de .
+br:ontology.html#heading
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#CatalogueEntry ;
+  rdfs:comment "Rubrik des Altkatalogs, unter der der Eintrag geführt wird"@de .
 
-<biographicalInformation> a owl:DatatypeProperty ;
-    rdfs:domain <Person> ;
-	rdfs:comment "Ein Link zu einer Ressource, die biographische Informationen zu einer Person enth&auml;lt"@de .
+br:ontology.html#historicalShelfmark
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#Item ;
+  rdfs:comment "Eine Signatur, unter der das Sammlungsobjekt in der rekonstruierten Sammlung geführt wurde"@de .
 
-<comment> a owl:DatatypeProperty ;
-    rdfs:domain <Item> ;
-	rdfs:comment "Erkl&auml;rungstext zu einem Sammlungsobjekt, der u. a. Probleme bei der Zuordnung von Ausgaben und Originalexemplaren thematisieren kann"@de .
+br:ontology.html#imageURL
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#CatalogueEntry ;
+  rdfs:comment "Link zu einem Digitalisat der Seite, auf der der Katalogeintrag steht"@de .
 
-<database> a owl:DatatypeProperty ;
-    rdfs:domain <Manifestation> ;
-	rdfs:comment "Eine bibliographische Datenbank, in der eine Ausgabe verzeichnet ist"@de .
+br:ontology.html#number
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#CatalogueEntry ;
+  rdfs:comment "Die Nummer eines Katalogeintrags in Vorlageform"@de .
 
-<heading> a owl:DatatypeProperty ;
-	rdfs:domain <CatalogueEntry> ;
-	rdfs:comment "Rubrik des Altkatalogs, unter der der Eintrag gef&uuml;hrt wird"@de .
+br:ontology.html#owner
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#Catalogue, br:ontology.html#OriginalItem ;
+  rdfs:comment "Institution oder Person, die ein mit Signatur identifizierbares Sammlungsobjekt besitzt"@de .
 
-<historicalShelfmark> a owl:DatatypeProperty ;
-    rdfs:domain <Item> ;
-	rdfs:comment "Eine Signatur, unter der das Sammlungsobjekt in der rekonstruierten Sammlung gef&uuml;hrt wurde"@de .
+br:ontology.html#page
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#CatalogueEntry ;
+  rdfs:comment "Die Seite, auf der sich ein bestimmter Textabschnitt befindet"@de .
 
-<imageURL> a owl:DatatypeProperty ;
-    rdfs:domain <CatalogueEntry> ;
-	rdfs:comment "Link zu einem Digitalisat der Seite, auf der der Katalogeintrag steht"@de .
+br:ontology.html#physicalForm
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#Item ;
+  rdfs:comment "Angabe ob gebunden oder ungebunden"@de .
 
-<number> a owl:DatatypeProperty ;
-    rdfs:domain <CatalogueEntry> ;
-	rdfs:comment "Die Nummer eines Katalogeintrags in Vorlageform"@de .
+br:ontology.html#position
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#PhysicalContext ;
+  rdfs:comment "Die numerische Position eines Sammlungsobjektes in einem größeren Verbund, insbesondere einem Sammelband"@de .
 
-<owner> a owl:DatatypeProperty ;
-    rdfs:domain <Catalogue>, <OriginalItem> ;
-	rdfs:comment "Institution oder Person, die ein mit Signatur identifizierbares Sammlungsobjekt besitzt"@de .
+br:ontology.html#provenanceAttribute
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#OriginalItem ;
+  rdfs:comment "Merkmale eines erhaltenen Objekts, die auf die Zugehörigkeit zu einer historischen Sammlung hindeuten"@de .
 
-<page> a owl:DatatypeProperty ;
-    rdfs:domain <CatalogueEntry> ;
-	rdfs:comment "Die Seite, auf der sich ein bestimmter Textabschnitt befindet"@de .
+br:ontology.html#shelfmark
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#Catalogue, br:ontology.html#OriginalItem ;
+  rdfs:comment "Die Signatur eines mit Signatur identifizierbaren Objekts im Bestand der besitzenden Person oder Institution"@de .
 
-<physicalForm>  a owl:DatatypeProperty ;
-	rdfs:domain <Item> ;
-	rdfs:comment "Angabe ob gebunden oder ungebunden"@de .
+br:ontology.html#text
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#CatalogueEntry ;
+  rdfs:comment "Wörtliche Wiedergabe eines Katalogeintrags, der neben bibliographischen Angaben auch weitere Informationen zum Sammlungsobjekt (Bindung, Zustand, Herkunft) enthalten kann"@de .
 
-<position>a owl:DatatypeProperty ;
-	rdfs:domain <PhysicalContext> ;
-	rdfs:comment "Die numerische Position eines Sammlungsobjektes in einem gr&ouml;&szlig;eren Verbund, insbesondere einem Sammelband"@de .
+dbo:genre
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#Item .
 
-<provenanceAttribute> a owl:DatatypeProperty ;
-    rdfs:domain <OriginalItem> ;
-	rdfs:comment "Merkmale eines erhaltenen Objekts, die auf die Zugeh&ouml;rigkeit zu einer historischen Sammlung hindeuten"@de .
+dbo:numberOfVolumes
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#Item, br:ontology.html#Miscellany .
 
-<shelfmark> a owl:DatatypeProperty ;
-    rdfs:domain <Catalogue>, <OriginalItem> ;
-	rdfs:comment "Die Signatur eines mit Signatur identifizierbaren Objekts im Bestand der besitzenden Person oder Institution"@de .
+dc:date
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#Collection, br:ontology.html#Catalogue, br:ontology.html#Item .
 
-<text> a owl:DatatypeProperty ;
-    rdfs:domain <CatalogueEntry> ;
-	rdfs:comment "W&ouml;rtliche Wiedergabe eines Katalogeintrags, der neben bibliographischen Angaben auch weitere Informationen zum Sammlungsobjekt (Bindung, Zustand, Herkunft) enthalten kann"@de .
+dc:description
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#Collection .
 
-# Datatype properties (imported)
+dc:hasFormat
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#Item, br:ontology.html#OriginalItem ;
+  rdfs:comment "Link zum Digitalisat"@de .
 
-<dbo:genre> a owl:DatatypeProperty ;
-    rdfs:domain <Item> .
+dc:identifier
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#Place, br:ontology.html#Manifestation .
 
-<dbo:numberOfVolumes>  a owl:DatatypeProperty ;
-    rdfs:domain <Item>, <Miscellany> .
+dc:language
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#Item .
 
-<dcmt:date> a owl:DatatypeProperty ;
-    rdfs:domain <Collection>, <Catalogue>, <Item> .
+dc:publisher
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#Item .
 
-<dcmt:description> a owl:DatatypeProperty ;
-    rdfs:domain <Collection> .
+dc:subject
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#Item .
 
-<dcmt:hasFormat> a owl:DatatypeProperty ;
-    rdfs:domain <Item>, <OriginalItem> ;
-    rdfs:comment "Link zum Digitalisat"@de .
+dc:title
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#Collection, br:ontology.html#Item, br:ontology.html#Catalogue, br:ontology.html#Work .
 
-<dcmt:identifier> a owl:DatatypeProperty ;
-    rdfs:domain <Place>, <Manifestation> .
+dc:type
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#Item .
 
-<dcmt:language> a owl:DatatypeProperty ;
-    rdfs:domain <Item> .
+foaf:name
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#Person .
 
-<dcmt:publisher> a owl:DatatypeProperty ;
-    rdfs:domain <Item> .
+foaf:gender
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#Person .
 
-<dcmt:subject> a owl:DatatypeProperty ;
-    rdfs:domain <Item> .
+gn:name
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#Place .
 
-<dcmt:title> a owl:DatatypeProperty ;
-    rdfs:domain <Collection>, <Item>, <Catalogue>, <Work> .
+geo:lat
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#Place .
 
-<dcmt:type> a owl:DatatypeProperty ;
-    rdfs:domain <Item> .
+geo:long
+  a owl:DatatypeProperty ;
+  rdfs:domain br:ontology.html#Place .
 
-<foaf:name> a owl:DatatypeProperty ;
-    rdfs:domain <Person> .
-
-<foaf:gender> a owl:DatatypeProperty ;
-    rdfs:domain <Person> .
-
-<gn:name> a owl:DatatypeProperty ;
-    rdfs:domain <Place> .
-
-<wgs84:lat> a owl:DatatypeProperty ;
-    rdfs:domain <Place> .
-
-<wgs84:long> a owl:DatatypeProperty ;
-    rdfs:domain <Place> .
