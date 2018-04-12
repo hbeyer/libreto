@@ -6,12 +6,6 @@ div.entry {
 	margin-top:0.5em;
 	margin-bottom:0.5em;
 }
-
-.dropdown-menu {
-    max-height: 400px;
-    overflow: hidden;
-    overflow-y: auto;
-}
 	
 .affix {
       top: 0;
@@ -40,6 +34,13 @@ ul.nav li.dropdown:hover ul.dropdown-menu {
 div.buttonsTop {
 	text-align:right
 }  */
+
+
+.dropdown-menu {
+    max-height: 400px;
+    overflow: hidden;
+    overflow-y: auto;
+}
 
 /* Formatierungen für Textteile */
 
