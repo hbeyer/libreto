@@ -186,7 +186,7 @@ function cleanCoordinate($coordinate) {
 }
 
 function removeSpecial($name) {
-	$translation = array('Á' => 'A', 'Ł' => 'L', 'Ǧ' => 'G');
+	$translation = array('Á' => 'A', 'Ł' => 'L', 'Ğ' => 'G', 'Ǧ' => 'G', 'Ĝ' => 'G', 'Ḥ' => 'H', 'ã' => 'a', 'ā' => 'a');
 	$name = strtr($name, $translation);
 	return($name);	
 }

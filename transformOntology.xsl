@@ -18,7 +18,22 @@
 <script src="assets/js/proprietary.js"/>
 </head>
 <body>
-<div class="container" style="min-height:1000px;">
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+<div class="container-fluid">
+<ul class="nav navbar-nav">
+<li><a href="index.html">Home</a></li>
+<li><a href="http://www.hab.de">HAB</a></li>
+<li><a href="http://www.mww-forschung.de">MWW</a></li>
+<li class="active"><a href="ontology.html">Ontologie</a></li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li style="margin-right:1em;"><img src="assets/images/Rotunde.png" height="50px"/></li>
+</ul>
+</div>
+</nav> 
+
+<div class="container" style="min-height:1000px;margin-top:80px;">
 
 <h1>Ontologie für das Library Reconstruction Tool (LibReTo)</h1>
 <p><a href="ontology.rdf">RDF/XML</a>, <a href="ontology.ttl">Turtle</a></p>
@@ -85,18 +100,6 @@ Objekt: <xsl:for-each select="rdfs:range">
 </xsl:template>
 
 <xsl:template name="range">
-<xsl:variable name="url"><xsl:value-of select="self::*/@rdf:resource"/></xsl:variable>
-<xsl:variable name="className"><xsl:call-template name="assignName"><xsl:with-param name="classURL"><xsl:value-of select="$url"/></xsl:with-param></xsl:call-template></xsl:variable>
-<a xmlns="http://www.w3.org/1999/xhtml" href="{$url}" title="{$className}"><xsl:value-of select="$className"></xsl:value-of></a>
-</xsl:template>
-
-<xsl:template match="rdfs:domain">
-<xsl:variable name="url"><xsl:value-of select="self::*/@rdf:resource"/></xsl:variable>
-<xsl:variable name="className"><xsl:call-template name="assignName"><xsl:with-param name="classURL"><xsl:value-of select="$url"/></xsl:with-param></xsl:call-template></xsl:variable>
-<a xmlns="http://www.w3.org/1999/xhtml" href="{$url}" title="{$className}"><xsl:value-of select="$className"></xsl:value-of></a>
-</xsl:template>
-
-<xsl:template match="rdfs:range">
 <xsl:variable name="url"><xsl:value-of select="self::*/@rdf:resource"/></xsl:variable>
 <xsl:variable name="className"><xsl:call-template name="assignName"><xsl:with-param name="classURL"><xsl:value-of select="$url"/></xsl:with-param></xsl:call-template></xsl:variable>
 <a xmlns="http://www.w3.org/1999/xhtml" href="{$url}" title="{$className}"><xsl:value-of select="$className"></xsl:value-of></a>

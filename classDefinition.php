@@ -7,7 +7,7 @@
 		public $base; //The string to be put before the image number of a digitized catalogue page
 		public $heading;
 		public $title;
-		public $place;
+		public $placeCat;
 		public $printer;
 		public $year;
 		public $institution; //Institution possessing the copy of the catalogue

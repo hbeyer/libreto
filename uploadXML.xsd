@@ -17,7 +17,7 @@
         <xs:element minOccurs="0" maxOccurs="1" ref="fileName"/>
         <xs:element minOccurs="0" maxOccurs="1" ref="title"/>
         <xs:element minOccurs="0" maxOccurs="1" ref="base"/>
-        <xs:element minOccurs="0" maxOccurs="1" ref="place"/>
+        <xs:element minOccurs="0" maxOccurs="1" ref="placeCat"/>
         <xs:element minOccurs="0" maxOccurs="1" ref="year"/>
         <xs:element minOccurs="0" maxOccurs="1" ref="institution"/>
         <xs:element minOccurs="0" maxOccurs="1" ref="shelfmark"/>
@@ -32,6 +32,7 @@
   <xs:element name="fileName" type="xs:normalizedString"/>
   <xs:element name="title" type="xs:string"/>
   <xs:element name="base" type="xs:anyURI"/>
+  <xs:element name="placeCat" type="xs:string"/>
   <xs:element name="institution" type="xs:string"/>
   <xs:element name="shelfmark" type="xs:string"/>
   <xs:element name="description" type="xs:string"/>
@@ -61,10 +62,10 @@
         <xs:element minOccurs="0" ref="languages"/>
         <xs:element minOccurs="0" ref="manifestation"/>
         <xs:element minOccurs="0" ref="originalItem"/>
-        <xs:element minOccurs="0" ref="work"/>        
+        <xs:element minOccurs="0" ref="work"/>
         <xs:element minOccurs="0" ref="bound"/>
         <xs:element minOccurs="0" ref="comment"/>
-        <xs:element minOccurs="0" ref="copiesHAB"/>        
+        <xs:element minOccurs="0" ref="copiesHAB"/>
         <xs:element minOccurs="0" ref="digitalCopy"/>
       </xs:all>
     </xs:complexType>
@@ -200,7 +201,7 @@
         <xs:element minOccurs="0" ref="provenanceAttribute"/>
         <xs:element minOccurs="0" ref="digitalCopyOriginal"/>
         <xs:element minOccurs="0" ref="targetOPAC"/>
-        <xs:element minOccurs="0" ref="searchID"/>                
+        <xs:element minOccurs="0" ref="searchID"/>
       </xs:all>
     </xs:complexType>
   </xs:element>
@@ -215,7 +216,7 @@
       <xs:all>
         <xs:element minOccurs="0" ref="titleWork"/>
         <xs:element minOccurs="0" ref="systemWork"/>
-        <xs:element minOccurs="0" ref="idWork"/>             
+        <xs:element minOccurs="0" ref="idWork"/>
       </xs:all>
     </xs:complexType>
   </xs:element>
