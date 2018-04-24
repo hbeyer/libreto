@@ -13,7 +13,7 @@ function makeTEI($data, $folder, catalogue $catalogue) {
 	$dom->load('templateTEI.xml');
 	insertMetadata($dom, $catalogue);
 	insertTranscription($dom, $data, $catalogue);
-	insertPageBreaks($dom, $data);
+	insertPageBreaks($dom, $data, $catalogue->base);
 	insertBibliography($dom, $data, $catalogue);
 	$xml = $dom->saveXML();
 	$handle = fopen($folder.'/'.$catalogue->fileName.'-tei.xml', 'w');
@@ -255,14 +255,18 @@ function insertBibliographicData($bibl, $dom, $item) {
 	return($bibl);
 }
 
-function insertPageBreaks($dom, $data) {
+function insertPageBreaks($dom, $data, $base) {
 	
 	$firstItems = array();
+    $urls = array();
 	$lastPageCat = '';
 	foreach($data as $item) {
 		$pageCat = $item->pageCat;
 		if($pageCat != $lastPageCat) {
 			$firstItems[$item->id] = $pageCat;
+            if($base) {
+                $urls[$item->id] = $base.$item->imageCat;
+            }
 		}
 		$lastPageCat = $pageCat;
 	}
@@ -270,6 +274,9 @@ function insertPageBreaks($dom, $data) {
 	foreach($firstItems as $id => $pageNo) {
 		$pb = $dom->createElement('pb');
 		$pb->setAttribute('n', $pageNo);
+        if($base and isset($urls[$id]))  {
+            $pb->setAttribute('facs', $urls[$id]);
+        }
 		
 		$xp = new DOMXPath($dom);
 		
