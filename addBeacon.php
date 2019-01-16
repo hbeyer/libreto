@@ -1,8 +1,5 @@
 <?php
 
-//include('class_beacon_repository.php');
-//include('classDefinition.php');
-
 function addBeacon($data, $repository) {
     
     $gnds = array();
@@ -26,13 +23,5 @@ function addBeacon($data, $repository) {
     }
     return($data);
 }
-
-/*
-$dataString = file_get_contents('user/bahnsen/dataPHP');
-$data = unserialize($dataString);
-$repository = new beacon_repository;
-$test = $repository->missingFiles();
-var_dump($test);
-*/
 
 ?>
