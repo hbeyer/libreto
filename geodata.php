@@ -5,8 +5,6 @@ include('settings.php');
 include('encode.php');
 include('class_geoDataArchive.php');
 include('class_geoDataArchiveEntry.php');
-include('beaconSources.php');
-include('storeBeacon.php');
 
 ?>
 <!DOCTYPE html>

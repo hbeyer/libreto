@@ -95,11 +95,11 @@ function flattenPersons($persons) {
 		$gnd = '';
 		if($person->gnd) {
 			$gnd = '#'.$person->gnd;
-			if(isset($person->beacon[0])) {
+			/*if(isset($person->beacon[0])) {
 				$fieldNameBeacon = 'beacon_'.$person->gnd;
 				$beaconString = resolveBeacon($person->beacon, $person->gnd);
 				$result[$fieldNameBeacon] = $beaconString;
-			}
+			}*/
 		}
 		if($person->role == 'author') {
 			$collectAuthors[] = $person->persName.$gnd;
@@ -167,27 +167,14 @@ function testArrayType($array) {
 	return($result);
 }
 
-function resolveBeacon($beaconArray, $gnd) {
-	include('beaconSources.php');
-	$beaconString = '';
-	foreach($beaconArray as $beaconKey) {
-		$beaconString .= $beaconSources[$beaconKey]['label'].'#'.makeBeaconLink($gnd, $beaconSources[$beaconKey]['target']).';';
-	}
-	$beaconString = trim($beaconString, ';');
-	return($beaconString);
-}
-
+// Diese Funktion ist u. U. obsolet
 function resolveManifestation($row) {
-	include('targetData.php');
-	if(isset($row['systemManifestation']) and isset($row['idManifestation'])) {
-		$systemClean = translateAnchor($row['systemManifestation']);
-		$systemClean = strtolower(str_replace(' ', '', $systemClean));
-		if(isset($bases[$systemClean])) {
-			$link = makeBeaconLink($row['idManifestation'], $bases[$systemClean]);
-			$row['titleManifestation'] = $row['systemManifestation'];
-			$row['linkManifestation'] = $link;
-			unset($row['systemManifestation'], $row['idManifestation']);
-		}
+	if(!empty($row['systemManifestation']) and !empty($row['idManifestation'])) {
+        $reference = new reference($row['systemManifestation'], $row['idManifestation']);
+        if ($reference->url) {
+            $row['linkManifestation'] = $reference->url;
+            $row['nameSystemManifestation'] = $reference->nameSystem;
+        }
 	}
 	return($row);
 }

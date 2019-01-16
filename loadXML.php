@@ -140,9 +140,9 @@ function makePersonFromNode($node) {
 		if(in_array($child->nodeName, $properties)) {
 			$person->$field = trim($child->nodeValue);
 		}
-		elseif($field == 'beacon') {
+		/*elseif($field == 'beacon') {
 			$person = insertMultiValued($person, 'beacon', $child);
-		}
+		}*/
 	}
 	return($person);
 }

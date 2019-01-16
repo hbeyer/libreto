@@ -201,7 +201,7 @@ function collectIDsSubObjects($data, $field, $subField) {
 }
 
 function collectIDsBeacon($data) {
-	include('beaconSources.php');
+    $beaconSources = $_SESSION['beaconRepository']->beacon_sources;
 	$collect = array();
 	$count = 0;
 	foreach($data as $item) {

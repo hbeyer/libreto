@@ -3,10 +3,13 @@ session_start();
 include('classDefinition.php');
 include('settings.php');
 include('encode.php');
-include('makeGeoDataArchive.php');
-include('beaconSources.php');
-include('storeBeacon.php');
+include('class_geoDataArchive.php');
+include('class_reference.php');
+include('class_beacon_repository.php');
+include('addBeacon.php');
 include('makeRDF.php');
+$repository = new beacon_repository;
+$_SESSION['beaconRepository'] = $repository;
 ?>
 
 <!DOCTYPE html>
@@ -41,11 +44,13 @@ include('makeRDF.php');
 			if($test2 == 0) {
 				echo '<p>Auf der Seite &bdquo;Personen&rdquo; werden Links zu weiterf&uuml;hrenden Informationen soweit vorhanden angezeigt. Wenn Sie bestimmte Nachweissysteme ganz ausschlie&szlig;en wollen, k&ouml;nnen Sie sie hier abw&auml;hlen.</p>';
 				echo '<form action="beacon.php" method="post">';
-				foreach($beaconSources as $key => $value) {
-					echo '
-					<div class="checkbox">
-						<label><input type="checkbox" name="'.$key.'" checked="checked">'.$value['label'].'</label>
-					</div>';
+				foreach($_SESSION['beaconRepository']->beacon_sources as $key => $value) {
+                    if (!in_array($value['label'], $_SESSION['beaconRepository']->missingFiles)) {
+					    echo '
+					    <div class="checkbox">
+						    <label><input type="checkbox" name="'.$key.'" checked="checked">'.$value['label'].'</label>
+					    </div>';
+                    }
 				}
 				echo '
 					<input type="hidden" name="beaconPosted">
@@ -56,7 +61,7 @@ include('makeRDF.php');
 			elseif($test2 == 1) {
 				$selectedBeacon = array();
 				foreach($_POST as $key => $value) {
-					if(in_array($key, $beaconKeys)) {
+					if(isset($_SESSION['beaconRepository']->beacon_sources[$key])) {
 						if($value == 'on') {
 							$selectedBeacon[] = $key;
 						}
@@ -67,13 +72,11 @@ include('makeRDF.php');
 				$data = unserialize($dataString);
 				unset($dataString);
 				
-				//Update of the stored Beacon files if they are older than one week, i. e. 604800 Seconds
-				cacheBeacon($beaconSources, 604800, $userAgentHTTP);
+                if ($_SESSION['beaconRepository']->missingFiles != array()) {
+                    echo '<p>Nicht geladen: '.implode(', ', $_SESSION['beaconRepository']->missingFiles).'</p>';
+                }
+                $data = addBeacon($data, $_SESSION['beaconRepository']);
 
-                // Write the beacon information into the collected data				
-                storeBeacon($data, $_SESSION['folderName'], $selectedBeacon);
-				$data = addBeacon($data, $_SESSION['folderName']);
-                
                 // Export the data to RDF (RdfXML and Turtle)
                 $catalogue = unserialize($_SESSION['catalogueObject']);
                 saveRDF($data, $catalogue);

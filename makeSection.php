@@ -10,6 +10,7 @@ function makeSections($data, $field) {
 		$section->label = $entry->label;
 		$section->level = $entry->level;
 		$section->authority = $entry->authority;
+        
 		$section->geoData = $entry->geoData;
 		$count = 1;
 		foreach($entry->content as $idItem) {
@@ -165,22 +166,10 @@ function makeList($structure, $catalogue) {
     return($return);
 }
 
-// The function produces a link to further information on persons. It is called by the function makeList, if GND data is submitted in $section->authority. To work, it needs serialized BEACON data in a file named beaconStore. Therefore you have to run the function storeBeacon() previously.
-
-function makeBeaconLinks($gnd, $fileName) {
-	$beaconString = file_get_contents('user/'.$fileName.'/beaconStore');
-	$beaconObject = unserialize($beaconString);
-	unset($beaconString);
-	$link = '';
-	$linkData = array('<a href="http://d-nb.info/gnd/'.$gnd.'" title="Deutsche Nationalbibliothek" target="_blank">Deutsche Nationalbibliothek</a>');
-	foreach($beaconObject->content as $beaconExtract) {
-		if(in_array($gnd, $beaconExtract->content)) {
-			$link = '<a href="'.makeBeaconLink($gnd, $beaconExtract->target).'" title="'.$beaconExtract->label.'" target="_blank">'.$beaconExtract->label.'</a>';
-			$linkData[] = $link;
-		}
-	}
-	$content = implode(' | ', $linkData);
-    return($content);
+function makeBeaconLinks($gnd, $repository) {
+    $linkArray = $repository->getLinks($gnd);
+    array_unshift($linkArray, '<a href="http://d-nb.info/gnd/'.$gnd.'" target="_blank">DNB</a>');
+    return(implode(' | ', $linkArray));
 }
-	
+
 ?>

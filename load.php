@@ -25,6 +25,7 @@ $_SESSION['extension'] = '';
 $_SESSION['unidentifiedPlaces'] = array();
 $_SESSION['catalogueObject'] = NULL;
 $_SESSION['folderName'] = '';
+$_SESSION['beaconRepository'] = NULL;
 
 // Create the necessary directories if not already there
 $directories = array('user', 'beaconFiles', 'geoDataArchive', 'upload', 'upload/files', 'download');

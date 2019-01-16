@@ -1,7 +1,6 @@
 ﻿<?php
 include('classDefinition.php');
 include('settings.php');
-include('makeGeoDataSheet.php');
 include('makeXML.php');
 include('addToSolr.php');
 include('encode.php');
@@ -14,6 +13,7 @@ include('makeEntry.php');
 include('makeCloudList.php');
 include('makeDoughnutList.php');
 include('class_reference.php');
+include('class_beacon_repository.php');
 session_start();
 
 ?>
@@ -202,7 +202,7 @@ session_start();
 function makeSelectForm() {
 	include('fieldList.php');
 	$result = '';
-	$checkedFields = array('persName', 'year', 'placeName', 'subject');
+	$checkedFields = array('persName', 'year', 'placeName', 'subjects', 'genres', 'languages', 'publisher');
 	$checked = '';
 	foreach($checkboxFields as $field) {
 		if(in_array($field, $checkedFields)) {

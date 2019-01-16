@@ -236,14 +236,20 @@ function addPerson($graph, $catalogue, $item, $person) {
             $personResource->addLiteral('foaf:gender', $gender, 'en');
         }
     }
-    if ($person->beacon and $person->gnd) {
-    include('beaconSources.php');
-        foreach ($person->beacon as $key){
-            $link = makeBeaconLink($person->gnd, $beaconSources[$key]['target']);
-            if ($link) {
-                $personResource->addLiteral('libreto:biographicalInformation', $link);
+    if ($person->gnd) {
+        $identifierGND = new EasyRdf_Literal($person->gnd, null, 'http://d-nb.info/standards/elementset/gnd#gndIdentifier');
+        $personResource->add('dcmt:identifier', $identifierGND);
+
+    /*    if ($person->beacon and $person->gnd) {
+        include('beaconSources.php');
+            foreach ($person->beacon as $key){
+                $link = makeBeaconLink($person->gnd, $beaconSources[$key]['target']);
+                if ($link) {
+                    $personResource->addLiteral('libreto:biographicalInformation', $link);
+                }
             }
         }
+    */
     }
     $property = 'dcmt:contributor';
     if ($person->role == 'author' or $person->role == 'creator') {
@@ -276,35 +282,27 @@ function addPhysicalContext($graph, $data, $catalogue) {
 }
 
 function addManifestation($graph, $itemResource, $item) {
-    include('targetData.php');
-    $system = strtolower(translateAnchor($item->manifestation['systemManifestation']));
-    $base = $bases[$system];
-    if ($base) {
-        $uri = resolveTarget($base, $item->manifestation['idManifestation']);
-        $manifestation = $graph->resource($uri, 'libreto:Manifestation');
-        $database = $namesSystems[$system];
-        if ($database)  {
-            $manifestation->addLiteral('libreto:database', $database);
-        }
-        $identifier = $item->manifestation['systemManifestation'].'_'.$item->manifestation['idManifestation'];
-        $manifestation->addLiteral('dcmt:identifier', $identifier);
-        $itemResource->addResource('libreto:hasManifestation', $manifestation);
+    $reference = new reference($item->manifestation['systemManifestation'], $item->manifestation['idManifestation']);
+    if (!$reference->url) {
+        return(null);
     }
+    $manifestation = $graph->resource($reference->url, 'libreto:Manifestation'); // Hier kommt eine ungültige reference (null)
+    $manifestation->addLiteral('libreto:database', $reference->nameSystem);
+    $manifestation->addLiteral('dcmt:identifier', $item->manifestation['idManifestation']);
+    $itemResource->addResource('libreto:hasManifestation', $manifestation);
     return;
 }
 
 function addWork($graph, $itemResource, $item) {
-    include('targetData.php');
-    $system = strtolower(translateAnchor($item->work['systemWork']));
-    if (isset($basesWorks[$system])) {
-        $base = $basesWorks[$system];
-        $uri = resolveTarget($base, $item->work['idWork']);
-        $work = $graph->resource($uri, 'libreto:Work');
-        if ($item->work['titleWork']) {
-            $work->addLiteral('dcmt:title', $item->work['titleWork']);
-        }
-        $itemResource->addResource('libreto:containsWork', $work);
+    $reference = new reference($item->manifestation['systemManifestation'], $item->manifestation['idManifestation'], 'work');
+    if (!$reference) {
+        return(null);
     }
+    $work = $graph->resource($reference->url, 'libreto:Work');
+    if ($item->work['titleWork']) {
+        $work->addLiteral('dcmt:title', $item->work['titleWork']);
+    }
+    $itemResource->addResource('libreto:containsWork', $work);
     return;
 }
 
