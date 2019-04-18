@@ -1,5 +1,7 @@
 # LibReTo: Hinweise für Anwender und Entwickler
 
+*Wichtiger Hinweis: LibReTo wird in der aktuellen Form nicht weiterentwickelt. Zur Verfügung steht stattdessen als libreto-transform ein objektorientiertes, kommandozeilenbasiertes Tool für die Transformation von Erschließungsdaten und die Erzeugung von Websites. Unter der Bezeichnung libreto-search wird daneben ein Programm zur gemeinsamen Darstellung mehrerer Bibliotheksrekonstruktionen in einer Apache Solr-Suchmaschine angeboten*
+
 *Stand: 14.03.2018*
 *Autor: Hartmut Beyer (beyer@hab.de)*
 
